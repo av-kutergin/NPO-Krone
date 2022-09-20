@@ -1,0 +1,16 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% block content %}
+<br><br>
+
+<div class="reports">
+  <div class="report">
+    <a href="#">Отчёт о проведённой работе за 2021 г.</a>
+    <a onclick="downloaded()" style="font-size: 0.7em;">(Скачать в формате PDF)</a>
+  </div>
+  <div class="report">
+    <a href="#">Предварительный отчёт о проведённой работе за 2022 г.</a>
+    <a onclick="downloaded()" style="font-size: 0.7em;">(Скачать в формате PDF)</a>
+  </div>
+</div>
+{% endblock content %}

@@ -218,15 +218,96 @@ nav {
     column-gap: 40px;
     row-gap: 0px;
     margin-bottom: 10px;
-    /* grid-template-columns: auto auto;  new */
 }
 
 .pay-container {
     padding: 40px 20% 0 20%;
 }
 
+/* custom added for guest-registration */
 .element {
     margin-bottom: 15px;
     margin-top: 5px;
     width: 270px;
+}
+
+/* from donate.html */
+.donate-container {
+    display: flex;
+    position: relative;
+    width: 50%;
+    left: 25%;
+    margin: 40px 0;
+}
+
+.donate-var {
+    flex: 1;
+    margin: 20px;
+}
+
+/* from team.html */
+.teammate {
+    position: relative;
+    left: 30%;
+    width: 35%;
+    display: grid;
+    grid-template-columns: 150px auto;
+    margin-bottom: 40px;
+}
+
+.teammate-smaller {
+    grid-template-columns: 100px auto;
+    left: 40%;
+    font-size: 0.8em;
+}
+
+.teammate-smaller .teammate-photo {
+    width: 80px;
+}
+
+.teammate:nth-child(even) {
+    left: 40%;
+}
+
+.teammate-smaller:nth-child(even) {
+    left: 50%;
+}
+
+.teammate-photo {
+    grid-row: 1 / span 2;
+    width: 100px;
+}
+
+.teammate-photo img {
+    width: 100%;
+}
+
+.teammate-name {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.teammate-text {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* from reports.html */
+.report {
+    margin: 30px;
+    text-align: center;
+}
+
+.report a:hover {
+    cursor: pointer;
+}
+
+/* from docs.html */
+.doc {
+    margin: 30px;
+    text-align: center;
+}
+
+.doc a:hover {
+    cursor: pointer;
 }

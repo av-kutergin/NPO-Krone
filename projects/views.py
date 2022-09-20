@@ -24,3 +24,29 @@ def main_page(request):
     return render(request, 'projects/index.html', {'menu': menu, 'title': 'Main page'})
 
 
+def team(request):
+    return render(request, 'projects/team.html')
+
+
+def documents(request):
+    return render(request, 'projects/documents.html')
+
+
+def reports(request):
+    return render(request, 'projects/reports.html')
+
+
+def projects(request):
+    return render(request, 'projects/projects.html')
+
+
+def contacts(request):
+    return render(request, 'projects/contacts.html')
+
+
+def donate(request):
+    return render(request, 'projects/donate.html')
+
+
+def sitemap(request):
+    return render(request, 'projects/sitemap.html')
