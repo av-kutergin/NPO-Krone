@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link type="text/css" href="{% static 'projects/css/styles.css' %}" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet" />
+<!--    <link rel="shortcut icon" href="{% static 'projects/images/logo.ico' %}" type="image/png" />-->
+</head>
+<body>
+{% block mainmenu %}
+    <div class="header block">
+        <a href="index.html">
+            <div class="logo">
+                <img src="{% static 'projects/images/logo.ico' %}" alt="" style="width:50px">
+                <img src="{% static 'projects/images/logo_text.svg' %}" alt="" style="width:100px; padding: 0 0 18px 10px;">
+            </div>
+        </a>
+        <nav>
+            <div class="nav-item" onclick="showAbout()">
+                <a href="#">О нас</a>
+                <div class="about-us block" onmouseout="aboutUsMouseout()" onmouseover="aboutUsMousein()">
+                    <div class="nav-subitem"><a href="team.html">Команда</a></div>
+                    <div class="nav-subitem"><a href="docs.html">Документы</a></div>
+                    <div class="nav-subitem"><a href="reports.html">Отчёты</a></div>
+                </div>
+            </div>
+            <div class="nav-item">
+                <a href="projects.html">Проекты</a>
+            </div>
+            <div class="nav-item">
+                <a href="contacts.html">Контакты</a>
+            </div>
+            <div class="nav-item">
+                <a href="donate.html">Донат</a>
+            </div>
+            <div class="nav-item" onclick="showEnru()">
+                <a href="#">EN/RU</a>
+            </div>
+        </nav>
+    </div>
+
+{% endblock mainmenu %}
+
+{% block content %}
+{% endblock content%}
+
+
+<div class="footer block">
+    <a href="sitemap.html">Карта сайта</a> <span style="display:inline-block; float: right; font-size: 0.8em; width: 30%">Макет сайта разработан Принцем Богемским Франц Иосиф фон Габсбург-Лотарингеном в 2022 г.</span>
+</div>
+
+<script src="{% static 'projects/js/main_script.js' %}"></script>
+</body>
+</html>

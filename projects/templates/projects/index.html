@@ -1,0 +1,64 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="carousel block">
+        <div class="epic-punchline">Пафосный панчлайн слева от карусельки</div>
+        <div class="carousel-container">
+            <div class="carousel-item">
+                <img src="{% static 'projects/images/main-photo.jfif' %}">
+                <div class="text-1"><p>Некоторое количество текста, которое имеет своей целью коротко представить организацию широкой публике заходящих на сайт людей</p>
+                <p><a href="#">И ещё ссылка на телегу</a></p></div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'projects/images/proj-photo.jpg' %}">
+                <div class="text-2"><p>Короткий текст для проекта</p>
+                <p><a href="#">И ещё ссылка</a></p></div>
+            </div>
+            <div class="carousel-item">
+                <div class="car-donut">
+                    <div class="text-3">
+                        <p>Деньги держат нашу организацию на плаву</p>
+                        <div class="button"><a href="donate.html">КНОПКА "ДОНАТ"</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="projects block">
+        <h2 style="text-align:center">Мы организуем проекты</h2>
+        <div class="proj">
+            <div class="proj-name"><h4>Проект под открытым небом "Лес в лесу"</h4></div>
+            <div class="proj-text">классический текст-«рыба» (условный, зачастую бессмысленный текст-заполнитель, вставляемый в макет страницы). Является искажённым отрывком из философского трактата Марка Туллия Цицерона «О пределах добра и зла[en]», написанного в 45 году до н. э. на латинском языке, обнаружение сходства приписывается Ричарду МакКлинтоку[1]. Распространился в 1970-х годах из-за трафаретов компании Letraset, a затем — из-за того, что служил примером текста в программе PageMaker. Испорченный текст, вероятно, происходит от его издания в Loeb Classical Library 1914 года, в котором слово dolorem разбито переносом так, что страница 36 начинается с lorem ipsum… (do- осталось на предыдущей)[2].</div>
+            <div style="text-align:center; margin: 30px auto; width: 300px" class="button" ><a href="project-1.html"><strong>Подробнее!</strong></a></div>
+        </div>
+        <hr>
+        <div class="proj">
+            <div class="proj-name"><h4>Благотворительная акция "Добро с кулаками"</h4></div>
+            <div class="proj-text">Я прекрасно понимал, Брут, что мои усилия изложить на латинском языке то, о чем с таким талантом и с такой ученостью писали греческие философы, встретят неодобрение с разных сторон1. Ведь иные, даже весьма образованные люди, вообще с подозрением относятся к самому занятию философией. Иные же, не осуждая его в умеренных пределах, полагают ненужным тратить на это слишком много времени и усилий. Будут и такие, из числа любителей греческой словесности, презирающих словесность латинскую, кто скажет, что предпочитают тратить свои силы скорее на чтение греческих авторов. Наконец, я подозреваю, что явятся и такие, кто станет призывать меня заниматься и другими видами словесности, утверждая, что этот литературный жанр, при всей его изысканности, не отвечает ни моей индивидуальности, ни моему положению.</div><div style="text-align:center; margin: 30px auto; width: 300px" class="button" ><a href="project-3.html"><strong>Подробнее!</strong></a></div>
+        </div>
+        <hr>
+        <div style="text-align:center; margin: 30px;" class="button" ><a href="projects.html"><strong>Хочу участвовать в одном из мероприятий!</strong></a></div>
+    </div>
+
+    <div class="team block">
+        <h2 style="text-align:center">Наша команда</h2>
+        <div class="teammate">
+            <div class="teammate-photo"><img src="{% static 'projects/images/team-1.png' %}"></div>
+            <div class="teammate-name"><h4>Дмитрий Платонов</h4></div>
+            <div class="teammate-text">Организатор, лидер</div>
+        </div>
+        <div class="teammate">
+            <div class="teammate-photo"><img src="{% static 'projects/images/team-2.png' %}"></div>
+            <div class="teammate-name"><h4>Михаил Рыбаков</h4></div>
+            <div class="teammate-text">Хороший человек, много умеет полезного</div>
+        </div>
+        <div class="teammate">
+            <div class="teammate-photo"><img src="{% static 'projects/images/team-2.png' %}"></div>
+            <div class="teammate-name"><h4>Аркадий Кожевников</h4></div>
+            <div class="teammate-text">Хороший человек, много умеет полезного</div>
+        </div>
+        <div style="text-align:center; margin: 30px" ><a href="team.html">И другие нераавнодушные люди</a></div>
+    </div>
+
+{% endblock content %}
