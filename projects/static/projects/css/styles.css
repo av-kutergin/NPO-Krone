@@ -207,3 +207,26 @@ nav {
 .text-3 a:hover {
     color: red;
 }
+
+/* from signintoproj.html */
+.form {
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    display: grid;
+    padding: 40px;
+    column-gap: 40px;
+    row-gap: 0px;
+    margin-bottom: 10px;
+    /* grid-template-columns: auto auto;  new */
+}
+
+.pay-container {
+    padding: 40px 20% 0 20%;
+}
+
+.element {
+    margin-bottom: 15px;
+    margin-top: 5px;
+    width: 270px;
+}

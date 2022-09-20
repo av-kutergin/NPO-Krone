@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from phone_field import PhoneField
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Project(models.Model):
@@ -33,7 +33,7 @@ class Guest(models.Model):
     firstname = models.CharField(max_length=100, verbose_name='Имя')
     lastname = models.CharField(max_length=100, verbose_name='Фамилия')
     birthdate = models.DateField(verbose_name='Дата рождения')
-    phone = PhoneField(verbose_name='Телефон')
+    phone = PhoneNumberField(verbose_name='Телефон')
     email = models.EmailField(verbose_name='Электронная почта')
     telegram = models.CharField(max_length=30, verbose_name='Телеграм')
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -47,7 +47,7 @@ class TeamMate(models.Model):
     description_ru = models.TextField(blank=True)
     description_en = models.TextField(blank=True)
     high_rank = models.BooleanField()
-    avatar = models.ImageField()
+    avatar = models.ImageField(blank=True)
     django_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 

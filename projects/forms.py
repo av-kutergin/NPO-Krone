@@ -13,13 +13,13 @@ class AddGuestForm(forms.ModelForm):
 
     class Meta:
         model = Guest
-        fields = ['lastname', 'firstname', 'birthdate', 'phone', 'email', 'telegram']
+        fields = ['lastname', 'firstname', 'phone', 'telegram', 'email', 'birthdate']
         widgets = {
-            'lastname': forms.TextInput(attrs={'style': {'grid-column': '1 / 1;', 'grid-row': '2 / 2;'}}),
-            'firstname': forms.TextInput(attrs={'style': {'grid-column': '2 / 2;', 'grid-row': '2 / 2;'}}),
-            'birthdate': forms.DateInput(attrs={'style': {'grid-column': '1 / 1;', 'grid-row': '4 / 4;'}}),
-            'phone': forms.TextInput(attrs={'style': 'grid-column: 2 / 2; grid-row: 3 / 3;'}),
-            'email': forms.EmailInput(attrs={'style': 'grid-column: 2 / 2; grid-row: 3 / 3;'}),
-            'telegram': forms.TextInput(attrs={'style': 'grid-column: 2 / 2; grid-row: 6 / 6;'}),
+            'lastname': forms.TextInput(attrs={'class': 'element'}),
+            'firstname': forms.TextInput(attrs={'class': 'element'}),
+            'birthdate': forms.DateInput(attrs={'class': 'element'}),
+            'phone': forms.TextInput(attrs={'class': 'element'}),
+            'email': forms.EmailInput(attrs={'class': 'element'}),
+            'telegram': forms.TextInput(attrs={'class': 'element'}),
         }
 
