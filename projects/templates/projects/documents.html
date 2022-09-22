@@ -4,32 +4,10 @@
 <br><br>
 
 <div class="docs">
+  {% for obj in object_list %}
   <div class="doc">
-    <a onclick="downloaded()">скачать: Организационно-правовое состыкование деревьев</a>
+    <a onclick="downloaded()">скачать: {{ obj.name_ru }}</a>
   </div>
-  <div class="doc">
-    <a onclick="downloaded()">скачать: Справка о получении справки по форме АРГ-3477</a>
-  </div>
-  <div class="doc">
-    <a onclick="downloaded()">скачать: Отчёт о проведении тайного санты январь 2021</a>
-  </div>
-  <div class="doc">
-    <a onclick="downloaded()">скачать: Отчёт о проведении тайного санты февраль 2021</a>
-  </div>
-  <div class="doc">
-    <a onclick="downloaded()">скачать: Отчёт о проведении тайного санты март 2021</a>
-  </div>
-  <div class="doc">
-    <a onclick="downloaded()">скачать: Отчёт о проведении тайного санты апрель 2021</a>
-  </div>
-  <div class="doc">
-    <a onclick="downloaded()">скачать: Отчёт о проведении тайного санты май 2021</a>
-  </div>
-  <div class="doc">
-    <a onclick="downloaded()">скачать: Отчёт о проведении тайного санты первая половина июня 2021</a>
-  </div>
-  <div class="doc">
-    <a onclick="downloaded()">скачать: Отчёт о проведении тайного санты вторая половина июня 2021</a>
-  </div>
+  {% endfor %}
 </div>
 {% endblock content %}

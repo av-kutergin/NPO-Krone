@@ -4,13 +4,11 @@
 <br><br>
 
 <div class="reports">
+  {% for obj in object_list %}
   <div class="report">
-    <a href="#">Отчёт о проведённой работе за 2021 г.</a>
+    <a href="{{ obj.get_absolute_url }}">{{ obj.name_ru}}</a>
     <a onclick="downloaded()" style="font-size: 0.7em;">(Скачать в формате PDF)</a>
   </div>
-  <div class="report">
-    <a href="#">Предварительный отчёт о проведённой работе за 2022 г.</a>
-    <a onclick="downloaded()" style="font-size: 0.7em;">(Скачать в формате PDF)</a>
-  </div>
+  {% endfor %}
 </div>
 {% endblock content %}

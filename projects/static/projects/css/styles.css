@@ -311,3 +311,28 @@ nav {
 .doc a:hover {
     cursor: pointer;
 }
+
+/* from project1.html */
+.project {
+    padding: 20px;
+
+}
+
+.project img {
+    max-width: 40%;
+}
+
+.project img:nth-child(odd) {
+    float: left;
+    margin: 20px 40px 20px 0;
+}
+
+.project img:nth-child(even) {
+    float: right;
+    margin: 20px 0 20px 40px;
+}
+
+.imin {
+    text-align: center;
+    padding: 20px;
+}

@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, ListView
+from django.views.generic import CreateView, FormView, ListView, TemplateView, DetailView
 
 from projects.forms import AddGuestForm
-from projects.models import Guest
+from projects.models import Guest, Project, SimpleDocument, ReportDocument, Carousel
 
 menu = ['about', 'contacts', 'upcoming events']
 
@@ -21,19 +21,49 @@ class GuestList(ListView):
 
 
 def main_page(request):
-    return render(request, 'projects/index.html', {'menu': menu, 'title': 'Main page'})
+    title = 'Krone'
+    projects = Project.objects.all()
+    carousel = Carousel.objects.all()
+    context = {
+        'title': title,
+        'carousel': carousel,
+        'projects': projects,
+
+    }
+    return render(request, 'projects/index.html', context)
+
+
+class ShowProject(DetailView):
+    model = Project
+    template_name = 'projects/project_page.html'
+    slug_url_kwarg = 'project_slug'
+    context_object_name = 'project'
+
+
+# class ShowSimpleDocument(DetailView):
+#     model = SimpleDocument
+#     template_name = 'projects/simple_document.html'
+#     context_object_name = 'document'
+#
+#
+# class ShowReportDocument(DetailView):
+#     model = ReportDocument
+#     template_name = 'projects/report_document.html'
+#     context_object_name = 'document'
 
 
 def team(request):
     return render(request, 'projects/team.html')
 
 
-def documents(request):
-    return render(request, 'projects/documents.html')
+class DocumentListView(ListView):
+    model = SimpleDocument
+    template_name = 'projects/documents.html'
 
 
-def reports(request):
-    return render(request, 'projects/reports.html')
+class ReportListView(ListView):
+    model = ReportDocument
+    template_name = 'projects/reports.html'
 
 
 def projects(request):

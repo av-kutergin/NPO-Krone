@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -17,6 +18,10 @@ class Project(models.Model):
     qr_reveal_date = models.DateField()
     howto_ru = models.CharField(max_length=200)
     howto_en = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
+
+    def get_absolute_url(self):
+        return reverse('show_project', kwargs={'project_slug': self.slug})
 
     # IF NEEDED
     #
@@ -48,13 +53,16 @@ class TeamMate(models.Model):
     description_en = models.TextField(blank=True)
     high_rank = models.BooleanField()
     avatar = models.ImageField(blank=True)
-    django_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    django_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
 
 class Document(models.Model):
-    name_ru = models.CharField(max_length=100)
-    name_en = models.CharField(max_length=100)
+    name_ru = models.CharField(max_length=100, blank=True)
+    name_en = models.CharField(max_length=100, blank=True)
     file = models.FileField()
+
+    class Meta:
+        abstract = True
 
     def clean(self):
         if not self.name_ru:
@@ -62,8 +70,8 @@ class Document(models.Model):
         if not self.name_en:
             self.name_en = self.file.url.split('/')[-1]
 
-    class Meta:
-        abstract = True
+    def get_absolute_url(self):
+        return reverse('simple_document', kwargs={'pk': self.id})
 
 
 class SimpleDocument(Document):
@@ -74,3 +82,10 @@ class ReportDocument(Document):
     pass
 
 
+class Carousel(models.Model):
+    display_name_ru = models.CharField(max_length=100)
+    display_name_en = models.CharField(max_length=100)
+    background_image_ru = models.ImageField()
+    background_image_en = models.ImageField()
+    content_ru = models.TextField()
+    content_en = models.TextField()

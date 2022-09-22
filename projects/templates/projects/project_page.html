@@ -1,0 +1,17 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% block content %}
+    <br>
+    <div class="project block">
+        <h2>{{ project.name_ru }}</h2>
+        <img src="img/proj-photo.jpg" alt="">
+        <p>{{ project.content_ru }}</p>
+        <img src="img/proj-photo.jpg" alt="">
+
+        <div style="clear: both"></div>
+        <a href="signintoproj.html"><div class="imin button">Участвовать!</div></a>
+    </div>
+
+    <br>
+
+{% endblock content %}
