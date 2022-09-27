@@ -6,7 +6,7 @@
 <div class="docs">
   {% for obj in object_list %}
   <div class="doc">
-    <a onclick="downloaded()">скачать: {{ obj.name_ru }}</a>
+    <a href="{{ obj.download }}" download style="text-decoration: none;">скачать: {{ obj.name_ru }}</a>
   </div>
   {% endfor %}
 </div>

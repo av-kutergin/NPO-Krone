@@ -7,7 +7,7 @@
   {% for obj in object_list %}
   <div class="report">
     <a href="{{ obj.get_absolute_url }}">{{ obj.name_ru}}</a>
-    <a onclick="downloaded()" style="font-size: 0.7em;">(Скачать в формате PDF)</a>
+    <a href="{{ obj.download }}" download style="font-size: 0.7em;">(Скачать в формате PDF)</a>
   </div>
   {% endfor %}
 </div>

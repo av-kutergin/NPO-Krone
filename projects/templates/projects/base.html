@@ -16,7 +16,7 @@
     <div class="header block">
         <a href="/">
             <div class="logo">
-                <img src="{% static 'projects/images/logo.ico' %}" alt="" style="width:50px">
+                <img src="{% static 'projects/images/logo.svg' %}" alt="" style="width:50px">
                 <img src="{% static 'projects/images/logo_text.svg' %}" alt="" style="width:100px; padding: 0 0 18px 10px;">
             </div>
         </a>
@@ -24,19 +24,19 @@
             <div class="nav-item" onclick="showAbout()">
                 <a href="#">О нас</a>
                 <div class="about-us block" onmouseout="aboutUsMouseout()" onmouseover="aboutUsMousein()">
-                    <div class="nav-subitem"><a href="/team">Команда</a></div>
-                    <div class="nav-subitem"><a href="/documents">Документы</a></div>
-                    <div class="nav-subitem"><a href="/reports">Отчёты</a></div>
+                    <div class="nav-subitem"><a href="{% url 'team'%}">Команда</a></div>
+                    <div class="nav-subitem"><a href="{% url 'documents'%}">Документы</a></div>
+                    <div class="nav-subitem"><a href="{% url 'reports'%}">Отчёты</a></div>
                 </div>
             </div>
             <div class="nav-item">
-                <a href="/projects">Проекты</a>
+                <a href="{% url 'projects' %}">Проекты</a>
             </div>
             <div class="nav-item">
-                <a href="/contacts">Контакты</a>
+                <a href="{% url 'contacts' %}">Контакты</a>
             </div>
             <div class="nav-item">
-                <a href="/donate">Донат</a>
+                <a href="{% url 'donate' %}">Донат</a>
             </div>
             <div class="nav-item" onclick="showEnru()">
                 <a href="#">EN/RU</a>

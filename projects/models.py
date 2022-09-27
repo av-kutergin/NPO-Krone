@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
@@ -53,13 +52,15 @@ class TeamMate(models.Model):
     description_en = models.TextField(blank=True)
     high_rank = models.BooleanField()
     avatar = models.ImageField(blank=True)
-    django_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    show = models.BooleanField(default=True)
+    # django_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
 
 class Document(models.Model):
     name_ru = models.CharField(max_length=100, blank=True)
     name_en = models.CharField(max_length=100, blank=True)
     file = models.FileField()
+    # slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
 
     class Meta:
         abstract = True
@@ -71,15 +72,23 @@ class Document(models.Model):
             self.name_en = self.file.url.split('/')[-1]
 
     def get_absolute_url(self):
-        return reverse('simple_document', kwargs={'pk': self.id})
+        return reverse('display', kwargs={'pk': self.id, 'file_type': 'report'})
+
+    def download(self):
+        pass
 
 
 class SimpleDocument(Document):
-    pass
+    # pass
+    def download(self):
+        return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'document'})
 
 
 class ReportDocument(Document):
-    pass
+    # pass
+    # return reverse('download_report', kwargs={'pk': self.id})
+    def download(self):
+        return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'report'})
 
 
 class Carousel(models.Model):
