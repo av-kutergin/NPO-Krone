@@ -336,3 +336,21 @@ nav {
     text-align: center;
     padding: 20px;
 }
+
+/* from projects.html */
+.project-date {
+    text-align: center;
+}
+
+.project-status {
+    text-align: center;
+}
+
+.green {
+    color: #29c729;
+    font-weight: bold;
+}
+
+.red {
+    color: #deb766;
+}

@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
@@ -19,8 +21,16 @@ class Project(models.Model):
     howto_en = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
 
+    class Meta:
+        verbose_name = 'Проект'
+        verbose_name_plural = 'Проекты'
+        ordering = ['-date']
+
     def get_absolute_url(self):
         return reverse('show_project', kwargs={'project_slug': self.slug})
+
+    def is_coming(self):
+        return datetime.date.today() < self.date
 
     # IF NEEDED
     #
@@ -72,21 +82,18 @@ class Document(models.Model):
             self.name_en = self.file.url.split('/')[-1]
 
     def get_absolute_url(self):
-        return reverse('display', kwargs={'pk': self.id, 'file_type': 'report'})
+        return reverse('display', kwargs={'pk': self.id})
 
     def download(self):
         pass
 
 
 class SimpleDocument(Document):
-    # pass
     def download(self):
         return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'document'})
 
 
 class ReportDocument(Document):
-    # pass
-    # return reverse('download_report', kwargs={'pk': self.id})
     def download(self):
         return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'report'})
 

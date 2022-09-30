@@ -1,5 +1,6 @@
 {% extends 'projects/base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
     <br>
     <div class="project block">
@@ -7,9 +8,10 @@
         <img src="img/proj-photo.jpg" alt="">
         <p>{{ project.content_ru }}</p>
         <img src="img/proj-photo.jpg" alt="">
-
-        <div style="clear: both"></div>
-        <a href="signintoproj.html"><div class="imin button">Участвовать!</div></a>
+        {% if project.is_coming and project.vacant_places %}
+        <div style="clear: both" ></div>
+        <a href="{% url 'register' project_slug=project.slug %}"><div class="imin button">{% translate 'Участвовать!'%}</div></a>
+        {% endif %}
     </div>
 
     <br>

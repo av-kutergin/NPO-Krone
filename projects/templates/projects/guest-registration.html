@@ -1,18 +1,21 @@
 {% extends 'projects/base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 <br><br>
 
-<h2>Название выбранного проекта</h2>
-<!--action="payment.html" -->
-<form class="form block" action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+{% get_current_language as LANGUAGE_CODE %}
+<!-- Current language: {{ LANGUAGE_CODE }} -->
+
+<h2>{{ event.name_ru }}</h2>
+<form class="form block" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% for f in form %}
     <div>{{ f.label_tag }}<br>{{ f }}</div>
     {% endfor %}
 
         <div class="pay-container" style="grid-column:1 / span 2; grid-row: 7 / 7;">
-            <div class="contrib-size">Взнос за участие: 1500 р.</div>
+            <div class="contrib-size">{% translate "Взнос за участие:" %} {{ event.price }}</div>
             <br>
             <a href="payment.html">
                 <div class="pay button">Оплатить</div>

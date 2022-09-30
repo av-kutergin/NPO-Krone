@@ -1,21 +1,39 @@
 import mimetypes
 
+from django import forms
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView, ListView, DetailView
+from phonenumber_field.formfields import PhoneNumberField
 
 from projects.forms import AddGuestForm
-from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate
+from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate, Guest
 
 menu = ['about', 'contacts', 'upcoming events']
+user_language = 'ru'
+
+# translation.activate(user_language)
+# response = HttpResponse(...)
+# response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+
+#
+# def switch_to_eng(request):
+#     request.session[translation.LANGUAGE_SESSION_KEY] = 'en'
 
 
 class AddGuestView(FormView):
     form_class = AddGuestForm
     template_name = 'projects/guest-registration.html'
-    success_url = reverse_lazy('main_page')
-    raise_exception = True
+    # success_url = reverse_lazy('main_page')
+    # raise_exception = True
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs['project_slug']
+        context["event"] = Project.objects.get(slug=slug)
+        return context
 
 
 class GuestList(ListView):
@@ -32,8 +50,7 @@ def main_page(request):
         'title': title,
         'carousel': carousel,
         'projects': projects,
-        'teammates': teammates
-
+        'teammates': teammates,
     }
     return render(request, 'projects/index.html', context)
 
@@ -79,7 +96,12 @@ class ReportListView(ListView):
 
 
 def projects(request):
-    return render(request, 'projects/projects.html')
+    projects = Project.objects.all()
+    context = {
+        'title': 'Projecti',
+        'projects': projects,
+    }
+    return render(request, 'projects/projects.html', context)
 
 
 def contacts(request):
@@ -134,7 +156,7 @@ def download_file(request, file_type, pk):
 #         return response
 
 
-def display(request, file_type, pk):
+def display(request, pk):
     # document = None
     # if file_type == 'report':
     document = get_object_or_404(ReportDocument, pk=pk)
@@ -148,15 +170,7 @@ def display(request, file_type, pk):
         #     'document': document,
         #     'type': mime_type,
         # }
-        return render(request, 'projects/display.html', document)
-
-    # report = get_object_or_404(ReportDocument, pk=pk)
-    # filepath = report.file.path
-    # mime_type, _ = mimetypes.guess_type(filepath)
-    # # if filepath.endswith('pdf'):
-    # with open(filepath, 'rb') as file:
-    #     response = HttpResponse(file.read(), content_type=mime_type)
-    #     response['Content-Disposition'] = f'inline;filename={report.name_ru}'
-    #     return response
-    # else:
-    #     raise TypeError
+        context = {
+            'document': document,
+        }
+        return render(request, 'projects/display.html', context)
