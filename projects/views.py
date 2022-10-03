@@ -1,26 +1,21 @@
 import mimetypes
 
+import stripe
 from django import forms
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView, ListView, DetailView
 from phonenumber_field.formfields import PhoneNumberField
+from dotenv import load_dotenv
 
 from projects.forms import AddGuestForm
-from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate, Guest
+from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate, Guest, DonateButton
 
-menu = ['about', 'contacts', 'upcoming events']
-user_language = 'ru'
+load_dotenv()
 
-# translation.activate(user_language)
-# response = HttpResponse(...)
-# response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
-
-#
-# def switch_to_eng(request):
-#     request.session[translation.LANGUAGE_SESSION_KEY] = 'en'
+YOUR_DOMAIN = 'http://127.0.0.1:8000/'
 
 
 class AddGuestView(FormView):
@@ -81,7 +76,6 @@ def team(request):
         'high_teammates': high_teammates,
         'ordinary_teammates': ordinary_teammates,
     }
-    print(high_teammates[0].avatar.path)
     return render(request, 'projects/team.html', context)
 
 
@@ -109,7 +103,32 @@ def contacts(request):
 
 
 def donate(request):
-    return render(request, 'projects/donate.html')
+    donation_options = DonateButton.objects.all()
+    print(donation_options)
+    context = {
+        'donations': donation_options
+    }
+    return render(request, 'projects/donate.html', context)
+
+
+def create_checkout_session(request, ):
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    'price': '{{PRICE_ID}}',
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/success.html',
+            cancel_url=YOUR_DOMAIN + '/cancel.html',
+        )
+    except Exception as e:
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)
 
 
 def sitemap(request):
@@ -136,41 +155,9 @@ def download_file(request, file_type, pk):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
 
 
-# def download_document(request, pk):
-#     document = get_object_or_404(SimpleDocument, pk=pk)
-#     filepath = document.file.path
-#     mime_type, _ = mimetypes.guess_type(filepath)
-#     with open(filepath, 'rb') as file:
-#         response = HttpResponse(file.read(), content_type=mime_type)  # mimetypes.guess_type(filepath)
-#         response['Content-Disposition'] = f'attachment;filename={document.name_ru}'
-#         return response
-
-
-# def download_report(request, pk, obj):
-#     document = get_object_or_404(ReportDocument, pk=pk)
-#     filepath = document.file.path
-#     mime_type, _ = mimetypes.guess_type(filepath)
-#     with open(filepath, 'rb') as file:
-#         response = HttpResponse(file.read(), content_type=mime_type)
-#         response['Content-Disposition'] = f'attachment; filename={document.name_ru}'
-#         return response
-
-
 def display(request, pk):
-    # document = None
-    # if file_type == 'report':
     document = get_object_or_404(ReportDocument, pk=pk)
-    # elif file_type == 'document':
-    #     document = get_object_or_404(SimpleDocument, pk=pk)
-
-    if document:
-        # filepath = document.file.path
-        # mime_type, _ = mimetypes.guess_type(filepath)
-        # context = {
-        #     'document': document,
-        #     'type': mime_type,
-        # }
-        context = {
-            'document': document,
-        }
-        return render(request, 'projects/display.html', context)
+    context = {
+        'document': document,
+    }
+    return render(request, 'projects/display.html', context)

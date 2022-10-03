@@ -5,9 +5,8 @@
 <br><br>
 
 {% get_current_language as LANGUAGE_CODE %}
-<!-- Current language: {{ LANGUAGE_CODE }} -->
 
-<h2>{{ event.name_ru }}</h2>
+<h2>{{ event.name }}</h2>
 <form class="form block" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% for f in form %}

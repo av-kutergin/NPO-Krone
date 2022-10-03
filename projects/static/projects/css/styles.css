@@ -245,6 +245,14 @@ nav {
     margin: 20px;
 }
 
+.donate-button {
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 100px;
+}
+
 /* from team.html */
 .teammate {
     position: relative;

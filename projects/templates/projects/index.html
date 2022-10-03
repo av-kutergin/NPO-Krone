@@ -1,22 +1,25 @@
 {% extends 'projects/base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 
 <div class="carousel block">
-    <div class="epic-punchline">Пафосный панчлайн слева от карусельки (changes on the front?)</div>
+    <div class="epic-punchline">{% translate "Пафосный панчлайн слева от карусельки" %}</div>
     <div class="carousel-container">
         {% for p in carousel %}
+        {% if p.position %}
         <div class="carousel-item">
-            <img src="{{ p.background_image_ru.url }}">
-            <div class="text-1"><p>{{ p.content_ru }}</p>
-                <p><a href="https://t.me/Everything42_bot">И ещё ссылка на телегу</a></p></div>
+            <img src="{{ p.background_image.url }}">
+            <div class="text-1"><p>{{ p.content }}</p>
+                <p><a href="https://t.me/Everything42_bot">{% translate "И ещё ссылка на телегу" %}</a></p></div>
         </div>
+        {% endif %}
         {% endfor %}
         <div class="carousel-item">
             <div class="car-donut">
                 <div class="text-3">
-                    <p>Деньги держат нашу организацию на плаву</p>
-                    <div class="button"><a href="donate.html">КНОПКА "ДОНАТ"</a></div>
+                    <p>{% translate "Деньги держат нашу организацию на плаву" %}</p>
+                    <div class="button"><a href="donate.html">{% translate '"КНОПКА "ДОНАТ"' %}</a></div>
                 </div>
             </div>
         </div>
@@ -24,30 +27,30 @@
 </div>
 
 <div class="projects block">
-    <h2 style="text-align:center">Мы организуем проекты</h2>
+    <h2 style="text-align:center">{% translate "Мы организуем проекты" %}</h2>
     <div class="proj">
         {% for p in projects %}
-        <div class="proj-name"><h4>{{ p.name_ru }}</h4></div>
-        <div class="proj-text">{{ p.content_brief_ru }}</div>
+        <div class="proj-name"><h4>{{ p.name }}</h4></div>
+        <div class="proj-text">{{ p.content_brief }}</div>
         <div style="text-align:center; margin: 30px auto; width: 300px" class="button"><a
-                href="{{ p.get_absolute_url }}"><strong>Подробнее!</strong></a></div>
+                href="{{ p.get_absolute_url }}"><strong>{% translate "Подробнее!" %}</strong></a></div>
         <hr>
         {% endfor %}
     </div>
 </div>
 
 <div class="team block">
-    <h2 style="text-align:center">Наша команда</h2>
+    <h2 style="text-align:center">{% translate "Наша команда" %}</h2>
 
     {% for t in teammates %}
     <div class="teammate">
         <div class="teammate-photo"><img src="{{ t.avatar.url }}"></div>
-        <div class="teammate-name"><h4>{{ t.name_ru }}</h4></div>
-        <div class="teammate-text">{{ t.description_ru }}</div>
+        <div class="teammate-name"><h4>{{ t.name }}</h4></div>
+        <div class="teammate-text">{{ t.description }}</div>
         <br>
     </div>
     {% endfor %}
-    <div style="text-align:center; margin: 30px"><a href="{% url 'team'%}">И другие нераавнодушные люди</a></div>
+    <div style="text-align:center; margin: 30px"><a href="{% url 'team'%}">{% translate "И другие нераавнодушные люди" %}</a></div>
 </div>
 
 {% endblock content %}

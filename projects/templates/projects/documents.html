@@ -1,13 +1,17 @@
 {% extends 'projects/base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 <br><br>
 
 <div class="docs">
-  {% for obj in object_list %}
-  <div class="doc">
-    <a href="{{ obj.download }}" download style="text-decoration: none;">скачать: {{ obj.name_ru }}</a>
-  </div>
-  {% endfor %}
+    {% for obj in object_list %}
+    <div class="doc">
+        <a href="{{ obj.download }}" download style="text-decoration: none;">
+          {% blocktranslate with name=obj.name %}
+            "скачать: {{ name }}
+          {% endblocktranslate %}</a>
+    </div>
+    {% endfor %}
 </div>
 {% endblock content %}

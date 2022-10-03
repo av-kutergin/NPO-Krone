@@ -1,28 +1,29 @@
 {% extends 'projects/base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 <br><br>
 
 <div class="projects block">
-    <h2 style="text-align:center">Мы организуем проекты</h2>
+    <h2 style="text-align:center">{% translate "Мы организуем проекты" %}</h2>
     {% for p in projects %}
     <div class="proj">
-        <div class="proj-name"><h4>{{ p.name_ru }}</h4></div>
-        <div class="proj-text">{{ p.content_brief_ru}}</div>
+        <div class="proj-name"><h4>{{ p.name }}</h4></div>
+        <div class="proj-text">{{ p.content_brief}}</div>
         <div style="text-align:center; margin: 30px auto; width: 300px" class="button">
-            <a href="{{ p.get_absolute_url }}"><strong>Подробнее!</strong></a>
+            <a href="{{ p.get_absolute_url }}"><strong>{% translate "Подробнее!" %}</strong></a>
         </div>
-        <div class="project-date">Дата проведения: {{ p.date }}</div>
+        <div class="project-date">{% translate "Дата проведения: " %} {{ p.date }}</div>
 
         {% if not p.is_coming %}
-            <div class="project-status">Акция уже прошла</div>
+            <div class="project-status">{% translate "Акция уже прошла" %}</div>
         {% elif p.vacant_places %}
             <div class="project-status green">
-                <a href="{{ p.get_absolute_url }}" class="green" style="text-decoration: none;">Ещё есть свободные места</a>
+                <a href="{{ p.get_absolute_url }}" class="green" style="text-decoration: none;">{% translate "Ещё есть свободные места" %}</a>
             </div>
         {% else %}
-            <div class="project-status red">Свободных мест нет.
-                <div style="font-size:0.8em">Не отчаивайся! Скоро будут новые проекты</div>
+            <div class="project-status red">{% translate "Свободных мест нет." %}
+                <div style="font-size:0.8em">{% translate "Не отчаивайся! Скоро будут новые проекты" %}</div>
             </div>
         {% endif %}
 

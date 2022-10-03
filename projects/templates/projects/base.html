@@ -1,48 +1,59 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
+{% load language_selector %}
+{% get_current_language as LANGUAGE_CODE %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Neucha&display=swap"/>
     <link rel="stylesheet" href="{% static 'projects/css/styles.css' %}" type="text/css"/>
     <title>{{ title }}</title>
-<!--    <link rel="shortcut icon" href="{% static 'projects/images/logo.ico' %}" type="image/png" />-->
+    <!--    <link rel="shortcut icon" href="{% static 'projects/images/logo.ico' %}" type="image/png" />-->
 </head>
 <body>
 {% block mainmenu %}
-    <div class="header block">
-        <a href="/">
-            <div class="logo">
-                <img src="{% static 'projects/images/logo.svg' %}" alt="" style="width:50px">
-                <img src="{% static 'projects/images/logo_text.svg' %}" alt="" style="width:100px; padding: 0 0 18px 10px;">
+<div class="header block">
+    <a href="/">
+        <div class="logo">
+            <img src="{% static 'projects/images/logo.svg' %}" alt="" style="width:50px">
+            <img src="{% static 'projects/images/logo_text.svg' %}" alt="" style="width:100px; padding: 0 0 18px 10px;">
+        </div>
+    </a>
+    <nav>
+        <div class="nav-item" onclick="showAbout()">
+            <a href="#">{% translate "О нас" %}</a>
+            <div class="about-us block" onmouseout="aboutUsMouseout()" onmouseover="aboutUsMousein()">
+                <div class="nav-subitem"><a href="{% url 'team'%}">{% translate "Команда" %}</a></div>
+                <div class="nav-subitem"><a href="{% url 'documents'%}">{% translate "Документы" %}</a></div>
+                <div class="nav-subitem"><a href="{% url 'reports'%}">{% translate "Отчёты" %}</a></div>
             </div>
-        </a>
-        <nav>
-            <div class="nav-item" onclick="showAbout()">
-                <a href="#">О нас</a>
-                <div class="about-us block" onmouseout="aboutUsMouseout()" onmouseover="aboutUsMousein()">
-                    <div class="nav-subitem"><a href="{% url 'team'%}">Команда</a></div>
-                    <div class="nav-subitem"><a href="{% url 'documents'%}">Документы</a></div>
-                    <div class="nav-subitem"><a href="{% url 'reports'%}">Отчёты</a></div>
-                </div>
-            </div>
-            <div class="nav-item">
-                <a href="{% url 'projects' %}">Проекты</a>
-            </div>
-            <div class="nav-item">
-                <a href="{% url 'contacts' %}">Контакты</a>
-            </div>
-            <div class="nav-item">
-                <a href="{% url 'donate' %}">Донат</a>
-            </div>
-            <div class="nav-item" onclick="showEnru()">
-                <a href="#">EN/RU</a>
-            </div>
-        </nav>
-    </div>
+        </div>
+        <div class="nav-item">
+            <a href="{% url 'projects' %}">{% translate "Проекты" %}</a>
+        </div>
+        <div class="nav-item">
+            <a href="{% url 'contacts' %}">{% translate "Контакты" %}</a>
+        </div>
+        <div class="nav-item">
+            <a href="{% url 'donate' %}">{% translate "Донат" %}</a>
+        </div>
+        <form action="{% url 'set_language' %}" method="post" id="form_{{ LANGUAGE_CODE|new_lang_code }}">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ redirect_to }}"/>
+            <input name="language" type="hidden" value="{{ LANGUAGE_CODE|new_lang_code }}"/>
+        </form>
+        <button class="button" type="submit" form="form_{{ LANGUAGE_CODE|new_lang_code }}"
+                value="Submit">EN/RU
+        </button>
+        <!--            <div class="nav-item" onclick="showEnru()">-->
+        <!--                <a href="#">EN/RU</a>-->
+        <!--            </div>-->
+    </nav>
+</div>
 
 {% endblock mainmenu %}
 
@@ -51,8 +62,8 @@
 
 
 <div class="footer block">
-    <a href="/sitemap">Карта сайта</a>
-    <span style="display:inline-block; float: right; font-size: 0.8em; width: 30%">Макет сайта разработан Принцем Богемским Франц Иосиф фон Габсбург-Лотарингеном в 2022 г.</span>
+    <a href="/sitemap">{% translate "Карта сайта" %}</a>
+    <span style="display:inline-block; float: right; font-size: 0.8em; width: 30%">{% translate "Макет сайта разработан Принцем Богемским Франц Иосиф фон Габсбург-Лотарингеном в 2022 г." %}</span>
 </div>
 
 <script src="{% static 'projects/js/main_script.js' %}"></script>

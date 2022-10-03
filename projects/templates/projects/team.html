@@ -1,24 +1,25 @@
 {% extends 'projects/base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 <br><br>
 
 <div class="team block">
-    <h2 style="text-align:center">Основной состав</h2>
+    <h2 style="text-align:center">{% translate "Основной состав" %}</h2>
     {% for h in high_teammates %}
     <div class="teammate">
         <div class="teammate-photo"><img src="{{ h.avatar.url }}"></div>
-        <div class="teammate-name"><h4>{{ h.name_ru }}</h4></div>
-        <div class="teammate-text">{{ h.description_ru }}</div>
+        <div class="teammate-name"><h4>{{ h.name }}</h4></div>
+        <div class="teammate-text">{{ h.description }}</div>
     </div>
     {% endfor %}
 
-    <h2 style="text-align:center">Те, без кого бы мы не справились ^^</h2>
+    <h2 style="text-align:center">{% translate "Те, без кого бы мы не справились ^^" %}</h2>
     {% for o in ordinary_teammates %}
     <div class="teammate teammate-smaller">
         <div class="teammate-photo"><img src="{{ o.avatar.url }}"></div>
-        <div class="teammate-name"><h4>{{ o.name_ru }}</h4></div>
-        <div class="teammate-text">{{ o.description_ru }}</div>
+        <div class="teammate-name"><h4>{{ o.name }}</h4></div>
+        <div class="teammate-text">{{ o.description }}</div>
     </div>
     {% endfor %}
 </div>
