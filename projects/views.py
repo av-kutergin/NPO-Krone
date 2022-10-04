@@ -30,25 +30,25 @@ class AddGuestView(FormView):
         context["event"] = Project.objects.get(slug=slug)
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = self.get_form()
-        # form = AddGuestForm(request.POST)
-        print('form', form)
-        my_data = request.POST
-        print('my data', my_data)
-        context = {}
-        print('form valid', form.is_valid())
-        if form.is_valid():
-            guest = form.save(commit=False)
-            # guest = Guest.objects.create(**form.cleaned_data)
-            print('guest', guest)
-        else:
-            form = AddGuestForm()
-            kwargs['form'] = form
-
-            return render(request, 'projects/guest-registration.html', kwargs)
-
-        return render(request, 'projects/payment-succeed-qr.html', context=context)
+    # def post(self, request, *args, **kwargs):
+    #     form = self.get_form()
+    #     # form = AddGuestForm(request.POST)
+    #     print('form', form)
+    #     my_data = request.POST
+    #     print('my data', my_data)
+    #     context = {}
+    #     print('form valid', form.is_valid())
+    #     if form.is_valid():
+    #         guest = form.save(commit=False)
+    #         # guest = Guest.objects.create(**form.cleaned_data)
+    #         print('guest', guest)
+    #     else:
+    #         form = AddGuestForm()
+    #         kwargs['form'] = form
+    #
+    #         return render(request, 'projects/guest-registration.html', kwargs)
+    #
+    #     return render(request, 'projects/payment-succeed-qr.html', context=context)
 
 
 def main_page(request):
