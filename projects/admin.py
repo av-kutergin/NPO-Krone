@@ -53,4 +53,4 @@ class GuestAdmin(admin.ModelAdmin):
 class DonateButtonAdmin(admin.ModelAdmin):
     list_display = ('id', 'amount', 'show')
     list_display_links = ('amount',)
-    list_filter = ('amount', 'show')
+    list_filter = ('show',)

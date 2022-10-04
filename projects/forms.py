@@ -1,4 +1,8 @@
+import datetime
+
 from django import forms
+from django.core.exceptions import ValidationError
+
 from projects.models import Guest
 
 from django.utils.translation import gettext_lazy as _
@@ -23,5 +27,12 @@ class AddGuestForm(forms.ModelForm):
             'phone': _('Телефон'),
             'telegram': _('Телеграм'),
             'email': _('Электронная почта'),
-            'birthdate': _('Дата рождения')
+            'birthdate': _('Дата рождения'),
         }
+    #
+    # def clean_birthdate(self):
+    #     birthdate = self.cleaned_data['birthdate']
+    #     if birthdate > datetime.date.today():
+    #         raise ValidationError(_('Введите правильную дату'))
+    #
+    #     return birthdate

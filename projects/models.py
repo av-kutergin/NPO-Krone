@@ -1,15 +1,24 @@
 import datetime
+import random
+from io import BytesIO
 
+import qrcode
+from django.core.files import File
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
+
+from projects.utils import get_uuid_id, COLORS
 
 
 class Project(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
     content_brief = models.TextField(blank=True, verbose_name='Контент кратко')
     content = models.TextField(blank=True, verbose_name='Контент')
-    price = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='Стоимость входа')
+    price = models.DecimalField(max_digits=5, decimal_places=0, verbose_name='Стоимость входа')
     date = models.DateField(verbose_name='Дата проведения')
     total_places = models.PositiveIntegerField(verbose_name='Общее количество мест')
     vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест')
@@ -50,15 +59,20 @@ class Guest(models.Model):
     email = models.EmailField(verbose_name='Электронная почта')
     telegram = models.CharField(max_length=30, verbose_name='Телеграм')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
-    ticket_uid = models.CharField(max_length=50, verbose_name='UID билета')
-    arrived = models.BooleanField(verbose_name='Пришёл')
-
-    def __str__(self):
-        return self.firstname, self.lastname
+    ticket_uid = models.CharField(default=get_uuid_id, verbose_name='UID билета',
+                                  editable=False, max_length=40, unique=True)
+    qr = models.ImageField(blank=True, editable=False)
+    arrived = models.BooleanField(default=False, verbose_name='Пришёл')
 
     class Meta:
         verbose_name = 'Гость'
         verbose_name_plural = 'Гости'
+
+    def __str__(self):
+        return f'{self.firstname} {self.lastname}'
+
+    def get_absolute_url(self):
+        return reverse('guest-page', kwargs={'guest_uid': self.ticket_uid})
 
 
 class TeamMate(models.Model):
@@ -67,6 +81,7 @@ class TeamMate(models.Model):
     high_rank = models.BooleanField(verbose_name='Верхнее звено')
     avatar = models.ImageField(blank=True, verbose_name='Фото')
     show = models.BooleanField(default=True, verbose_name='Отображать на сайте')
+
     # django_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
     def __str__(self):
@@ -148,3 +163,23 @@ class DonateButton(models.Model):
         verbose_name = 'Донат'
         verbose_name_plural = 'Донаты'
         ordering = ['amount']
+
+
+@receiver(post_save, sender=Guest)
+def set_guest_qr(sender, instance, **kwargs):
+    if not instance.qr:
+        project = Project.objects.get(pk=instance.project_id)
+        new_qr = qrcode.QRCode(version=1, box_size=10, border=5)
+        project_slug = str(project.slug)
+        ticket_uid = instance.ticket_uid
+        data = f'https://npokrona.ru/{project_slug}/{ticket_uid}'
+        new_qr.add_data(data)
+        fill_color, back_color = random.choice(list(COLORS.items()))
+        image = new_qr.make_image(fill_color=fill_color, back_color=back_color)
+        blob = BytesIO()
+        image.save(blob, 'PNG')
+        instance.qr.save(f'{ticket_uid}.PNG', File(blob), save=False)
+
+        # post_save.disconnect(set_guest_qr, sender=Guest)
+        # instance.save()
+        # post_save.connect(set_guest_qr, sender=Guest)

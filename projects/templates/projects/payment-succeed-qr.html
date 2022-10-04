@@ -1,0 +1,26 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<br><br>
+
+<div style="font-size:50px; text-align: center; padding: 50px; margin:50px; font-family: 'Neucha', cursive;">{%
+    translate "Останьтесь на пару секунд!" %}
+</div>
+<div style="font-size:20px; text-align: center;">
+    <p>{% translate "Оплата прошла успешно и в качестве доказательства взноса на входе нужно будет предоставить этот
+        qr-код" %}</p>
+    <p>{% blocktranslate %} Мы уже отправили его к вам на {{ g.email }}, но на всякий случай вы можете его
+        сфотографировать, скачать или распечатать {% endblocktranslate %}</p>
+</div>
+<div class="qr-code">
+    <img src="img/qr-example.PNG" alt="">
+</div>
+<br>
+<div class="button" style="width: 100px">{% translate "Скачать" %}</div>
+<br>
+<div class="button" style="width: 100px">{% translate "Распечатать" %}</div>
+<br>
+<a href="{% url 'main_page' %}" style="text-align: center;display:block">{% translate "На главную!" %}</a>
+
+{% endblock content %}

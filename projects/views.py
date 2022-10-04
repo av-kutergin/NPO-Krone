@@ -1,12 +1,13 @@
 import mimetypes
 
-import stripe
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView, ListView, DetailView
+from django.views.generic.edit import FormMixin
 from phonenumber_field.formfields import PhoneNumberField
 from dotenv import load_dotenv
 
@@ -15,14 +16,13 @@ from projects.models import Project, SimpleDocument, ReportDocument, Carousel, T
 
 load_dotenv()
 
-YOUR_DOMAIN = 'http://127.0.0.1:8000/'
-
 
 class AddGuestView(FormView):
+    model = Guest
     form_class = AddGuestForm
     template_name = 'projects/guest-registration.html'
-    # success_url = reverse_lazy('main_page')
-    # raise_exception = True
+    success_url = reverse_lazy('main_page')
+    raise_exception = True
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -30,10 +30,25 @@ class AddGuestView(FormView):
         context["event"] = Project.objects.get(slug=slug)
         return context
 
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        # form = AddGuestForm(request.POST)
+        print('form', form)
+        my_data = request.POST
+        print('my data', my_data)
+        context = {}
+        print('form valid', form.is_valid())
+        if form.is_valid():
+            guest = form.save(commit=False)
+            # guest = Guest.objects.create(**form.cleaned_data)
+            print('guest', guest)
+        else:
+            form = AddGuestForm()
+            kwargs['form'] = form
 
-class GuestList(ListView):
-    template_name = 'projects/guest-list.html'
-    # queryset = Guest.objects.filter(project=project)
+            return render(request, 'projects/guest-registration.html', kwargs)
+
+        return render(request, 'projects/payment-succeed-qr.html', context=context)
 
 
 def main_page(request):
@@ -48,6 +63,16 @@ def main_page(request):
         'teammates': teammates,
     }
     return render(request, 'projects/index.html', context)
+
+
+def guest_page(request, guest_uid):
+    guest = Guest.object.get(ticket_uid=guest_uid)
+    project = Project.objects.get(pk=guest.project)
+    context = {
+        'project': project,
+        'guest': guest,
+    }
+    return render(request, 'projects/guest-page.html', context)
 
 
 class ShowProject(DetailView):
@@ -109,26 +134,6 @@ def donate(request):
         'donations': donation_options
     }
     return render(request, 'projects/donate.html', context)
-
-
-def create_checkout_session(request, ):
-    try:
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {
-                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    'price': '{{PRICE_ID}}',
-                    'quantity': 1,
-                },
-            ],
-            mode='payment',
-            success_url=YOUR_DOMAIN + '/success.html',
-            cancel_url=YOUR_DOMAIN + '/cancel.html',
-        )
-    except Exception as e:
-        return str(e)
-
-    return redirect(checkout_session.url, code=303)
 
 
 def sitemap(request):

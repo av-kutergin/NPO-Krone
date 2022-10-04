@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.main_page, name='main_page'),
     path('guest-registration/<slug:project_slug>', views.AddGuestView.as_view(), name='register'),
+    path('guest-page/<slug:guest_uid>', views.guest_page, name='guest-page'),
     path('team/', views.team, name='team'),
     path('documents/', views.DocumentListView.as_view(), name='documents'),
     # path('documents/<int:pk>', views.ShowSimpleDocument.as_view(), name='simple_document'),

@@ -362,3 +362,20 @@ nav {
 .red {
     color: #deb766;
 }
+
+.errorlist {
+    height: 50%;
+    width: 100%;
+    margin: 0px;
+}
+
+/* qr page */
+.qr-code {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.qr-code img {
+    width: 30%;
+}
