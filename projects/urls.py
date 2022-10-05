@@ -7,8 +7,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.main_page, name='main_page'),
-    path('guest-registration/<slug:project_slug>', views.AddGuestView.as_view(), name='register'),
-    path('guest-page/<slug:guest_uid>', views.guest_page, name='guest-page'),
     path('team/', views.team, name='team'),
     path('documents/', views.DocumentListView.as_view(), name='documents'),
     # path('documents/<int:pk>', views.ShowSimpleDocument.as_view(), name='simple_document'),
@@ -18,8 +16,12 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('donate/', views.donate, name='donate'),
     path('sitemap/', views.sitemap, name='sitemap'),
-    path('display/<int:pk>', views.display, name='display'),
+    path('display_document/<int:pk>', views.display_document, name='display_document'),
     path('download/<slug:file_type>/<int:pk>', views.download_file, name='download_file'),
+    path('guest-registration/<slug:project_slug>', views.add_guest, name='register'),
+    path('payment_success/<slug:ticket_uid>', views.payment_success, name='payment_success'),
+    path('<slug:project_slug>/<slug:ticket_uid>', views.how_to_view, name='how_to'),
+    path('<slug:project_slug>/service', views.service_page, name='service_page')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

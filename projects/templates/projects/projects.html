@@ -15,7 +15,7 @@
         </div>
         <div class="project-date">{% translate "Дата проведения: " %} {{ p.date }}</div>
 
-        {% if not p.is_coming %}
+        {% if not p.is_future_event %}
             <div class="project-status">{% translate "Акция уже прошла" %}</div>
         {% elif p.vacant_places %}
             <div class="project-status green">

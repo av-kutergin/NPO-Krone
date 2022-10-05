@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
-from projects.utils import get_uuid_id, COLORS
+from projects.utils import get_uuid_id, COLORS, get_day_word
 
 
 class Project(models.Model):
@@ -37,8 +37,20 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse('show_project', kwargs={'project_slug': self.slug})
 
-    def is_coming(self):
-        return datetime.date.today() < self.date
+    def is_future_event(self):
+        return self.date > datetime.date.today()
+
+    def is_over(self):
+        return (self.date - datetime.date.today()).days < -1
+
+    def is_it_time_to_reveal_howto(self):
+        if datetime.date.today() >= self.qr_reveal_date:
+            return True
+        return False
+
+    def days_to_event(self):
+        days = (self.date - datetime.date.today()).days
+        return _(f'До мероприятия осталось: {days} {get_day_word(days)}')
 
     # IF NEEDED
     #
@@ -61,7 +73,7 @@ class Guest(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
     ticket_uid = models.CharField(default=get_uuid_id, verbose_name='UID билета',
                                   editable=False, max_length=40, unique=True)
-    qr = models.ImageField(blank=True, editable=False)
+    qr = models.ImageField(blank=True)    #, editable=False)
     arrived = models.BooleanField(default=False, verbose_name='Пришёл')
 
     class Meta:
@@ -72,7 +84,7 @@ class Guest(models.Model):
         return f'{self.firstname} {self.lastname}'
 
     def get_absolute_url(self):
-        return reverse('guest-page', kwargs={'guest_uid': self.ticket_uid})
+        return reverse('guest-page', kwargs={'ticket_uid': self.ticket_uid})
 
 
 class TeamMate(models.Model):
@@ -107,7 +119,7 @@ class Document(models.Model):
             self.name_ru = self.file.url.split('/')[-1]
 
     def get_absolute_url(self):
-        return reverse('display', kwargs={'pk': self.id})
+        return reverse('display_document', kwargs={'pk': self.id})
 
     def download(self):
         pass
@@ -157,7 +169,7 @@ class DonateButton(models.Model):
     show = models.BooleanField(default=True, verbose_name='Отображать на сайте')
 
     def __str__(self):
-        return self.amount
+        return str(self.amount)
 
     class Meta:
         verbose_name = 'Донат'
@@ -180,6 +192,6 @@ def set_guest_qr(sender, instance, **kwargs):
         image.save(blob, 'PNG')
         instance.qr.save(f'{ticket_uid}.PNG', File(blob), save=False)
 
-        # post_save.disconnect(set_guest_qr, sender=Guest)
-        # instance.save()
-        # post_save.connect(set_guest_qr, sender=Guest)
+        post_save.disconnect(set_guest_qr, sender=Guest)
+        instance.save()
+        post_save.connect(set_guest_qr, sender=Guest)

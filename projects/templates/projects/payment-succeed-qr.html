@@ -4,17 +4,15 @@
 {% block content %}
 <br><br>
 
-<div style="font-size:50px; text-align: center; padding: 50px; margin:50px; font-family: 'Neucha', cursive;">{%
-    translate "Останьтесь на пару секунд!" %}
+<div style="font-size:50px; text-align: center; padding: 20px; margin:50px 50px 0px; font-family: 'Neucha', cursive;">{% translate "Останьтесь на пару секунд!" %}
 </div>
 <div style="font-size:20px; text-align: center;">
-    <p>{% translate "Оплата прошла успешно и в качестве доказательства взноса на входе нужно будет предоставить этот
-        qr-код" %}</p>
-    <p>{% blocktranslate %} Мы уже отправили его к вам на {{ g.email }}, но на всякий случай вы можете его
+    <p>{% translate "Оплата прошла успешно и в качестве доказательства взноса на входе нужно будет предоставить этот qr-код" %}</p>
+    <p>{% blocktranslate with email=guest.email%} Мы уже отправили его к вам на {{ email }}, но на всякий случай вы можете его
         сфотографировать, скачать или распечатать {% endblocktranslate %}</p>
 </div>
 <div class="qr-code">
-    <img src="img/qr-example.PNG" alt="">
+    <img src="{{ guest.qr.url }}" alt="">
 </div>
 <br>
 <div class="button" style="width: 100px">{% translate "Скачать" %}</div>
