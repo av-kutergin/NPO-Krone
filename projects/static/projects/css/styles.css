@@ -42,6 +42,23 @@ body {
     font-size: 20px;
 }
 
+input[type=submit] {
+    border: 2px solid black;
+    border-radius: 5px;
+    border: none;
+    background: none;
+    width: 100%;
+    font-family: 'Neucha', cursive;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.input {
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
 .block {
     border: 1px dashed black;
     box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.1);
@@ -183,6 +200,22 @@ nav {
 }
 
 .nav-item a:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.nav-button {
+    position: relative;
+    margin-right: 20px;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: 'Neucha', cursive;
+    font-size: 20px;
+    text-decoration: underline;
+}
+
+.nav-button:hover {
     color: red;
     cursor: pointer;
 }

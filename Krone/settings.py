@@ -146,6 +146,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = BASE_DIR / 'staticfiles/uploads'
 
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static']
+
 LOCALE_PATHS = [
     BASE_DIR / 'locale/',
 ]
@@ -154,3 +157,16 @@ LOCALE_PATHS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
+# EMAIL_USE_SSL = os.environ['EMAIL_USE_SSL']

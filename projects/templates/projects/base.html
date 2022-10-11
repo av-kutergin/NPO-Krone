@@ -7,13 +7,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--    <link rel="shortcut icon" href="{% static 'projects/images/favicon.ico' %}" type="image/png">-->
+    <link rel="shortcut icon" href="{% static 'projects/images/logo.svg' %}" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Neucha&display=swap"/>
     <link rel="stylesheet" href="{% static 'projects/css/styles.css' %}" type="text/css"/>
     <title>{{ title }}</title>
-    <!--    <link rel="shortcut icon" href="{% static 'projects/images/logo.ico' %}" type="image/png" />-->
 </head>
 <body>
 {% block mainmenu %}
@@ -47,7 +46,7 @@
             <input name="next" type="hidden" value="{{ redirect_to }}"/>
             <input name="language" type="hidden" value="{{ LANGUAGE_CODE|new_lang_code }}"/>
         </form>
-        <button class="button" type="submit" form="form_{{ LANGUAGE_CODE|new_lang_code }}"
+        <button class="nav-button" type="submit" form="form_{{ LANGUAGE_CODE|new_lang_code }}"
                 value="Submit">EN/RU
         </button>
         <!--            <div class="nav-item" onclick="showEnru()">-->
@@ -57,7 +56,6 @@
 </div>
 
 {% endblock mainmenu %}
-
 {% block content %}
 {% endblock content%}
 

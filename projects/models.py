@@ -37,8 +37,8 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse('show_project', kwargs={'project_slug': self.slug})
 
-    def is_future_event(self):
-        return self.date > datetime.date.today()
+    # def is_future_event(self):
+    #     return self.date > datetime.date.today()
 
     def is_over(self):
         return (self.date - datetime.date.today()).days < -1
@@ -73,7 +73,7 @@ class Guest(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
     ticket_uid = models.CharField(default=get_uuid_id, verbose_name='UID билета',
                                   editable=False, max_length=40, unique=True)
-    qr = models.ImageField(blank=True)    #, editable=False)
+    qr = models.ImageField(blank=True, editable=False)
     arrived = models.BooleanField(default=False, verbose_name='Пришёл')
 
     class Meta:
@@ -81,10 +81,15 @@ class Guest(models.Model):
         verbose_name_plural = 'Гости'
 
     def __str__(self):
-        return f'{self.firstname} {self.lastname}'
+        return f'{self.firstname} {self.lastname} {self.arrived}'
 
-    def get_absolute_url(self):
-        return reverse('guest-page', kwargs={'ticket_uid': self.ticket_uid})
+    def set_arrived(self):
+        self.arrived = True
+        self.save(update_fields=['arrived'])
+        return self
+
+    def download_qr_image(self):
+        return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'qr_image'})
 
 
 class TeamMate(models.Model):
@@ -184,7 +189,7 @@ def set_guest_qr(sender, instance, **kwargs):
         new_qr = qrcode.QRCode(version=1, box_size=10, border=5)
         project_slug = str(project.slug)
         ticket_uid = instance.ticket_uid
-        data = f'https://npokrona.ru/{project_slug}/{ticket_uid}'
+        data = f'https://npokrona.ru/how-to{project_slug}/{ticket_uid}'
         new_qr.add_data(data)
         fill_color, back_color = random.choice(list(COLORS.items()))
         image = new_qr.make_image(fill_color=fill_color, back_color=back_color)

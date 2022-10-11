@@ -26,6 +26,4 @@ function aboutUsMouseout() {
     }, 1500)
 }
 
-//function downloaded() {
-//    alert('Представь, что скачалось')
-//}
+

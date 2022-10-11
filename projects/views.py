@@ -1,7 +1,10 @@
 import mimetypes
 
 from django import forms
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.mail import send_mail, EmailMessage
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -11,12 +14,33 @@ from django.views.generic.edit import FormMixin
 from phonenumber_field.formfields import PhoneNumberField
 from dotenv import load_dotenv
 
+from Krone import settings
 from projects.forms import AddGuestForm
 from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate, Guest, DonateButton
 
 load_dotenv()
 
 
+def set_arrived(request, ticket_uid):
+    guest = Guest.objects.get(ticket_uid=ticket_uid)
+    project = guest.project
+    guest.set_arrived()
+    return redirect('guest_list', project.slug)
+
+
+def login_page(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('main_page')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'projects/login.html', {'form': form})
+
+
+@login_required()
 def guest_list(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     list_of_guests = project.guest_set.all()
@@ -25,12 +49,20 @@ def guest_list(request, project_slug):
         'list_of_guests': list_of_guests,
         'title': _('Список гостей')
     }
-    return render(request, 'projects/how_to_page.html', context)
+    return render(request, 'projects/guest_list.html', context)
 
 
-def service_page(request, project_slug):
+@login_required()
+def service_page(request, project_slug, ticket_uid):
+    project = Project.objects.get(slug=project_slug)
+    guest = Guest.objects.get(ticket_uid=ticket_uid)
+    context = {
+        'project': project,
+        'guest': guest,
+        'title': _('Сервис'),
+    }
+    return render(request, 'projects/service_page.html', context)
 
-    return render(request, 'projects/service_page.html')
 
 def how_to_view(request, project_slug, ticket_uid):
     project = Project.objects.get(slug=project_slug)
@@ -63,6 +95,19 @@ def add_guest(request, project_slug):
 
 def payment_success(request, ticket_uid):
     guest = Guest.objects.get(ticket_uid=ticket_uid)
+    image_data = bytes(guest.qr.read())
+    message_text = _(f'')
+    message = EmailMessage(_(f'Ваш QR для входа на мероприятие: {guest.project.name}'), message_text, settings.EMAIL_HOST_USER, [guest.email])
+    message.attach(guest.qr.name, image_data, 'image/png')
+    # message.send()
+
+    # send_mail(
+    #     _(f'Ваш QR для входа на мероприятие: {guest.project.name}'),
+    #     guest.qr,
+    #     settings.EMAIL_HOST_USER,
+    #     [guest.email],
+    # )
+
     context = {'guest': guest,
                'title': _('Успешная оплата')}
     return render(request, 'projects/payment-succeed-qr.html', context)
@@ -168,10 +213,13 @@ def sitemap(request):
 
 def download_file(request, file_type, pk):
     document = None
+    guest = None
     if file_type == 'report':
         document = get_object_or_404(ReportDocument, pk=pk)
     elif file_type == 'document':
         document = get_object_or_404(SimpleDocument, pk=pk)
+    elif file_type == 'qr_image':
+        guest = get_object_or_404(Guest, pk=pk)
 
     if document:
         filepath = document.file.path
@@ -183,6 +231,18 @@ def download_file(request, file_type, pk):
             response = HttpResponse(file.read(), content_type=mime_type)
             response['Content-Disposition'] = f'attachment; filename={name}'
             return response
+
+    elif guest:
+        filepath = guest.qr.path
+        mime_type, _ = mimetypes.guess_type(filepath)
+        extension = mimetypes.guess_extension(filepath)
+        name = filepath.split('/')[-1]
+        print(name)
+        with open(filepath, 'rb') as file:
+            response = HttpResponse(file.read(), content_type=mime_type)
+            response['Content-Disposition'] = f'attachment; filename={name}'
+            return response
+
     return HttpResponseNotFound(_('<h1>Страница не найдена</h1>'))
 
 

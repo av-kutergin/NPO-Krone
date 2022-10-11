@@ -22,6 +22,6 @@
     <br>
     <a href="{% url 'main_page' %}" style="text-align: center;display:block">{% translate "На главную!" %}</a>
 <br><br>
-<a href="{% url 'service_page' project_slug=project.slug%}" style="text-align: center;display:block">{% translate "Обслуживание" %}</a>
+<a href="{% url 'service_page' project_slug=project.slug ticket_uid=guest.ticket_uid %}" style="text-align: center;display:block">{% translate "Обслуживание" %}</a>
 </div>
 {% endblock content %}

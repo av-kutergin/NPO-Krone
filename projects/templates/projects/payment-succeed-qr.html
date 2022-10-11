@@ -12,13 +12,23 @@
         сфотографировать, скачать или распечатать {% endblocktranslate %}</p>
 </div>
 <div class="qr-code">
-    <img src="{{ guest.qr.url }}" alt="">
+    <img id="qr" src="{{ guest.qr.url }}" alt="">
 </div>
 <br>
+<a href="{{ guest.download_qr_image }}">
 <div class="button" style="width: 100px">{% translate "Скачать" %}</div>
+</a>
 <br>
-<div class="button" style="width: 100px">{% translate "Распечатать" %}</div>
+<div class="button" onclick="printQr()"  style="width: 100px">{% translate "Распечатать" %}</div>
 <br>
 <a href="{% url 'main_page' %}" style="text-align: center;display:block">{% translate "На главную!" %}</a>
-
+<script>
+    var printQr = function () {
+        var qr = document.getElementById('qr');
+        var win = window.open('', '', 'height=200, width=200');
+        win.document.write(qr.outerHTML);
+        win.document.close();
+        win.print();
+    }
+</script>
 {% endblock content %}

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from projects import views
 
 
@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.main_page, name='main_page'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('team/', views.team, name='team'),
     path('documents/', views.DocumentListView.as_view(), name='documents'),
     # path('documents/<int:pk>', views.ShowSimpleDocument.as_view(), name='simple_document'),
@@ -20,8 +21,10 @@ urlpatterns = [
     path('download/<slug:file_type>/<int:pk>', views.download_file, name='download_file'),
     path('guest-registration/<slug:project_slug>', views.add_guest, name='register'),
     path('payment_success/<slug:ticket_uid>', views.payment_success, name='payment_success'),
-    path('<slug:project_slug>/<slug:ticket_uid>', views.how_to_view, name='how_to'),
-    path('<slug:project_slug>/service', views.service_page, name='service_page')
+    path('service/<slug:project_slug>/<slug:ticket_uid>', views.service_page, name='service_page'),
+    path('guests/<slug:project_slug>', views.guest_list, name='guest_list'),
+    path('how-to/<slug:project_slug>/<slug:ticket_uid>', views.how_to_view, name='how_to'),
+    path('set_arrived/<slug:ticket_uid>', views.set_arrived, name='set_arrived'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

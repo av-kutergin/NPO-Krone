@@ -8,7 +8,7 @@
         <img src="{% static 'projects/images/proj-photo.jpg' %}" alt="">
         <p>{{ project.content }}</p>
         <img src="{% static 'projects/images/proj-photo.jpg' %}" alt="">
-        {% if project.is_future_event and project.vacant_places %}
+        {% if not project.is_over and project.vacant_places %}
         <div style="clear: both" ></div>
         <a href="{% url 'register' project_slug=project.slug %}"><div class="imin button">{% translate "Участвовать!"%}</div></a>
         {% endif %}
