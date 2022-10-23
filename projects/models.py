@@ -3,6 +3,7 @@ import random
 from io import BytesIO
 
 import qrcode
+from ckeditor.fields import RichTextField
 from django.core.files import File
 from django.db import models
 from django.db.models.signals import post_save
@@ -16,14 +17,14 @@ from projects.utils import get_uuid_id, COLORS, get_day_word
 
 class Project(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
-    content_brief = models.TextField(blank=True, verbose_name='Контент кратко')
-    content = models.TextField(blank=True, verbose_name='Контент')
+    content_brief = RichTextField(blank=True, verbose_name='Контент кратко')
+    content = RichTextField(blank=True, verbose_name='Контент')
     price = models.DecimalField(max_digits=5, decimal_places=0, verbose_name='Стоимость входа')
-    date = models.DateField(verbose_name='Дата проведения')
-    total_places = models.PositiveIntegerField(verbose_name='Общее количество мест')
-    vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест')
+    date = models.DateTimeField(verbose_name='Дата проведения')
+    total_places = models.PositiveIntegerField(verbose_name='Количество мест')
+    # vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест', editable=False, blank=True)
     qr_reveal_date = models.DateField(verbose_name='Дата, когда откроется qr-код')
-    howto = models.CharField(max_length=200, verbose_name='Как добраться')
+    howto = models.TextField(max_length=200, verbose_name='Как добраться')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
 
     class Meta:
@@ -51,6 +52,18 @@ class Project(models.Model):
     def days_to_event(self):
         days = (self.date - datetime.date.today()).days
         return _(f'До мероприятия осталось: {days} {get_day_word(days)}')
+
+    def has_vacant(self):
+        return int(self.total_places) - len(self.guest_set.all())
+
+    def clean(self):
+        if not self.content_brief:
+            if not self.content:
+                pass
+            elif len(self.content) < 200:
+                self.content_brief = self.content
+            else:
+                self.content_brief = self.content[:200]
 
     # IF NEEDED
     #
@@ -157,7 +170,7 @@ class ReportDocument(Document):
 class Carousel(models.Model):
     display_name = models.CharField(max_length=100, verbose_name='Наименование')
     background_image = models.ImageField(verbose_name='Картинка фона', blank=True)
-    content = models.TextField(verbose_name='Контент', blank=True)
+    content = RichTextField(verbose_name='Контент', blank=True)
     position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
 
     def __str__(self):
@@ -189,7 +202,7 @@ def set_guest_qr(sender, instance, **kwargs):
         new_qr = qrcode.QRCode(version=1, box_size=10, border=5)
         project_slug = str(project.slug)
         ticket_uid = instance.ticket_uid
-        data = f'https://npokrona.ru/how-to{project_slug}/{ticket_uid}'
+        data = f'https://npokrona.ru/how-to/{project_slug}/{ticket_uid}'
         new_qr.add_data(data)
         fill_color, back_color = random.choice(list(COLORS.items()))
         image = new_qr.make_image(fill_color=fill_color, back_color=back_color)

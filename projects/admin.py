@@ -9,7 +9,7 @@ admin.site.unregister(Group)
 
 @admin.register(Project)
 class ProjectAdmin(TranslationAdmin):
-    list_display = ('id', 'name', 'date', 'total_places', 'vacant_places')
+    list_display = ('id', 'name', 'date', 'total_places')
     list_display_links = ('name',)
     list_filter = ('date',)
 

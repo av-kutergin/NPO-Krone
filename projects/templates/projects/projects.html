@@ -17,7 +17,7 @@
 
         {% if p.is_over %}
             <div class="project-status">{% translate "Акция уже прошла" %}</div>
-        {% elif p.vacant_places %}
+        {% elif p.has_vacant %}
             <div class="project-status green">
                 <a href="{{ p.get_absolute_url }}" class="green" style="text-decoration: none;">{% translate "Ещё есть свободные места" %}</a>
             </div>
