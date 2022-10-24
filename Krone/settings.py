@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'phonenumber_field',
+    'ckeditor',
     'rosetta',
     'projects',
 ]
@@ -170,3 +171,5 @@ EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
 # EMAIL_USE_SSL = os.environ['EMAIL_USE_SSL']
+
+# Payment settings

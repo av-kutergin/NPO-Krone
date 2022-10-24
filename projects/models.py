@@ -42,7 +42,7 @@ class Project(models.Model):
     #     return self.date > datetime.date.today()
 
     def is_over(self):
-        return (self.date - datetime.date.today()).days < -1
+        return (self.date.date() - datetime.date.today()).days < -1
 
     def is_it_time_to_reveal_howto(self):
         if datetime.date.today() >= self.qr_reveal_date:
@@ -88,6 +88,7 @@ class Guest(models.Model):
                                   editable=False, max_length=40, unique=True)
     qr = models.ImageField(blank=True, editable=False)
     arrived = models.BooleanField(default=False, verbose_name='Пришёл')
+    paid = models.BooleanField(default=False, verbose_name='Оплачено')
 
     class Meta:
         verbose_name = 'Гость'
@@ -99,6 +100,11 @@ class Guest(models.Model):
     def set_arrived(self):
         self.arrived = True
         self.save(update_fields=['arrived'])
+        return self
+
+    def set_paid(self):
+        self.paid = True
+        self.save(update_fields=['paid'])
         return self
 
     def download_qr_image(self):
@@ -193,6 +199,9 @@ class DonateButton(models.Model):
         verbose_name = 'Донат'
         verbose_name_plural = 'Донаты'
         ordering = ['amount']
+
+    def donate(self):
+        pass
 
 
 @receiver(post_save, sender=Guest)

@@ -42,7 +42,7 @@ body {
     font-size: 20px;
 }
 
-input[type=submit] {
+input[type='submit'] {
     border: 2px solid black;
     border-radius: 5px;
     border: none;

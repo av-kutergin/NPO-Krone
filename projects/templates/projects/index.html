@@ -10,7 +10,7 @@
         {% if p.position %}
         <div class="carousel-item">
             <img src="{{ p.background_image.url }}">
-            <div class="text-1"><p>{{ p.content }}</p>
+            <div class="text-1"><p>{{ p.content|safe }}</p>
                 <p><a href="https://t.me/Everything42_bot">{% translate "И ещё ссылка на телегу" %}</a></p></div>
         </div>
         {% endif %}
@@ -31,7 +31,7 @@
     <div class="proj">
         {% for p in projects %}
         <div class="proj-name"><h4>{{ p.name }}</h4></div>
-        <div class="proj-text">{{ p.content_brief }}</div>
+        <div class="proj-text">{{ p.content_brief|safe }}</div>
         <div style="text-align:center; margin: 30px auto; width: 300px" class="button"><a
                 href="{{ p.get_absolute_url }}"><strong>{% translate "Подробнее!" %}</strong></a></div>
         <hr>

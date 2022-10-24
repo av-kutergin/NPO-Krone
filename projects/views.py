@@ -1,22 +1,20 @@
 import mimetypes
+import os
 
-from django import forms
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.mail import send_mail, EmailMessage
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMessage
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import FormView, ListView, DetailView
-from django.views.generic.edit import FormMixin
-from phonenumber_field.formfields import PhoneNumberField
+from django.views.generic import ListView, DetailView
 from dotenv import load_dotenv
 
-from Krone import settings
 from projects.forms import AddGuestForm
 from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate, Guest, DonateButton
+from projects.utils import calculate_signature, parse_response, check_signature_result, generate_payment_link, check_success_payment
 
 load_dotenv()
 
@@ -54,14 +52,22 @@ def guest_list(request, project_slug):
 
 @login_required()
 def service_page(request, project_slug, ticket_uid):
-    project = Project.objects.get(slug=project_slug)
-    guest = Guest.objects.get(ticket_uid=ticket_uid)
-    context = {
-        'project': project,
-        'guest': guest,
-        'title': _('Сервис'),
-    }
-    return render(request, 'projects/service_page.html', context)
+    try:
+        project = Project.objects.get(slug=project_slug)
+        guest = Guest.objects.get(ticket_uid=ticket_uid)
+        context = {
+            'project': project,
+            'guest': guest,
+            'title': _('Сервис'),
+            'flag': True
+        }
+        return render(request, 'projects/service_page.html', context)
+    except ObjectDoesNotExist:
+        context = {
+            'title': _('Сервис'),
+            'flag': False
+        }
+        return render(request, 'projects/service_page.html', context)
 
 
 def how_to_view(request, project_slug, ticket_uid):
@@ -86,31 +92,50 @@ def add_guest(request, project_slug):
             new_guest.project = project
             new_guest.save()
             context['guest'] = new_guest
-            return redirect('payment_success', new_guest.ticket_uid)
+            payment_link = generate_payment_link(
+                cost=project.price,
+                number=new_guest.pk,
+                description=str(new_guest.ticket_uid),
+                shp_ticket_uid=new_guest.guest_uid,
+            )
+            return redirect(payment_link)
+            # return redirect('payment_success', new_guest.ticket_uid)
     else:
         form = AddGuestForm()
     context['form'] = form
     return render(request, 'projects/guest-registration.html', context)
 
 
-def payment_success(request, ticket_uid):
-    guest = Guest.objects.get(ticket_uid=ticket_uid)
-    image_data = bytes(guest.qr.read())
-    message_text = _(f'')
-    message = EmailMessage(_(f'Ваш QR для входа на мероприятие: {guest.project.name}'), message_text, settings.EMAIL_HOST_USER, [guest.email])
-    message.attach(guest.qr.name, image_data, 'image/png')
-    # message.send()
+def payment_success(request):
+    if check_success_payment(request):
+        param_request = parse_response(request)
+        shp_ticket_uid = param_request['shp_ticket_uid']
+        if shp_ticket_uid:
+            guest_id = param_request['InvId']
+            guest = Guest.objects.get(pk=guest_id)
+            # project = guest.project
+            # image_data = bytes(guest.qr.read())
+            # message_text = _(f'''К сообщению прикреплён Ваш QR для входа на мероприятие: {project.name}
+            # За сутки до мероприятия на странице, на которую ведёт Ваш QR, появится подробная интрукция о том, как нас найти.
+            # ''')
+            # message = EmailMessage(
+            #     _(f'Ваш QR для входа на мероприятие: {project.name}'),
+            #     message_text,
+            #     os.environ['EMAIL_HOST_USER'],
+            #     [guest.email]
+            # )
+            # message.attach(guest.qr.name, image_data, 'image/png')
+            # message.send()
 
-    # send_mail(
-    #     _(f'Ваш QR для входа на мероприятие: {guest.project.name}'),
-    #     guest.qr,
-    #     settings.EMAIL_HOST_USER,
-    #     [guest.email],
-    # )
+            context = {
+                'title': _('Успешная оплата'),
+                'guest': guest,
+                }
+            return render(request, 'projects/payment-succeed-qr.html', context)
 
-    context = {'guest': guest,
-               'title': _('Успешная оплата')}
-    return render(request, 'projects/payment-succeed-qr.html', context)
+        else:
+            context = {'title': _('Успешная оплата'), }
+            return render(request, 'projects/payment-succeed-qr.html', context)
 
 
 def main_page(request):
@@ -139,18 +164,6 @@ class ShowProject(DetailView):
         project = Project.objects.get(slug=slug)
         context['title'] = project.name
         return context
-
-
-# class ShowSimpleDocument(DetailView):
-#     model = SimpleDocument
-#     template_name = 'projects/simple_document.html'
-#     context_object_name = 'document'
-#
-#
-# class ShowReportDocument(DetailView):
-#     model = ReportDocument
-#     template_name = 'projects/report_document.html'
-#     context_object_name = 'document'
 
 
 def team(request):
@@ -253,3 +266,26 @@ def display_document(request, pk):
         'title': f'{document.name}',
     }
     return render(request, 'projects/display_document.html', context)
+
+
+# Получение уведомления об исполнении операции (ResultURL).
+
+def result_payment(request: str) -> str:
+    """Verification of notification (ResultURL).
+    :param request: HTTP parameters.
+    """
+    merchant_password_2 = os.environ['PAYMENT_PASSWORD2']
+    param_request = parse_response(request)
+    cost = param_request['OutSum']
+    number = param_request['InvId']
+    signature = param_request['SignatureValue']
+    ticket_uid = param_request['shp_ticket_uid']
+
+    signature = calculate_signature(cost, number, signature)
+
+    if check_signature_result(number, cost, signature, merchant_password_2):
+        if ticket_uid:
+            guest = Guest.objects.get(ticket_uid=ticket_uid)
+            guest.set_paid()
+        return f'OK{number}'
+    return "bad sign"

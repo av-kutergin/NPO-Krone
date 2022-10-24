@@ -9,6 +9,7 @@
 </style>
 <br>
 <div class="project block">
+    {% if flag %}
     <h2>{{ project.name }}</h2>
     {% if not guest.arrived and not project.is_over %}
         <p>{% translate "green back" %}</p>
@@ -27,8 +28,15 @@
     <br>
     <a href="{% url 'guest_list' project_slug=project.slug %}" style="text-align: center;display:block">{% translate "Список гостей" %}</a>
     <br>
-    <a href="{% url 'main_page' %}" style="text-align: center;display:block">{% translate "На главную!" %}</a>
+
     <!--<br><br>-->
     <!--<a href="{% url 'service_page' project_slug=project.slug ticket_uid=guest.ticket_uid %}" style="text-align: center;display:block">{% translate "Обслуживание" %}</a>-->
+
+{% else %}
+    <div style="font-size:20px; text-align: center;">
+        <p>{% translate "red back" %}</p>
+    </div>
+{% endif %}
+        <a href="{% url 'main_page' %}" style="text-align: center;display:block">{% translate "На главную!" %}</a>
 </div>
 {% endblock content %}

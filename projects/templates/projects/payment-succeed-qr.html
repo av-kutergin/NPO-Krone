@@ -3,7 +3,7 @@
 {% load i18n %}
 {% block content %}
 <br><br>
-
+{% if guest %}
 <div style="font-size:50px; text-align: center; padding: 20px; margin:50px 50px 0px; font-family: 'Neucha', cursive;">{% translate "Останьтесь на пару секунд!" %}
 </div>
 <div style="font-size:20px; text-align: center;">
@@ -31,4 +31,9 @@
         win.print();
     }
 </script>
+{% else %}
+<div style="font-size:20px; text-align: center;">
+    <p>{% translate "Спасибо за Ваше щедрое пожертвование!" %}</p>
+</div>
+{% endif %}
 {% endblock content %}

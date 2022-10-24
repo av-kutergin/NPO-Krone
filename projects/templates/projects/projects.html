@@ -9,7 +9,7 @@
     {% for p in projects %}
     <div class="proj">
         <div class="proj-name"><h4>{{ p.name }}</h4></div>
-        <div class="proj-text">{{ p.content_brief}}</div>
+        <div class="proj-text">{{ p.content_brief|safe }}</div>
         <div style="text-align:center; margin: 30px auto; width: 300px" class="button">
             <a href="{{ p.get_absolute_url }}"><strong>{% translate "Подробнее!" %}</strong></a>
         </div>
