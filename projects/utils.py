@@ -77,9 +77,7 @@ def check_signature_result(
 
 def generate_payment_link(
         cost: decimal,  # Cost of goods, RU
-        number: int,  # Invoice number
-        description: str,  # Description of the purchase
-        shp_ticket_uid: str = '',
+        description: str = 'donation',  # Description of the purchase
 ) -> str:
     """URL for redirection of the customer to the service.
     """
@@ -91,18 +89,15 @@ def generate_payment_link(
     signature = calculate_signature(
         merchant_login,
         cost,
-        number,
         merchant_password_1
     )
 
     data = {
         'MerchantLogin': merchant_login,
         'OutSum': cost,
-        'InvId': number,
         'Description': description,
         'SignatureValue': signature,
         'IsTest': is_test,
-        'shp_ticket_uid': shp_ticket_uid,
     }
     return f'{payment_url}?{parse.urlencode(data)}'
 

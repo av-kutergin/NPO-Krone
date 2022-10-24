@@ -94,9 +94,7 @@ def add_guest(request, project_slug):
             context['guest'] = new_guest
             payment_link = generate_payment_link(
                 cost=project.price,
-                number=new_guest.pk,
                 description=str(new_guest.ticket_uid),
-                shp_ticket_uid=new_guest.guest_uid,
             )
             return redirect(payment_link)
             # return redirect('payment_success', new_guest.ticket_uid)
@@ -109,10 +107,9 @@ def add_guest(request, project_slug):
 def payment_success(request):
     if check_success_payment(request):
         param_request = parse_response(request)
-        shp_ticket_uid = param_request['shp_ticket_uid']
-        if shp_ticket_uid:
-            guest_id = param_request['InvId']
-            guest = Guest.objects.get(pk=guest_id)
+        description = param_request['description']
+        if description != 'donation':
+            guest = Guest.objects.get(ticket_uid=description)
             # project = guest.project
             # image_data = bytes(guest.qr.read())
             # message_text = _(f'''К сообщению прикреплён Ваш QR для входа на мероприятие: {project.name}
@@ -212,7 +209,6 @@ def contacts(request):
 
 def donate(request):
     donation_options = DonateButton.objects.all()
-    print(donation_options)
     context = {
         'donations': donation_options,
         'title': _('Донат'),
@@ -261,7 +257,9 @@ def download_file(request, file_type, pk):
 
 def display_document(request, pk):
     document = get_object_or_404(ReportDocument, pk=pk)
+    merchant_login = os.environ['PAYMENT_LOGIN']
     context = {
+        'merchant_login': merchant_login,
         'document': document,
         'title': f'{document.name}',
     }
@@ -279,13 +277,13 @@ def result_payment(request: str) -> str:
     cost = param_request['OutSum']
     number = param_request['InvId']
     signature = param_request['SignatureValue']
-    ticket_uid = param_request['shp_ticket_uid']
+    description = param_request['description']
 
     signature = calculate_signature(cost, number, signature)
 
     if check_signature_result(number, cost, signature, merchant_password_2):
-        if ticket_uid:
-            guest = Guest.objects.get(ticket_uid=ticket_uid)
+        if description != 'donation':
+            guest = Guest.objects.get(ticket_uid=description)
             guest.set_paid()
         return f'OK{number}'
     return "bad sign"

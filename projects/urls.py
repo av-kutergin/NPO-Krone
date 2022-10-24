@@ -25,7 +25,7 @@ urlpatterns = [
     path('guests/<slug:project_slug>', views.guest_list, name='guest_list'),
     path('how-to/<slug:project_slug>/<slug:ticket_uid>', views.how_to_view, name='how_to'),
     path('set_arrived/<slug:ticket_uid>', views.set_arrived, name='set_arrived'),
-    path('cash-desk/result-payment', views.result_payment, name='result_payment')
+    path('cash-desk/result-payment', views.result_payment, name='result_payment'),  # Payment ResultURL
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

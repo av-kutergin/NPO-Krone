@@ -8,11 +8,18 @@
     <div class="donate-container block">
         {% for d in donations %}
         {% if d.show %}
-        <a href="payment.html" class="donate-var donate-button">
-            <div>{{ d.amount }} ₽</div>
-        </a>
+<!--        <a href="payment.html" class="donate-var donate-button">-->
+<!--            <div>{{ d.amount }} ₽</div>-->
+<!--        </a>-->
+        <script type="text/javascript" src="https://auth.robokassa.ru/Merchant/bundle/robokassa_iframe.js"></script>
+        <input  type="submit" class="donate-var donate-button" value='{{ d.amount }} ₽' onclick="Robokassa.StartPayment({
+             MerchantLogin: '{{ merchant_login }}',
+             OutSum: '{{ d.amount }}',
+             Description: 'donation',
+             SignatureValue: '{{ d.get_hash }}'})">
         {% endif %}
         {% endfor %}
     </div>
 </div>
+
 {% endblock content %}

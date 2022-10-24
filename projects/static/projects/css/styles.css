@@ -41,7 +41,7 @@ body {
     margin: auto;
     font-size: 20px;
 }
-
+/*
 input[type='submit'] {
     border: 2px solid black;
     border-radius: 5px;
@@ -52,6 +52,7 @@ input[type='submit'] {
     font-size: 20px;
     cursor: pointer;
 }
+*/
 
 .input {
     border: 2px solid black;
@@ -284,6 +285,12 @@ nav {
     cursor: pointer;
     text-align: center;
     line-height: 100px;
+    background: none;
+}
+
+.donate-button:hover {
+    color: red;
+    cursor: pointer;
 }
 
 /* from team.html */

@@ -1,4 +1,5 @@
 import datetime
+import os
 import random
 from io import BytesIO
 
@@ -12,7 +13,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
-from projects.utils import get_uuid_id, COLORS, get_day_word
+from projects.utils import get_uuid_id, COLORS, get_day_word, calculate_signature
 
 
 class Project(models.Model):
@@ -200,8 +201,10 @@ class DonateButton(models.Model):
         verbose_name_plural = 'Донаты'
         ordering = ['amount']
 
-    def donate(self):
-        pass
+    def get_hash(self):
+        merchant_login = os.environ['PAYMENT_LOGIN']
+        merchant_password_1 = os.environ['PAYMENT_PASSWORD1']
+        return calculate_signature(merchant_login, self.amount, merchant_password_1)
 
 
 @receiver(post_save, sender=Guest)
