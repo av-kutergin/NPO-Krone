@@ -1,5 +1,5 @@
 from modeltranslation.translator import register, TranslationOptions
-from .models import Project, TeamMate, ReportDocument, SimpleDocument, Carousel
+from projects.models import Project, TeamMate, ReportDocument, SimpleDocument, Carousel
 
 
 @register(Project)

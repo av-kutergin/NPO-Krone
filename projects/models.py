@@ -43,15 +43,13 @@ class Project(models.Model):
     #     return self.date > datetime.date.today()
 
     def is_over(self):
-        return (self.date.date() - datetime.date.today()).days < -1
+        return (self.date - datetime.datetime.now()).days < -1
 
     def is_it_time_to_reveal_howto(self):
-        if datetime.date.today() >= self.qr_reveal_date:
-            return True
-        return False
+        return datetime.date.today() >= self.qr_reveal_date
 
     def days_to_event(self):
-        days = (self.date - datetime.date.today()).days
+        days = (self.date - datetime.datetime.now()).days
         return _(f'До мероприятия осталось: {days} {get_day_word(days)}')
 
     def has_vacant(self):
@@ -96,11 +94,12 @@ class Guest(models.Model):
         verbose_name_plural = 'Гости'
 
     def __str__(self):
-        return f'{self.firstname} {self.lastname} {self.arrived}'
+        return f'{self.firstname} {self.lastname}'
 
     def set_arrived(self):
-        self.arrived = True
-        self.save(update_fields=['arrived'])
+        if self.paid:
+            self.arrived = True
+            self.save(update_fields=['arrived'])
         return self
 
     def set_paid(self):
@@ -115,7 +114,7 @@ class Guest(models.Model):
 class TeamMate(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя')
     description = models.TextField(blank=True, verbose_name='Описание')
-    high_rank = models.BooleanField(verbose_name='Верхнее звено')
+    high_rank = models.BooleanField(default=False, verbose_name='Верхнее звено')
     avatar = models.ImageField(blank=True, verbose_name='Фото')
     show = models.BooleanField(default=True, verbose_name='Отображать на сайте')
 
@@ -151,8 +150,6 @@ class Document(models.Model):
 
 
 class SimpleDocument(Document):
-    def __str__(self):
-        return self.name
 
     def download(self):
         return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'document'})
@@ -163,8 +160,6 @@ class SimpleDocument(Document):
 
 
 class ReportDocument(Document):
-    def __str__(self):
-        return self.name
 
     def download(self):
         return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'report'})

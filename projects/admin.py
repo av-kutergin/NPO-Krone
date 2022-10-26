@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from modeltranslation.admin import TranslationAdmin
 
-from .models import Project, Guest, TeamMate, SimpleDocument, ReportDocument, Carousel, DonateButton
+from projects.models import Project, Guest, TeamMate, SimpleDocument, ReportDocument, Carousel, DonateButton
 
 admin.site.unregister(Group)
 

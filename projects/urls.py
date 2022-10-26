@@ -1,9 +1,10 @@
 from django.urls import path, include
-from projects import views
 
 
 from django.conf import settings
 from django.conf.urls.static import static
+
+from projects import views
 
 urlpatterns = [
     path('', views.main_page, name='main_page'),
