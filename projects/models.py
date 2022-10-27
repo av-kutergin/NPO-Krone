@@ -53,7 +53,7 @@ class Project(models.Model):
         return _(f'До мероприятия осталось: {days} {get_day_word(days)}')
 
     def has_vacant(self):
-        return int(self.total_places) - len(self.guest_set.all())
+        return int(self.total_places) - len(self.guest_set.all().filter(paid=True))
 
     def clean(self):
         if not self.content_brief:

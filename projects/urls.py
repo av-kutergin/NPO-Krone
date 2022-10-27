@@ -7,8 +7,8 @@ from django.conf.urls.static import static
 from projects import views
 
 urlpatterns = [
-    path('', views.main_page, name='main_page'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('', views.main_page, name='main_page'),
     path('team/', views.team, name='team'),
     path('documents/', views.DocumentListView.as_view(), name='documents'),
     # path('documents/<int:pk>', views.ShowSimpleDocument.as_view(), name='simple_document'),

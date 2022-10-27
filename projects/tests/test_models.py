@@ -1,10 +1,11 @@
 import shutil
-import tempfile
+
 from datetime import date, datetime, timedelta
 
+from django.core.files.temp import NamedTemporaryFile
 from django.contrib.auth.models import User
+from django.db.models.fields import files
 from django.test import TestCase, override_settings
-from django.test.client import RequestFactory, Client
 
 from projects.models import Project, Guest, TeamMate, SimpleDocument, DonateButton, Carousel
 from projects.utils import get_uuid_id, calculate_signature
@@ -16,9 +17,11 @@ TEST_DIR = 'test_data'
 class ModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.factory = RequestFactory()
-        cls.user = User.objects.create_user(id=1, username='123', email='abirvalg@lasdf.am',
-                                         password='jasdfjkn,m1')
+        cls.user = User.objects.create_user(
+            username='123',
+            email='abirvalg@lasdf.am',
+            password='jasdfjkn,m1'
+        )
         cls.user.save()
         cls.project_1 = Project.objects.create(
             # id=1,
@@ -28,7 +31,7 @@ class ModelTests(TestCase):
             total_places=1,
             qr_reveal_date=date.today() + timedelta(days=4),
             howto='how to get',
-            slug='forthcoming event',
+            slug='forthcoming-event',
         )
         cls.project_1.save()
         cls.project_2 = Project.objects.create(
@@ -40,7 +43,7 @@ class ModelTests(TestCase):
             total_places=10,
             qr_reveal_date=date.today() - timedelta(days=6),
             howto='how to get',
-            slug='already passed event',
+            slug='already-passed-event',
         )
         cls.project_2.save()
         cls.project_3 = Project.objects.create(
@@ -52,7 +55,7 @@ class ModelTests(TestCase):
             total_places=0,
             qr_reveal_date=date.today(),
             howto='how to get',
-            slug='tomorrows event',
+            slug='tomorrows-event',
         )
         cls.project_3.save()
         cls.guest_1 = Guest.objects.create(
@@ -82,7 +85,6 @@ class ModelTests(TestCase):
         cls.guest_2.save()
         cls.don_button_1 = DonateButton.objects.create(amount=20)
         cls.don_button_1.save()
-        cls.client = Client()
 
     def test_dummy(self):
         self.assertEqual(2 + 2, 4)
@@ -128,6 +130,7 @@ class ModelTests(TestCase):
         self.assertEqual(len(self.project_3.content_brief), 50)
 
     def test_project_has_vacant_places(self):
+        self.guest_1.set_paid()
         self.assertFalse(self.project_1.has_vacant())
         self.assertTrue(self.project_2.has_vacant())
         self.assertFalse(self.project_3.has_vacant())
@@ -139,12 +142,12 @@ class ModelTests(TestCase):
         self.assertEqual(str(self.member_1), 'Gor')
 
     # Test Documents
-    # def test_document_clean_str(self):
-    #     file = tempfile.NamedTemporaryFile(suffix='.pdf', prefix='my_file')
-    #     print("!!!!!!!!", file)
-    #     self.simple_doc_1 = SimpleDocument.objects.create(file=file)
-    #     self.simple_doc_1.clean()
-    #     self.assertEqual(str(self.simple_doc_1), 'my_file.pdf')
+    def test_document_clean_str(self):
+        with NamedTemporaryFile() as temp:
+            file = files.File(temp, name='my_file.pdf')
+            self.simple_doc_1 = SimpleDocument.objects.create(file=file)
+            self.simple_doc_1.clean()
+            self.assertEqual(str(self.simple_doc_1), 'my_file.pdf')
 
     # Test Donation
     def test_get_donation(self):

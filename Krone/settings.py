@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'rosetta',
     'django.test',
-    'unittest',
     'projects.apps.ProjectsConfig',
 ]
 
