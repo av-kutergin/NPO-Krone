@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from modeltranslation.admin import TranslationAdmin
 
-from projects.models import Project, Guest, TeamMate, SimpleDocument, ReportDocument, Carousel, DonateButton
+from projects.models import Project, Guest, TeamMate, SimpleDocument, ReportDocument, Carousel, DonateButton, AboutUs
 
 admin.site.unregister(Group)
 
@@ -54,3 +54,10 @@ class DonateButtonAdmin(admin.ModelAdmin):
     list_display = ('id', 'amount', 'show')
     list_display_links = ('amount',)
     list_filter = ('show',)
+
+
+@admin.register(AboutUs)
+class DonateButtonAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'text')
+    list_display_links = ('name',)
+    list_filter = ('id',)

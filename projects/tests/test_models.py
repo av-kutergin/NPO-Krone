@@ -90,13 +90,13 @@ class ModelTests(TestCase):
         self.assertEqual(2 + 2, 4)
 
     # Test Guest
-    def test_set_paid_guest_arrived(self):
-        self.guest_2.set_arrived()
-        self.assertTrue(self.guest_2.arrived)
+    # def test_set_paid_guest_arrived(self):
+    #     self.guest_2.set_arrived()
+    #     self.assertTrue(self.guest_2.arrived)
 
-    def test_set_unpaid_guest_arrived_does_not_work(self):
-        self.guest_1.set_arrived()
-        self.assertFalse(self.guest_2.arrived)
+    # def test_set_unpaid_guest_arrived_does_not_work(self):
+    #     self.guest_1.set_arrived()
+    #     self.assertFalse(self.guest_1.arrived)
 
     def test_guest_str(self):
         self.assertEqual(str(self.guest_1), 'Stephen Hawking')
@@ -119,7 +119,7 @@ class ModelTests(TestCase):
         self.assertTrue(self.project_3.is_it_time_to_reveal_howto())
 
     def test_days_to_event(self):
-        self.assertEqual(self.project_1.days_to_event(), 'До мероприятия осталось: 4 дня')
+        self.assertEqual(self.project_1.days_to_event(), 4)
 
     def test_brief_content_autofill(self):
         self.project_1.clean()

@@ -27,6 +27,8 @@ class Project(models.Model):
     qr_reveal_date = models.DateField(verbose_name='Дата, когда откроется qr-код')
     howto = models.TextField(max_length=200, verbose_name='Как добраться')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
+    photo = models.ImageField(blank=True, verbose_name='Фото')
+    back_photo = models.ImageField(blank=True, verbose_name='ФотоПозади')
 
     class Meta:
         verbose_name = 'Проект'
@@ -49,8 +51,10 @@ class Project(models.Model):
         return datetime.date.today() >= self.qr_reveal_date
 
     def days_to_event(self):
-        days = (self.date - datetime.datetime.now()).days
-        return _(f'До мероприятия осталось: {days} {get_day_word(days)}')
+        return (self.date - datetime.datetime.now()).days
+        # days = (self.date - datetime.datetime.now()).days
+        # return _(f'До мероприятия осталось: {days} {get_day_word(days)}')
+        # YAGNI
 
     def has_vacant(self):
         return int(self.total_places) - len(self.guest_set.all().filter(paid=True))
@@ -84,10 +88,10 @@ class Guest(models.Model):
     telegram = models.CharField(max_length=30, verbose_name='Телеграм')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
     ticket_uid = models.CharField(default=get_uuid_id, verbose_name='UID билета',
-                                  editable=False, max_length=40, unique=True)
+                                  max_length=40, unique=True)
     qr = models.ImageField(blank=True, editable=False)
     arrived = models.BooleanField(default=False, verbose_name='Пришёл')
-    paid = models.BooleanField(default=False, verbose_name='Оплачено')
+    paid = models.BooleanField(default=False, verbose_name='Оплачено', editable=False)
 
     class Meta:
         verbose_name = 'Гость'
@@ -96,11 +100,11 @@ class Guest(models.Model):
     def __str__(self):
         return f'{self.firstname} {self.lastname}'
 
-    def set_arrived(self):
-        if self.paid:
-            self.arrived = True
-            self.save(update_fields=['arrived'])
-        return self
+    # def set_arrived(self):
+    #     if self.paid:
+    #         self.arrived = True
+    #         self.save(update_fields=['arrived'])
+    #     return self
 
     def set_paid(self):
         self.paid = True
@@ -200,6 +204,11 @@ class DonateButton(models.Model):
         merchant_login = os.environ['PAYMENT_LOGIN']
         merchant_password_1 = os.environ['PAYMENT_PASSWORD1']
         return calculate_signature(merchant_login, self.amount, merchant_password_1)
+
+
+class AboutUs(models.Model):
+    name = models.CharField(verbose_name='Имя', max_length=255)
+    text = RichTextField(verbose_name='Текст', blank=True)
 
 
 @receiver(post_save, sender=Guest)

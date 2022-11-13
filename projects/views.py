@@ -146,8 +146,6 @@ def download_file(request, file_type, pk):
             response['Content-Disposition'] = f'attachment; filename={name}'
             return response
 
-    return HttpResponseNotFound(_('<h1>Страница не найдена</h1>'))
-
 
 def display_document(request, pk):
     document = get_object_or_404(ReportDocument, pk=pk)
@@ -197,7 +195,9 @@ def add_guest(request, project_slug):
 def set_arrived(request, ticket_uid):
     guest = Guest.objects.get(ticket_uid=ticket_uid)
     project = guest.project
-    guest.set_arrived()
+    if guest.paid:
+        guest.arrived = True
+        guest.save(update_fields=['arrived'])
     return redirect('guest_list', project.slug)
 
 

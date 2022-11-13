@@ -1,17 +1,18 @@
 import shutil
+import time
 from datetime import datetime, timedelta, date
 
-from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.core.files.temp import NamedTemporaryFile
 from django.db.models.fields import files
+from django.test import RequestFactory, Client
 from django.test import TestCase, override_settings
-from django.test.client import RequestFactory, Client
+from django.urls import reverse
 
 from projects.models import Project, Guest, SimpleDocument, ReportDocument
 from projects.utils import get_uuid_id
-from projects.views import main_page, team, projects, contacts, donate, sitemap, login_page, set_arrived, ShowProject, \
-    DocumentListView, ReportListView, guest_list, download_file, display_document, how_to_view
+from projects.views import main_page, team, projects, contacts, donate, sitemap, login_page, ShowProject, \
+    DocumentListView, ReportListView, download_file, display_document, how_to_view, add_guest, guest_list
 
 TEST_DIR = 'test_data'
 
@@ -102,6 +103,11 @@ class ViewsTests(TestCase):
         response = login_page(request)
         self.assertEqual(response.status_code, 200)
 
+    def test_login(self):
+        data = {'username': 'my_username', 'password': 'my_password'}
+        response = self.client.post(reverse('login'), data)
+        self.assertEqual(response.status_code, 302)
+
     def test_show_project(self):
         path = self.project_1.get_absolute_url()
         request = self.factory.get(path)
@@ -147,30 +153,55 @@ class ViewsTests(TestCase):
         response = how_to_view(request, project_slug=self.project_1.slug, ticket_uid=self.guest_1.ticket_uid)
         self.assertEqual(response.status_code, 200)
 
-    # def test_add_guest(self):
-    #     data = {
-    #         'firstname': 'Linus',
-    #         'lastname': 'Torvalds',
-    #         'birthdate': '1969-12-28',
-    #         'phone': '+12345678911',
-    #         'email': 'LTorvalds@linker.eu',
-    #         'telegram': '@LTorvalds',
-    #     }
-    #     request = self.factory.get('add_guest', data={'project_slug': self.project_1.slug})
-    #     response = self.client.post(request, data=data)
-    #     self.assertEqual(response.status_code, 302)
+    def test_add_guest(self):
+        data = {
+            'firstname': 'Linus',
+            'lastname': 'Torvalds',
+            'birthdate': '1969-12-28',
+            'phone': '+12345678911',
+            'email': 'LTorvalds@linker.eu',
+            'telegram': '@LTorvalds',
+        }
+        response = self.client.post(reverse('register', kwargs={'project_slug': self.project_1.slug}), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(Guest.objects.all()), 2)
+
+    def test_add_guest_invalid_form(self):
+        data = {
+            'firstname': 'Linus',
+            'lastname': 'Torvalds',
+            'birthdate': '1969-12-28',
+            'phone': '',
+            'email': 'LTorvalds@linker.eu',
+            'telegram': '@LTorvalds',
+        }
+        response = self.client.post(reverse('register', kwargs={'project_slug': self.project_1.slug}), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(Guest.objects.all()), 1)
 
     def test_set_arrived(self):
-        pass
+        self.client.login(username='my_username', password='my_password')
+        self.guest_3 = Guest.objects.create(
+            # id=1,
+            firstname='Stephen',
+            lastname='Hawking',
+            birthdate='1942-01-08',
+            phone='+12345678911',
+            email='Stephen@Hawking.com',
+            telegram='@SHawking',
+            project=self.project_1,
+            ticket_uid=get_uuid_id(),
+            paid=True,
+        )
+        response = self.client.get(reverse('set_arrived', kwargs={'ticket_uid': self.guest_3.ticket_uid}))
+        self.assertEqual(response.status_code, 302)
+        # self.assertTrue(self.guest_3.arrived)
 
     def test_service_page(self):
         self.client.login(username='my_username', password='my_password')
-        request = self.factory.get('service_page')
-        response = ShowProject.as_view()(
-            request,
-            project_slug=self.project_1.slug,
-            ticket_uid=self.guest_1.ticket_uid,
-        )
+        response = self.client.get(reverse(
+            'service_page',
+            kwargs={'project_slug': self.project_1.slug, 'ticket_uid': self.guest_1.ticket_uid}))
         self.assertEqual(response.status_code, 200)
 
     def test_service_page_no_object(self):
@@ -183,11 +214,10 @@ class ViewsTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    # def test_guest_list(self):
-    #     self.client.login(username='my_username', password='my_password')
-    #     request = self.factory.get('guest_list')
-    #     response = guest_list(request, project_slug=self.project_1.slug)
-    #     self.assertEqual(response.status_code, 200)
+    def test_guest_list(self):
+        self.client.login(username='my_username', password='my_password')
+        response = self.client.get(reverse('guest_list', kwargs={'project_slug': self.project_1.slug}))
+        self.assertEqual(response.status_code, 200)
 
     def test_payment_success(self):
         pass
