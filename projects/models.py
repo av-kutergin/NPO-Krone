@@ -121,6 +121,7 @@ class TeamMate(models.Model):
     high_rank = models.BooleanField(default=False, verbose_name='Верхнее звено')
     avatar = models.ImageField(blank=True, verbose_name='Фото')
     show = models.BooleanField(default=True, verbose_name='Отображать на сайте')
+    telegram = models.CharField(max_length=100, verbose_name='Телеграм', default='@telegram')
 
     # django_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
