@@ -86,7 +86,7 @@ class Guest(models.Model):
     phone = PhoneNumberField(verbose_name='Телефон')
     email = models.EmailField(verbose_name='Электронная почта')
     telegram = models.CharField(max_length=30, verbose_name='Телеграм')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name='Проект')
     ticket_uid = models.CharField(default=get_uuid_id, verbose_name='UID билета',
                                   max_length=40, unique=True)
     qr = models.ImageField(blank=True, editable=False)
@@ -177,7 +177,11 @@ class ReportDocument(Document):
 class Carousel(models.Model):
     display_name = models.CharField(max_length=100, verbose_name='Наименование')
     background_image = models.ImageField(verbose_name='Картинка фона', blank=True)
+    img_offset_x = models.FloatField(verbose_name='Смещение картинки x', blank=True)
+    img_offset_y = models.FloatField(verbose_name='Смещение картинки y', blank=True)
+    img_scale = models.FloatField(verbose_name='Масштаб картинки', blank=True)
     content = RichTextField(verbose_name='Контент', blank=True)
+    collapsed_content = models.CharField(max_length=100, verbose_name='Контент для свёрнутого представления', blank=True)
     position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
 
     def __str__(self):
@@ -230,3 +234,18 @@ def set_guest_qr(sender, instance, **kwargs):
         post_save.disconnect(set_guest_qr, sender=Guest)
         instance.save()
         post_save.connect(set_guest_qr, sender=Guest)
+
+
+def generate_carousel_item(instance=None):
+    if instance:
+        return Carousel.objects.create(
+            diplay_name=instance.name,
+            background_image=instance.photo,
+            content=instance.content,
+        )
+    else:
+        return Carousel.objects.create(
+            diplay_name='instance.name',
+            background_image=b'instance.photo',
+            content='instance.content',
+        )

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'rosetta',
     'django.test',
+    'debug_toolbar',
     'projects.apps.ProjectsConfig',
 ]
 
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'Krone.urls'
@@ -198,5 +200,9 @@ LOGGING = {
         },
     },
 }
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 # Payment settings

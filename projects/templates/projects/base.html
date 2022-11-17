@@ -12,7 +12,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Neucha&display=swap"/>
     <link rel="stylesheet" href="{% static 'projects/css/styles.css' %}" type="text/css"/>
+    {% block title %}
     <title>{{ title }}</title>
+    {% endblock title %}
 </head>
 <body>
 {% block mainmenu %}
@@ -49,9 +51,6 @@
         <button class="nav-button" type="submit" form="form_{{ LANGUAGE_CODE|new_lang_code }}"
                 value="Submit">EN/RU
         </button>
-        <!--            <div class="nav-item" onclick="showEnru()">-->
-        <!--                <a href="#">EN/RU</a>-->
-        <!--            </div>-->
     </nav>
 </div>
 

@@ -88,13 +88,6 @@ class ShowProject(DetailView):
     slug_url_kwarg = 'project_slug'
     context_object_name = 'project'
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(ShowProject, self).get_context_data(*args, **kwargs)
-        slug = self.kwargs['project_slug']
-        project = Project.objects.get(slug=slug)
-        context['title'] = project.name
-        return context
-
 
 class DocumentListView(ListView):
     model = SimpleDocument
@@ -157,8 +150,8 @@ def display_document(request, pk):
 
 
 def how_to_view(request, project_slug, ticket_uid):
-    project = Project.objects.get(slug=project_slug)
-    guest = Guest.objects.get(ticket_uid=ticket_uid)
+    guest = Guest.objects.select_related('project').get(ticket_uid=ticket_uid)
+    project = guest.project
     context = {
         'project': project,
         'guest': guest,
@@ -193,7 +186,7 @@ def add_guest(request, project_slug):
 
 @login_required()
 def set_arrived(request, ticket_uid):
-    guest = Guest.objects.get(ticket_uid=ticket_uid)
+    guest = Guest.objects.select_related('project').get(ticket_uid=ticket_uid)
     project = guest.project
     if guest.paid:
         guest.arrived = True
@@ -204,8 +197,8 @@ def set_arrived(request, ticket_uid):
 @login_required()
 def service_page(request, project_slug, ticket_uid):
     try:
-        project = Project.objects.get(slug=project_slug)
-        guest = Guest.objects.get(ticket_uid=ticket_uid)
+        guest = Guest.objects.select_related('project').get(ticket_uid=ticket_uid)
+        project = guest.project
         context = {
             'project': project,
             'guest': guest,
@@ -223,7 +216,7 @@ def service_page(request, project_slug, ticket_uid):
 
 @login_required()
 def guest_list(request, project_slug):
-    project = Project.objects.get(slug=project_slug)
+    project = Project.objects.prefetch_related('guest_set').get(slug=project_slug)
     list_of_guests = project.guest_set.all()
     context = {
         'project': project,
