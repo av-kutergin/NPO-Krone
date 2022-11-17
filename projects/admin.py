@@ -1,17 +1,31 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from django.utils.safestring import mark_safe
 from modeltranslation.admin import TranslationAdmin
+from django.utils.translation import gettext_lazy as _
 
 from projects.models import Project, Guest, TeamMate, SimpleDocument, ReportDocument, Carousel, DonateButton, AboutUs
 
 admin.site.unregister(Group)
+admin.site.site_title = _('Админ-панель НКО "Крона"')
+admin.site.site_header = _('Админ-панель НКО "Крона"')
+
+
+@admin.action(description='Sdelat carousel')
+def make_carousel(self, request, queryset):
+    for obj in queryset:
+        Carousel.objects.create(display_name=obj.name, background_image=obj.photo, content=obj.content)
 
 
 @admin.register(Project)
 class ProjectAdmin(TranslationAdmin):
-    list_display = ('id', 'name', 'date', 'total_places')
+    list_display = ('id', 'name', 'date', 'total_places',)
     list_display_links = ('name',)
     list_filter = ('date',)
+    actions = [make_carousel]
+
+    # def generate_carousel_item(self, obj):
+    #     return mark_safe(f'<div class="button" onclick="{obj.create_carousel}">Sozdat</div>')
 
 
 @admin.register(TeamMate)
