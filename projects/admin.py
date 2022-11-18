@@ -11,7 +11,7 @@ admin.site.site_title = _('Админ-панель НКО "Крона"')
 admin.site.site_header = _('Админ-панель НКО "Крона"')
 
 
-@admin.action(description='Sdelat carousel')
+@admin.action(description=_('Сделать карусель'))
 def make_carousel(self, request, queryset):
     for obj in queryset:
         Carousel.objects.create(display_name=obj.name, background_image=obj.photo, content=obj.content)
