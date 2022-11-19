@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'ckeditor',
     'rosetta',
+    'parler',
     'django.test',
     'debug_toolbar',
     'projects.apps.ProjectsConfig',
@@ -133,10 +133,17 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'ru'
 
 # gettext = lambda s: s
-LANGUAGES = (
-    ('ru', 'Russian'),
-    ('en', 'English'),
-)
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'ru', },  # Russian
+        {'code': 'en', },  # English
+    ),
+    'default': {
+        'fallbacks': ['ru'],
+        'hide_untranslated': False,
+    }
+}
+
 
 LOCALE_PATHs = BASE_DIR, 'locale'
 

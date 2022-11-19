@@ -11,24 +11,28 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from parler.fields import TranslatedField
+from parler.models import TranslatedFields, TranslatableModel
 from phonenumber_field.modelfields import PhoneNumberField
 
 from projects.utils import get_uuid_id, COLORS, get_day_word, calculate_signature
 
 
-class Project(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Название')
-    content_brief = RichTextField(blank=True, verbose_name='Контент кратко')
-    content = RichTextField(blank=True, verbose_name='Контент')
+class Project(TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(max_length=100, verbose_name='Название'),
+        content_brief=RichTextField(blank=True, verbose_name='Контент кратко'),
+        content=RichTextField(blank=True, verbose_name='Контент'),
+        howto=models.TextField(max_length=200, verbose_name='Как добраться'),
+    )
     price = models.DecimalField(max_digits=5, decimal_places=0, verbose_name='Стоимость входа')
     date = models.DateTimeField(verbose_name='Дата проведения')
     total_places = models.PositiveIntegerField(verbose_name='Количество мест')
-    # vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест', editable=False, blank=True)
     qr_reveal_date = models.DateField(verbose_name='Дата, когда откроется qr-код')
-    howto = models.TextField(max_length=200, verbose_name='Как добраться')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
     photo = models.ImageField(blank=True, verbose_name='Фото')
     back_photo = models.ImageField(blank=True, verbose_name='ФотоПозади')
+    # vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест', editable=False, blank=True)
 
     class Meta:
         verbose_name = 'Проект'
@@ -115,9 +119,11 @@ class Guest(models.Model):
         return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'qr_image'})
 
 
-class TeamMate(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Имя')
-    description = models.TextField(blank=True, verbose_name='Описание')
+class TeamMate(TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(max_length=100, verbose_name='Имя'),
+        description=models.TextField(blank=True, verbose_name='Описание'),
+    )
     high_rank = models.BooleanField(default=False, verbose_name='Верхнее звено')
     avatar = models.ImageField(blank=True, verbose_name='Фото')
     show = models.BooleanField(default=True, verbose_name='Отображать на сайте')
@@ -134,7 +140,7 @@ class TeamMate(models.Model):
 
 
 class Document(models.Model):
-    name = models.CharField(max_length=100, blank=True, verbose_name='Название')
+    name = TranslatedField()
     file = models.FileField(verbose_name='Файл')
 
     def __str__(self):
@@ -154,7 +160,10 @@ class Document(models.Model):
         pass
 
 
-class SimpleDocument(Document):
+class SimpleDocument(Document, TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(max_length=100, blank=True, verbose_name='Название'),
+    )
 
     def download(self):
         return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'document'})
@@ -164,7 +173,10 @@ class SimpleDocument(Document):
         verbose_name_plural = 'Документы'
 
 
-class ReportDocument(Document):
+class ReportDocument(Document, TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(max_length=100, blank=True, verbose_name='Название'),
+    )
 
     def download(self):
         return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'report'})
@@ -174,13 +186,15 @@ class ReportDocument(Document):
         verbose_name_plural = 'Отчёты'
 
 
-class Carousel(models.Model):
-    display_name = models.CharField(max_length=100, verbose_name='Наименование')
+class Carousel(TranslatableModel):
+    translations = TranslatedFields(
+        display_name=models.CharField(max_length=100, verbose_name='Наименование', default=_('Некоторое')),
+        content=RichTextField(verbose_name='Контент', null=True, default=_('Некоторое количество текста, которое имеет своей целью коротко представить организацию широкой публике заходящих на сайт людей')),
+    )
     background_image = models.ImageField(verbose_name='Картинка фона', null=True)
     img_offset_x = models.FloatField(verbose_name='Смещение картинки x', null=True)
     img_offset_y = models.FloatField(verbose_name='Смещение картинки y', null=True)
     img_scale = models.FloatField(verbose_name='Масштаб картинки', null=True)
-    content = RichTextField(verbose_name='Контент', null=True)
     collapsed_content = models.CharField(max_length=100, verbose_name='Контент для свёрнутого представления', null=True)
     position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
 
@@ -211,9 +225,11 @@ class DonateButton(models.Model):
         return calculate_signature(merchant_login, self.amount, merchant_password_1)
 
 
-class AboutUs(models.Model):
-    name = models.CharField(verbose_name='Имя', max_length=255)
-    text = RichTextField(verbose_name='Текст', blank=True)
+class AboutUs(TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(verbose_name='Имя', max_length=255),
+        text=RichTextField(verbose_name='Текст', blank=True)
+    )
 
 
 @receiver(post_save, sender=Guest)
