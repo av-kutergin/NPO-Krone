@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from dotenv import load_dotenv
@@ -278,3 +279,35 @@ def result_payment(request: str) -> str:
             guest.set_paid()
         return f'OK{number}'
     return "bad sign"
+
+
+def p_list(request):
+    list_of_p = Project.objects.all()
+    context = {
+        'list_of_p': list_of_p,
+        'title': _('Список гостей')
+    }
+    return render(request, 'projects/p_list.html', context)
+
+
+def make_carousel(request, project_slug):
+    if project_slug:
+        project = Project.objects.get(slug=project_slug)
+        Project.make_carousel(project)
+    else:
+        Project.make_carousel()
+    return HttpResponseRedirect(reverse('admin:index'))
+
+
+def make_default_carousel(request):
+    new_obj = Carousel.objects.create(display_name='', background_image=b'', content='')
+    new_obj.set_current_language('ru')
+    new_obj.display_name = 'DefaultRu'
+    new_obj.background_image = b''
+    new_obj.content = 'DefaultRu'
+    new_obj.set_current_language('en')
+    new_obj.display_name = 'DefaultEn'
+    new_obj.background_image = b''
+    new_obj.content = 'DefaultEn'
+    new_obj.save()
+    return HttpResponseRedirect(reverse('admin:index'))

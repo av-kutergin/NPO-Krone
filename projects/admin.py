@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from parler.admin import TranslatableAdmin, SortedRelatedFieldListFilter
 
+from Krone.settings import BASE_DIR
 from projects.models import Project, Guest, TeamMate, SimpleDocument, ReportDocument, Carousel, DonateButton, AboutUs
 
 admin.site.unregister(Group)
@@ -28,7 +29,6 @@ def make_carousel(self, request, queryset):
         new_obj.save()
 
 
-
 @admin.register(Project)
 class ProjectAdmin(TranslatableAdmin):
     list_display = ('id', 'name', 'date', 'total_places',)
@@ -39,21 +39,19 @@ class ProjectAdmin(TranslatableAdmin):
               )
     actions = [make_carousel]
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request).prefetch_related('translations')
-        print(qs)
-        return qs
-
-    # def generate_carousel_item(self, obj):
-    #     return mark_safe(f'<div class="button" onclick="{obj.create_carousel}">Sozdat</div>')
+    def get_prepopulated_fields(self, request, obj=None):
+        # can't use `prepopulated_fields = ..` because it breaks the admin validation
+        # for translated fields. This is the official django-parler workaround.
+        return {
+            'slug': ('name',)
+        }
 
 
 @admin.register(TeamMate)
 class TeamMateAdmin(TranslatableAdmin):
     list_display = ('id', 'name', 'high_rank', 'show')
     list_display_links = ('name',)
-    # list_filter = ('name', 'high_rank', 'show')
-    pass
+    list_filter = ('high_rank', 'show')
 
 
 @admin.register(SimpleDocument)
@@ -61,7 +59,6 @@ class SimpleDocumentAdmin(TranslatableAdmin):
     list_display = ('id', 'name')
     list_display_links = ('name',)
     # list_filter = (('name', SortedRelatedFieldListFilter),)
-    pass
 
 
 @admin.register(ReportDocument)
@@ -75,10 +72,12 @@ class ReportDocumentAdmin(TranslatableAdmin):
 class CarouselAdmin(TranslatableAdmin):
     list_display = ('id', 'display_name')
     list_display_links = ('display_name',)
-    # list_filter = (
-    #     ('display_name', SortedRelatedFieldListFilter),
-    #     ('position', SortedRelatedFieldListFilter),
-    # )
+    list_filter = (
+        # ('translations__display_name', SortedRelatedFieldListFilter),
+        # 'position',
+    )
+
+    change_list_template = str(BASE_DIR) + '/templates/admin/change_list_carousel.html'
 
 
 @admin.register(Guest)

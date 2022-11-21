@@ -72,6 +72,22 @@ class Project(TranslatableModel):
             else:
                 self.content_brief = self.content[:200]
 
+    @staticmethod
+    def make_carousel(instance):
+        new_obj = Carousel.objects.create(display_name='', background_image=b'', content='')
+        instance.set_current_language('ru')
+        new_obj.set_current_language('ru')
+        new_obj.display_name = instance.name
+        new_obj.background_image = instance.photo
+        new_obj.content = instance.content
+        instance.set_current_language('en')
+        new_obj.set_current_language('en')
+        new_obj.display_name = instance.name
+        new_obj.background_image = instance.photo
+        new_obj.content = instance.content
+        new_obj.save()
+
+
     # IF NEEDED
     #
     # PASSPHRASE_CHOICES = [
@@ -189,12 +205,12 @@ class ReportDocument(Document, TranslatableModel):
 class Carousel(TranslatableModel):
     translations = TranslatedFields(
         display_name=models.CharField(max_length=100, verbose_name='Наименование', default=_('Некоторое')),
-        content=RichTextField(verbose_name='Контент', null=True, default=_('Некоторое количество текста, которое имеет своей целью коротко представить организацию широкой публике заходящих на сайт людей')),
+        content=RichTextField(verbose_name='Контент', null=True, default=_('')),
     )
     background_image = models.ImageField(verbose_name='Картинка фона', null=True)
-    img_offset_x = models.FloatField(verbose_name='Смещение картинки x', null=True)
-    img_offset_y = models.FloatField(verbose_name='Смещение картинки y', null=True)
-    img_scale = models.FloatField(verbose_name='Масштаб картинки', null=True)
+    img_offset_x = models.FloatField(verbose_name='Смещение картинки x', default=0.0)
+    img_offset_y = models.FloatField(verbose_name='Смещение картинки y', default=0.0)
+    img_scale = models.FloatField(verbose_name='Масштаб картинки', default=0.0)
     collapsed_content = models.CharField(max_length=100, verbose_name='Контент для свёрнутого представления', null=True)
     position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
 

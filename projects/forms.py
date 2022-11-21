@@ -29,10 +29,3 @@ class AddGuestForm(forms.ModelForm):
             'email': _('Электронная почта'),
             'birthdate': _('Дата рождения'),
         }
-    #
-    # def clean_birthdate(self):
-    #     birthdate = self.cleaned_data['birthdate']
-    #     if birthdate > datetime.date.today():
-    #         raise ValidationError(_('Введите правильную дату'))
-    #
-    #     return birthdate
