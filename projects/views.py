@@ -14,7 +14,7 @@ from django.views.generic import ListView, DetailView
 from dotenv import load_dotenv
 
 from projects.forms import AddGuestForm
-from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate, Guest, DonateButton
+from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate, Guest, DonateButton, AboutUs
 from projects.utils import calculate_signature, parse_response, check_signature_result, generate_payment_link, check_success_payment
 
 load_dotenv()
@@ -22,14 +22,16 @@ load_dotenv()
 
 def main_page(request):
     title = _('НКО Крона')
-    projects = Project.objects.all()
+    projects_for_main = Project.objects.filter(show_on_main=True)
     carousel = Carousel.objects.all()
     teammates = TeamMate.objects.filter(show=True).filter(high_rank=True)
+    about_us = AboutUs.objects.all()
     context = {
         'title': title,
         'carousel': carousel,
-        'projects': projects,
+        'projects_for_main': projects_for_main,
         'teammates': teammates,
+        'about_us': about_us,
     }
     return render(request, 'projects/index.html', context)
 
@@ -46,10 +48,10 @@ def team(request):
 
 
 def projects(request):
-    projects = Project.objects.all()
+    all_projects = Project.objects.all()
     context = {
         'title': _('Проекты'),
-        'projects': projects,
+        'projects': all_projects,
     }
     return render(request, 'projects/projects.html', context)
 

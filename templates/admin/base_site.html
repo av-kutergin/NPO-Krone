@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block extrastyle %}
+    <link rel="shortcut icon" href="{% static 'projects/images/logo.svg' %}" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Neucha&display=swap"/>
+<!--    <link rel="stylesheet" href="{% static 'projects/css/styles.css' %}" type="text/css"/>-->
+{% endblock extrastyle %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

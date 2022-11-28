@@ -14,6 +14,7 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path('', include('projects.urls')),
+    prefix_default_language=False,
 )
 
 if settings.DEBUG:

@@ -32,6 +32,7 @@ class Project(TranslatableModel):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
     photo = models.ImageField(blank=True, verbose_name='Фото')
     back_photo = models.ImageField(blank=True, verbose_name='ФотоПозади')
+    show_on_main = models.BooleanField(default=False, verbose_name='Отображать на главной странице')
     # vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест', editable=False, blank=True)
 
     class Meta:
@@ -143,7 +144,7 @@ class TeamMate(TranslatableModel):
     high_rank = models.BooleanField(default=False, verbose_name='Верхнее звено')
     avatar = models.ImageField(blank=True, verbose_name='Фото')
     show = models.BooleanField(default=True, verbose_name='Отображать на сайте')
-    telegram = models.CharField(max_length=100, verbose_name='Телеграм', default='@telegram')
+    telegram = models.CharField(blank=True, max_length=100, verbose_name='Телеграм')
 
     # django_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
@@ -246,6 +247,7 @@ class AboutUs(TranslatableModel):
         name=models.CharField(verbose_name='Имя', max_length=255),
         text=RichTextField(verbose_name='Текст', blank=True)
     )
+    position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
 
 
 @receiver(post_save, sender=Guest)

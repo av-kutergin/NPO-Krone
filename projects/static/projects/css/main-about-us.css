@@ -1,0 +1,133 @@
+.about-us {
+    position: relative;
+    height: 800px;
+    width: 100%;
+    padding: 80px 0;
+    background: #4F4B69 url('../img/pngwing.png');
+    background-repeat: repeat-x;
+    background-size: 70%;
+}
+
+.about-us h2 {
+    margin: 60px 0;
+    color: white;
+}
+
+.about-us__subtitle {
+    width: 40%;
+    margin: 60px 0;
+    font-size: 18px;
+    color: white;
+}
+
+.about-us__cards {
+    height: 550px;
+}
+
+.about-us__card-wrapper {
+    position: absolute;
+    top: 400px;
+    left: 0;
+}
+
+.about-us__card {
+    position: absolute;
+    box-sizing: border-box;
+    width: 447px;
+    min-height: 390px;
+    left: 0px;
+    padding: 40px;
+    margin-right: 30px;
+    border: 2px solid #7B8AA8;
+    border-radius: 30px;
+    background: #FFFFFF;
+}
+
+.about-us__card h3 {
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 30px;
+}
+
+
+@media (min-width: 1500px) {
+    .about-us__card-wrapper:nth-child(3n+0) {
+        left: 0;
+    }
+
+    .about-us__card-wrapper:nth-child(3n+2) {
+        left: 477px;
+    }
+
+    .about-us__card-wrapper:nth-child(3n+1) {
+        left: 954px;
+    }
+}
+
+@media (max-width: 1500px) {
+    .about-us__card-wrapper:nth-child(2n+1) {
+        left: 0;
+    }
+
+    .about-us__card-wrapper:nth-child(2n+2) {
+        left: 440px;
+    }
+
+    .about-us__card {
+        width: 380px;
+        min-height: 340px;
+        left: 0px;
+        margin-right: 20px;
+    }
+
+    .about-us__card h3 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .about-us__card-wrapper {
+        top: 250px;
+    }
+
+    .about-us__card-wrapper:nth-child(2n+1) {
+        left: 0;
+    }
+
+    .about-us__card-wrapper:nth-child(2n+2) {
+        left: 384px;
+    }
+
+    .about-us__card {
+        width: 324px;
+        min-height: 340px;
+        left: 0px;
+        margin-right: 20px;
+    }
+
+    .about-us__card h3 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 900px) {
+    .about-us__subtitle {
+        width: 80%;
+    }
+    .about-us__card-wrapper {
+        top: 280px;
+        width: 100%;
+    }
+    .about-us__card-wrapper:nth-child(2n+1),
+    .about-us__card-wrapper:nth-child(2n+2),
+    .about-us__card-wrapper:nth-child(2n+3) {
+        left: 0;
+    }
+    .about-us__card {
+        width: 100%;
+        min-height: 340px;
+        left: 0px;
+    }
+    .about-us__card h3 {
+        font-size: 24px;
+    }
+}

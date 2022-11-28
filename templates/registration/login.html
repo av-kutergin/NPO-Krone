@@ -1,0 +1,21 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<br><br>
+<form class="form block" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <div class="pay button"><input type="submit" value='{% translate "Войти" %}'></div>
+</form>
+
+{% endblock content %}
+
+<!--for LOGOUT-->
+<!--{% if user.is_authenticated %}-->
+<!--  Hi {{ user.username }}!-->
+<!--  <p><a href="{% url 'logout' %}">Log Out</a></p>-->
+<!--{% else %}-->
+<!--  <p>You are not logged in</p>-->
+<!--  <a href="{% url 'login' %}">Log In</a>-->
+<!--{% endif %}-->

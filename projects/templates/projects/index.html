@@ -1,56 +1,212 @@
 {% extends 'projects/base.html' %}
 {% load static %}
 {% load i18n %}
+{% load language_selector %}
+{% get_current_language as LANGUAGE_CODE %}
+
 {% block content %}
 
-<div class="carousel block">
-    <div class="epic-punchline">{% translate "Пафосный панчлайн слева от карусельки" %}</div>
-    <div class="carousel-container">
-        {% for p in carousel %}
-        {% if p.position %}
-        <div class="carousel-item">
-            <img src="{{ p.background_image.url }}">
-            <div class="text-1"><p>{{ p.content|safe }}</p>
-                <p><a href="https://t.me/Everything42_bot">{% translate "И ещё ссылка на телегу" %}</a></p></div>
+
+    <div class="carousel" data-count="3">
+        <div class="container">
+            <div class="punchline">
+                <div class="punchline-wrapper">
+                    <div class="punchline__main"><h2>{% translate "Мы объединяем людей" %}</h2></div>
+                    <div class="punchline__sub">{% translate "организуем культурные, развлекательные и иные массовые мероприятия, направленные на достижение цели АНО “Крона”" %}</div>
+                    <div class="punchline__button button"><a href="{% url 'projects' %}">{% translate "Узнать больше" %}</a></div>
+                </div>
+            </div>
+            <div class="carousel-images">
+                {% for c in carousel %}
+                    {% if c.position %}
+                        {% if c.position == 1 %}
+                            <div class="carousel-images__card is-active" onmouseenter="cardHovered(event)">
+                                <div class="carousel-images__card-contentwrapper">
+                                    <div class="carousel-images__tg tg">
+                                        <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
+                                        <div class="tg__text">@telegram_krona</div>
+                                    </div>
+                                    <div class="carousel-images__img">
+                                        <div>
+                                            <img src="{{ c.background_image.url }}" alt="">
+                                        </div>
+                                        <div class="carousel-images__text">
+                                            <h3>{{ c.display_name }}</h3>
+                                            <div class="collapsed-h3">{{ c.collapsed_content }}</div>
+                                            <p>{{ c.content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    <div class="carousel-images__card" onmouseenter="cardHovered(event)">
+                        <div class="carousel-images__card-contentwrapper">
+                            <div class="carousel-images__tg tg">
+                                <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
+                                <div class="tg__text">@telegram_krona</div>
+                            </div>
+                            <div class="carousel-images__img">
+                                <div>
+                                    <img src="{{ c.background_image.url }}" alt="">
+                                </div>
+                                <div class="carousel-images__text">
+                                    <h3>{{ c.display_name }}</h3>
+                                    <div class="collapsed-h3">{{ c.collapsed_content }}</div>
+                                    <p><a class="button dark">{{ c.content }}</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% endfor %}
+<!--                <div class="carousel-images__card" onmouseenter="cardHovered(event)">-->
+<!--                    <div class="carousel-images__card-contentwrapper">-->
+<!--                        <div class="carousel-images__tg tg">-->
+<!--                            <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>-->
+<!--                            <div class="tg__text">@telegram_krona</div>-->
+<!--                        </div>-->
+<!--                        <div class="carousel-images__img">-->
+<!--                            <div>-->
+<!--                                <img src="{% static 'projects/img/p-2.jpg' %}" alt="">-->
+<!--                            </div>-->
+<!--                            <div class="carousel-images__text">      -->
+<!--                                <h3>Проект <br> «Хэллоуин»</h3>-->
+<!--                                <div class="collapsed-h3">Проект <br> «Хэллоуин»</div>-->
+<!--                                <p><a class="button dark">Узнать больше</a></p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
         </div>
-        {% endif %}
-        {% endfor %}
-        <div class="carousel-item">
-            <div class="car-donut">
-                <div class="text-3">
-                    <p>{% translate "Деньги держат нашу организацию на плаву" %}</p>
-                    <div class="button"><a href="donate.html">{% translate '"КНОПКА "ДОНАТ"' %}</a></div>
+    </div>
+
+    <div class="about-us-scrollwrapper">
+    <div class="about-us">
+
+        <div class="container">
+
+            <h2>О нас</h2>
+            <p class="about-us__subtitle">{% translate "Мы - автономная некоммерческая организация внедрения нетиповых решений в социальной сфере." %}</p>
+            <div class="about-us__cards">
+                {% for a in about_us %}
+                <div class="about-us__card-wrapper">
+                    <div class="about-us__card" data-index="{{ a.position }}">
+                        <h3>{{ a.name }}</h3>
+                        <p>{{ a.text }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+
+    {% if projects_for_main %}
+    <div class="projects">
+
+        <div class="container">
+            <h2>{% translate "Наши проекты" %}</h2>
+                    {% for p in projects_for_main %}
+            <div class="projects-wrapper">
+                <div class="projects__descriptions">
+                    <div class="projects__description">
+                        <h3>{{ p }}</h3>
+                        <p class="projects__description-text">{{ p.content_brief|safe }}</p>
+                        <a class="projects__go-to-project button dark" href="{{ p.get_absolute_url }}">{% translate "Узнать больше" %}</a>
+                    </div>
+                </div>
+<!--                <div class="projects__suggestion">-->
+<!--                    <div class="projects__suggestion-back">-->
+<!--                        <div class="projects__suggestion-back-img">-->
+<!--                            <img src="{% static 'projects/img/p-3.jpg' %}" alt="">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="projects__suggestion-front">-->
+<!--                        <div class="projects__suggestion-front-img">-->
+<!--                            <img src="{% static 'projects/img/p-3.jpg' %}" alt="">-->
+<!--                        </div>-->
+<!--                        <div class="card-gradient"></div>-->
+<!--                        <div class="projects__suggestion-text">-->
+<!--                            <div class="projects__suggestion-name">«Хэллоуин»</div>-->
+<!--                            <div class="projects__suggestion-go-to button dark">Хочу участвовать</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+                    {% endfor %}
+        </div>
+
+    </div>
+    {% endif %}
+
+    <div class="team">    
+
+        <div class="container">
+            <h2>{% translate "Наша команда" %}</h2>
+
+            <div class="team__teammates">
+                {% for t in teammates %}
+                <div class="team__teammate teammate">
+                    <div class="teammate__img"><img src="{{ t.avatar.url }}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    <div class="teammate__text">
+                        <div class="teammate__name">{{ t.name }}</div>
+                        <div class="teammate__description">{{ t.description }}</div>
+                    </div>
+                    <div class="teammate__tg tg">
+                        <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
+                        <div class="tg__text">{{ t.telegram }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <a class="projects__go-to-project button dark" href="{% url 'team' %}">{% translate "Посмотреть команду" %}</a>
+        </div>
+
+    </div>
+
+    <div class="support">
+        <div class="container">
+            <h2>{% translate "Поддержка" %}</h2>
+            <div class="support__text">
+                <p>{% translate "Наша организация не является коммерческой, поэтому вы можете материально поддержать нас, чтобы у нас была возможность продолжать организовывать мероприятия и помогать людям" %}</p>
+                <p>{% translate "Мы будем рады любой помощи" %}</p>
+                <div class="button light">{% translate "Поддержать" %}</div>
+            </div>
+            <div class="support__img">
+                <div class="support__img-front"><img src="{% static 'projects/img/photo_sup.jpg' %}" alt=""></div>
+                <div class="support__img-back"><img src="{% static 'projects/img/photo_sup.jpg' %}" alt=""></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contacts">
+        <div class="container">
+            <h2>{% translate "Контакты" %}</h2>
+            <p class="contacts__description">{% translate "Автономная некоммерческая организация внедрения экстраординарных решений в социальной сфере «Крона»" %}</p>
+            <div class="contacts__columns">
+                <div class="contacts__item contacts__location">
+                    <div class="contacts__location-icon contacts__icon"></div>
+                    <div class="contacts__location-text">{% translate "Свердловская область, г. Екатеринбург," %} <br>{% translate "ул. Резервная, д. 1" %}</div>
+                </div>
+                <div class="contacts__item contacts__phone">
+                    <div class="contacts__phone-icon contacts__icon"></div>
+                    <div class="contacts__phone-text">{% translate "Телефон: " %}<br>+7&nbsp;(343)&nbsp;382-45-99</div>
+                </div>
+                <div class="contacts__item contacts__mail">
+                    <div class="contacts__mail-icon contacts__icon"></div>
+                    <div class="contacts__mail-text">{% translate "Эл. почта:" %}<br>npokrona@gmail.com</div>
+                </div>
+                <div class="contacts__item contacts__tg">
+                    <div class="contacts__tg-icon contacts__icon"></div>
+                    <div class="contacts__tg-text">@telegram_krona</div>                    
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="projects block">
-    <h2 style="text-align:center">{% translate "Мы организуем проекты" %}</h2>
-    <div class="proj">
-        {% for p in projects %}
-        <div class="proj-name"><h4>{{ p.name }}</h4></div>
-        <div class="proj-text">{{ p.content_brief|safe }}</div>
-        <div style="text-align:center; margin: 30px auto; width: 300px" class="button"><a
-                href="{{ p.get_absolute_url }}"><strong>{% translate "Подробнее!" %}</strong></a></div>
-        <hr>
-        {% endfor %}
-    </div>
-</div>
-
-<div class="team block">
-    <h2 style="text-align:center">{% translate "Наша команда" %}</h2>
-
-    {% for t in teammates %}
-    <div class="teammate">
-        <div class="teammate-photo"><img src="{{ t.avatar.url }}"></div>
-        <div class="teammate-name"><h4>{{ t.name }}</h4></div>
-        <div class="teammate-text">{{ t.description }}</div>
-        <br>
-    </div>
-    {% endfor %}
-    <div style="text-align:center; margin: 30px"><a href="{% url 'team'%}">{% translate "И другие нераавнодушные люди" %}</a></div>
-</div>
-
 {% endblock content %}
