@@ -47,8 +47,16 @@
             <div class="nav-burger-button__icon"></div>
         </div>
         <div class="en-ru">
-            <div class="en-ru__var en-ru__en">EN</div>
+            <div class="en-ru__var en-ru__en" onclick="changeLanguage()">EN</div>
             <div class="en-ru__var en-ru__ru is-active">RU</div>
+                        <form action="{% url 'set_language' %}" method="post" id="form_{{ LANGUAGE_CODE|new_lang_code }}">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ redirect_to }}"/>
+                            <input name="language" type="hidden" value="{{ LANGUAGE_CODE|new_lang_code }}"/>
+                        </form>
+                        <button class="nav-button" type="submit" form="form_{{ LANGUAGE_CODE|new_lang_code }}"
+                                value="Submit">EN/RU
+                        </button>
         </div>
     </div>
 
@@ -71,14 +79,6 @@
                 <div class="en-ru__var en-ru__en">EN</div>
                 <div class="en-ru__var en-ru__ru is-active">RU</div>
             </div>
-            <!--            <form action="{% url 'set_language' %}" method="post" id="form_{{ LANGUAGE_CODE|new_lang_code }}">-->
-            <!--                {% csrf_token %}-->
-            <!--                <input name="next" type="hidden" value="{{ redirect_to }}"/>-->
-            <!--                <input name="language" type="hidden" value="{{ LANGUAGE_CODE|new_lang_code }}"/>-->
-            <!--            </form>-->
-            <!--            <button class="nav-button" type="submit" form="form_{{ LANGUAGE_CODE|new_lang_code }}"-->
-            <!--                    value="Submit">EN/RU-->
-            <!--            </button>-->
         </div>
     </div>
 </header>
@@ -110,6 +110,14 @@
 </footer>
 
 <script src="{% static 'projects/js/main.js' %}"></script>
+<script>async function changeLanguage(lang) {
+const formData  = new FormData();
+formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+formData.append('language', '{{ LANGUAGE_CODE|new_lang_code }}');
+await fetch('{% url 'set_language' %}', {body: formData, method: 'POST'});
+location.reload();
+}
+</script>
 
 </body>
 </html>

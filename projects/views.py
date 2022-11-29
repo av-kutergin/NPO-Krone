@@ -26,12 +26,19 @@ def main_page(request):
     carousel = Carousel.objects.all()
     teammates = TeamMate.objects.filter(show=True).filter(high_rank=True)
     about_us = AboutUs.objects.all()
+    project_w_photo = None
+    for proj in projects_for_main:
+        if proj.photo:
+            project_w_photo = proj
+            break
+
     context = {
         'title': title,
         'carousel': carousel,
         'projects_for_main': projects_for_main,
         'teammates': teammates,
         'about_us': about_us,
+        'project_w_photo': project_w_photo,
     }
     return render(request, 'projects/index.html', context)
 

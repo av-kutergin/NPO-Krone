@@ -110,8 +110,8 @@
 
         <div class="container">
             <h2>{% translate "Наши проекты" %}</h2>
-                    {% for p in projects_for_main %}
             <div class="projects-wrapper">
+                    {% for p in projects_for_main %}
                 <div class="projects__descriptions">
                     <div class="projects__description">
                         <h3>{{ p }}</h3>
@@ -119,25 +119,31 @@
                         <a class="projects__go-to-project button dark" href="{{ p.get_absolute_url }}">{% translate "Узнать больше" %}</a>
                     </div>
                 </div>
-<!--                <div class="projects__suggestion">-->
-<!--                    <div class="projects__suggestion-back">-->
-<!--                        <div class="projects__suggestion-back-img">-->
-<!--                            <img src="{% static 'projects/img/p-3.jpg' %}" alt="">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="projects__suggestion-front">-->
-<!--                        <div class="projects__suggestion-front-img">-->
-<!--                            <img src="{% static 'projects/img/p-3.jpg' %}" alt="">-->
-<!--                        </div>-->
-<!--                        <div class="card-gradient"></div>-->
-<!--                        <div class="projects__suggestion-text">-->
-<!--                            <div class="projects__suggestion-name">«Хэллоуин»</div>-->
-<!--                            <div class="projects__suggestion-go-to button dark">Хочу участвовать</div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-            </div>
                     {% endfor %}
+            {% if project_w_photo %}
+                <div class="projects__suggestion">
+                    <div class="projects__suggestion-back">
+                        <div class="projects__suggestion-back-img">
+                            <img src="{{ project_w_photo.photo.url }}" alt="">
+                        </div>
+                    </div>
+                    <div class="projects__suggestion-front">
+                        <div class="projects__suggestion-front-img">
+                            {% if project_w_photo.back_photo %}
+                            <img src="{{ project_w_photo.back_photo.url }}" alt="">
+                            {% else %}
+                            <img src="{{ project_w_photo.photo.url }}" alt="">
+                            {% endif %}
+                        </div>
+                        <div class="card-gradient"></div>
+                        <div class="projects__suggestion-text">
+                            <div class="projects__suggestion-name">{{ project_w_photo.name }}</div>
+                            <div class="projects__suggestion-go-to button dark"><a href="{{ project_w_photo.get_absolute_url }}">{% translate "Хочу участвовать" %}</a></div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
         </div>
 
     </div>
