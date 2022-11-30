@@ -47,16 +47,41 @@
             <div class="nav-burger-button__icon"></div>
         </div>
         <div class="en-ru">
-            <div class="en-ru__var en-ru__en" onclick="changeLanguage()">EN</div>
-            <div class="en-ru__var en-ru__ru is-active">RU</div>
-                        <form action="{% url 'set_language' %}" method="post" id="form_{{ LANGUAGE_CODE|new_lang_code }}">
-                            {% csrf_token %}
-                            <input name="next" type="hidden" value="{{ redirect_to }}"/>
-                            <input name="language" type="hidden" value="{{ LANGUAGE_CODE|new_lang_code }}"/>
-                        </form>
-                        <button class="nav-button" type="submit" form="form_{{ LANGUAGE_CODE|new_lang_code }}"
-                                value="Submit">EN/RU
-                        </button>
+            <form action="{% url 'set_language' %}" method="post" id="form_ru">
+                  {% csrf_token %}
+                <input name="next" type="hidden" value="/ru/" />
+            </form>
+            <form action="{% url 'set_language' %}" method="post" id="form_en">
+                  {% csrf_token %}
+                <input name="next" type="hidden" value="/en/" />
+            </form>
+
+            <button class="en-ru__var en-ru__ru {% if LANGUAGE_CODE == 'ru' %} is-active {% endif %}" type="submit" form="form_ru" value="Submit">RU
+            </button>
+            <button class="en-ru__var en-ru__en {% if LANGUAGE_CODE == 'en' %} is-active {% endif %}" type="submit" form="form_en" value="Submit">EN
+            </button>
+
+
+<!--        <select class="selectpicker" name="language" style="width: auto;" onchange="this.form.submit()">-->
+<!--          {% get_current_language as LANGUAGE_CODE %}-->
+<!--          {% get_available_languages as LANGUAGES %}-->
+<!--          {% get_language_info_list for LANGUAGES as languages %}-->
+<!--          {% for language in languages %}-->
+
+<!--              <option-->
+<!--                value="{{ language.code }}"-->
+<!--                {% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}-->
+<!--                data-content='<img src="/static/images/flags/{{ language.code }}.gif"></span>-->
+<!--                <span style="display:inline-block; width:100px; padding-left: 10px; text-shadow:none">-->
+<!--                  {{ language.name_local }}-->
+<!--                  &lt;!&ndash; span style="color:#999;">&nbsp;[{{ language.code }}]</span &ndash;&gt;-->
+<!--                </span>'>-->
+<!--                {{ language.code }}-->
+<!--              </option>-->
+
+<!--          {% endfor %}-->
+<!--        </select>-->
+
         </div>
     </div>
 
@@ -76,9 +101,10 @@
                 <div class="nav-burger-menu__close-icon" onclick="closeBurger()"></div>
             </div>
             <div class="nav-burger-menu__en-ru">
-                <div class="en-ru__var en-ru__en">EN</div>
-                <div class="en-ru__var en-ru__ru is-active">RU</div>
-            </div>
+            <button class="en-ru__var en-ru__ru {% if LANGUAGE_CODE == 'ru' %} is-active {% endif %}" type="submit" form="form_ru" value="Submit">RU
+            </button>
+            <button class="en-ru__var en-ru__en {% if LANGUAGE_CODE == 'en' %} is-active {% endif %}" type="submit" form="form_en" value="Submit">EN
+            </button>
         </div>
     </div>
 </header>
@@ -86,7 +112,6 @@
 {% endblock mainmenu %}
 {% block content %}
 {% endblock content%}
-
 <footer class="footer">
     <div class="container">
 
@@ -110,14 +135,6 @@
 </footer>
 
 <script src="{% static 'projects/js/main.js' %}"></script>
-<script>async function changeLanguage(lang) {
-const formData  = new FormData();
-formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-formData.append('language', '{{ LANGUAGE_CODE|new_lang_code }}');
-await fetch('{% url 'set_language' %}', {body: formData, method: 'POST'});
-location.reload();
-}
-</script>
 
 </body>
 </html>
