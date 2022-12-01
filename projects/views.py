@@ -14,7 +14,7 @@ from django.views.generic import ListView, DetailView
 from dotenv import load_dotenv
 
 from projects.forms import AddGuestForm
-from projects.models import Project, SimpleDocument, ReportDocument, Carousel, TeamMate, Guest, DonateButton, AboutUs
+from projects.models import Project, Document, Carousel, TeamMate, Guest, DonateButton, AboutUs
 from projects.utils import calculate_signature, parse_response, check_signature_result, generate_payment_link, check_success_payment
 
 load_dotenv()
@@ -100,7 +100,7 @@ class ShowProject(DetailView):
 
 
 class DocumentListView(ListView):
-    model = SimpleDocument
+    model = Document
     template_name = 'projects/documents.html'
 
     def get_context_data(self, *args, **kwargs):
@@ -109,23 +109,11 @@ class DocumentListView(ListView):
         return context
 
 
-class ReportListView(ListView):
-    model = ReportDocument
-    template_name = 'projects/reports.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ReportListView, self).get_context_data(*args, **kwargs)
-        context['title'] = _('Отчёты')
-        return context
-
-
 def download_file(request, file_type, pk):
     document = None
     guest = None
-    if file_type == 'report':
-        document = get_object_or_404(ReportDocument, pk=pk)
-    elif file_type == 'document':
-        document = get_object_or_404(SimpleDocument, pk=pk)
+    if file_type == 'document':
+        document = get_object_or_404(Document, pk=pk)
     elif file_type == 'qr_image':
         guest = get_object_or_404(Guest, pk=pk)
 
@@ -148,15 +136,6 @@ def download_file(request, file_type, pk):
             response = HttpResponse(file.read(), content_type=mime_type)
             response['Content-Disposition'] = f'attachment; filename={name}'
             return response
-
-
-def display_document(request, pk):
-    document = get_object_or_404(ReportDocument, pk=pk)
-    context = {
-        'document': document,
-        'title': f'{document.name}',
-    }
-    return render(request, 'projects/display_document.html', context)
 
 
 def how_to_view(request, project_slug, ticket_uid):

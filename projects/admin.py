@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from parler.admin import TranslatableAdmin, SortedRelatedFieldListFilter
 
 from Krone.settings import BASE_DIR
-from projects.models import Project, Guest, TeamMate, SimpleDocument, ReportDocument, Carousel, DonateButton, AboutUs
+from projects.models import Project, Guest, TeamMate, Document, Carousel, DonateButton, AboutUs
 
 admin.site.unregister(Group)
 admin.site.site_title = _('Админ-панель НКО "Крона"')
@@ -54,15 +54,8 @@ class TeamMateAdmin(TranslatableAdmin):
     list_filter = ('high_rank', 'show')
 
 
-@admin.register(SimpleDocument)
+@admin.register(Document)
 class SimpleDocumentAdmin(TranslatableAdmin):
-    list_display = ('id', 'name')
-    list_display_links = ('name',)
-    # list_filter = (('name', SortedRelatedFieldListFilter),)
-
-
-@admin.register(ReportDocument)
-class ReportDocumentAdmin(TranslatableAdmin):
     list_display = ('id', 'name')
     list_display_links = ('name',)
     # list_filter = (('name', SortedRelatedFieldListFilter),)

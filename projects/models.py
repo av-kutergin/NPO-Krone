@@ -3,6 +3,7 @@ import os
 import random
 from io import BytesIO
 
+import fitz
 import qrcode
 from ckeditor.fields import RichTextField
 from django.core.files import File
@@ -15,6 +16,7 @@ from parler.fields import TranslatedField
 from parler.models import TranslatedFields, TranslatableModel
 from phonenumber_field.modelfields import PhoneNumberField
 
+from Krone.settings import MEDIA_ROOT
 from projects.utils import get_uuid_id, COLORS, get_day_word, calculate_signature
 
 
@@ -156,51 +158,30 @@ class TeamMate(TranslatableModel):
         verbose_name_plural = 'Команда'
 
 
-class Document(models.Model):
-    name = TranslatedField()
-    file = models.FileField(verbose_name='Файл')
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        abstract = True
-
-    def clean(self):
-        if not self.name:
-            self.name_ru = self.file.url.split('/')[-1]
-
-    def get_absolute_url(self):
-        return reverse('display_document', kwargs={'pk': self.id})
-
-    def download(self):
-        pass
-
-
-class SimpleDocument(Document, TranslatableModel):
+class Document(TranslatableModel):
     translations = TranslatedFields(
-        name=models.CharField(max_length=100, blank=True, verbose_name='Название'),
+        name=models.CharField(max_length=100, blank=True, verbose_name='Название', unique=True),
     )
-
-    def download(self):
-        return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'document'})
+    file = models.FileField(verbose_name='Файл')
+    image = models.FileField(verbose_name='рендер', blank=True)  # editable=False,
 
     class Meta:
         verbose_name = 'Документ'
         verbose_name_plural = 'Документы'
 
-
-class ReportDocument(Document, TranslatableModel):
-    translations = TranslatedFields(
-        name=models.CharField(max_length=100, blank=True, verbose_name='Название'),
-    )
+    def __str__(self):
+        return self.name
 
     def download(self):
-        return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'report'})
+        return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'document'})
 
-    class Meta:
-        verbose_name = 'Отчёт'
-        verbose_name_plural = 'Отчёты'
+    def clean(self):
+        if not self.name:
+            self.name_ru = self.file.url.split('/')[-1]
+            return
+
+    # def get_absolute_url(self):
+    #     return reverse('display_document', kwargs={'pk': self.id})
 
 
 class Carousel(TranslatableModel):
@@ -268,4 +249,32 @@ def set_guest_qr(sender, instance, **kwargs):
         post_save.disconnect(set_guest_qr, sender=Guest)
         instance.save()
         post_save.connect(set_guest_qr, sender=Guest)
+
+
+@receiver(post_save, sender=Document)
+def set_doc_image(sender, instance, **kwargs):
+    if not instance.image:
+        filepath = instance.file.path
+        img_filepath = filepath + '.png'
+        doc = fitz.open(filepath)  # open document
+        name = filepath.split('/')[-1]
+        print('______________', name)
+        DPI = 300  # the desired image resolution
+        ZOOM = DPI / 72  # zoom factor, standard dpi is 72
+        magnify = fitz.Matrix(ZOOM, ZOOM)  # takes care of zooming
+        for page in doc:
+            pix = page.get_pixmap(matrix=magnify)  # make page image
+            pix.set_dpi(DPI, DPI)  # store dpi info in image
+            pix.pil_save(img_filepath)
+            instance.image = img_filepath
+            post_save.disconnect(set_doc_image, sender=Document)
+            instance.save()
+            post_save.connect(set_doc_image, sender=Document)
+            break
+
+        # for page in doc:
+        #     pix = page.get_pixmap(matrix=magnify)  # make page image
+        #     pix.set_dpi(DPI, DPI)  # store dpi info in image
+        #     pix.save("page-%04i.png" % (page.number + 1))
+        #     break
 
