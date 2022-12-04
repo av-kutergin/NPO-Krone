@@ -1,0 +1,73 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load language_selector %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'projects/css/team.css' %}">
+{% endblock extrastyle %}
+
+{% block content %}
+
+    <div class="team is-top">    
+
+        <div class="container">
+            <h2>{% translate "Основной состав" %}</h2>
+
+            <div class="team__teammates">
+                {% for ht in high_teammates %}
+                <div class="team__teammate teammate">
+                    {% if not ht.avatar %}
+                    <div class="teammate__img"><img src="{% static 'projects/img/default_avatar.jpg' %}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    {% else %}
+                    <div class="teammate__img"><img src="{{ ht.avatar.url }}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    {% endif %}
+                    <div class="teammate__text">
+                        <div class="teammate__name">{{ ht.name}}</div>
+                        <div class="teammate__description">{{ ht.description }}</div>
+                    </div>
+                    <div class="teammate__tg tg">
+                        <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
+                        <div class="tg__text">{{ ht.telegram }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>    
+        </div>
+
+    </div>
+
+    <div class="team">    
+
+        <div class="container">
+            <h2>{% translate "Те, без кого мы бы не справились" %}</h2>
+
+            <div class="team__teammates">
+                {% for ot in ordinary_teammates %}
+                <div class="team__teammate teammate">
+                    {% if not ot.avatar %}
+                    <div class="teammate__img"><img src="{% static 'projects/img/default_avatar.jpg' %}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    {% else %}
+                    <div class="teammate__img"><img src="{{ ot.avatar.url }}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    {% endif %}
+                    <div class="teammate__text">
+                        <div class="teammate__name">{{ ot.name}}</div>
+                        <div class="teammate__description">{{ ot.description }}</div>
+                    </div>
+                    <div class="teammate__tg tg">
+                        <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
+                        <div class="tg__text">{{ ot.telegram }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}
+<script src="js/common.js"></script>

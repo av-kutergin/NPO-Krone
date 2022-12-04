@@ -1,0 +1,66 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load language_selector %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'projects/css/docs.css' %}">
+{% endblock extrastyle %}
+
+{% block content %}
+    <div class="docs">
+        <div class="container">
+            <h2>{% translate "Документы" %}</h2>
+            <div class="docs-container">
+                {% for obj in object_list %}
+                    {% if obj.right_is_empty %}
+                        <div class="doc-wrapper">
+                            <div class="doc">
+                                <div class="doc__preview">
+                                    <img src="{{ obj.doc.image.url }}" alt="">
+                                </div>
+                                <div class="doc__over">
+                                    <div class="doc__over-title">{{ obj.doc.name }}</div>
+                                    <div class="doc__over-sownload-button button dark"><a href="{{ obj.doc.download }}">{% translate "Скачать" %}</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="doc-filler-img">
+                            <div class="doc-filler-img-wrapper">
+                                <img src="{% static 'projects/img/photo_main.jpg' %}" alt="">
+                            </div>
+                        </div>
+                    {% elif obj.left_is_empty %}
+                        <div class="doc-filler-img">
+                            <div class="doc-filler-img-wrapper">
+                                <img src="{% static 'projects/img/photo_main.jpg' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="doc-wrapper">
+                            <div class="doc">
+                                <div class="doc__preview">
+                                    <img src="{{ obj.doc.image.url }}" alt="">
+                                </div>
+                                <div class="doc__over">
+                                    <div class="doc__over-title">{{ obj.doc.name }}</div>
+                                    <div class="doc__over-sownload-button button dark"><a href="{{ obj.doc.download }}">Скачать</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="doc-wrapper">
+                            <div class="doc">
+                                <div class="doc__preview">
+                                    <img src="{{ obj.doc.image.url }}" alt="">
+                                </div>
+                                <div class="doc__over">
+                                    <div class="doc__over-title">{{ obj.doc.name }}</div>
+                                    <div class="doc__over-sownload-button button dark"><a href="{{ obj.doc.download }}">Скачать</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+{% endblock content %}
