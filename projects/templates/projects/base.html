@@ -15,12 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{% static 'projects/img/logo_mini.svg' %}" type="image/png"/>
     <link rel="stylesheet" href="{% static 'projects/css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'projects/css/main-top.css' %}">
-    <link rel="stylesheet" href="{% static 'projects/css/main-about-us.css' %}">
-    <link rel="stylesheet" href="{% static 'projects/css/main-projects.css' %}">
-    <link rel="stylesheet" href="{% static 'projects/css/main-team.css' %}">
-    <link rel="stylesheet" href="{% static 'projects/css/main-support.css' %}">
-    <link rel="stylesheet" href="{% static 'projects/css/main-contacts.css' %}">
+{% block extrastyle %}
+{% endblock extrastyle %}
     {% block title %}
     <title>{{ title }}</title>
     {% endblock title %}
@@ -83,6 +79,7 @@
             </button>
             <button class="en-ru__var en-ru__en {% if LANGUAGE_CODE == 'en' %} is-active {% endif %}" type="submit" form="form_en" value="Submit">EN
             </button>
+            </div>
         </div>
     </div>
 </header>
@@ -112,7 +109,6 @@
     </div>
 </footer>
 
-<script src="{% static 'projects/js/main.js' %}"></script>
 
 </body>
 </html>

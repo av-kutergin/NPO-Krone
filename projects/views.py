@@ -22,10 +22,10 @@ load_dotenv()
 
 def main_page(request):
     title = _('НКО Крона')
-    projects_for_main = Project.objects.filter(show_on_main=True)
-    carousel = Carousel.objects.all()
-    teammates = TeamMate.objects.filter(show=True).filter(high_rank=True)
-    about_us = AboutUs.objects.all()
+    projects_for_main = Project.objects.prefetch_related('translations').filter(show_on_main=True)
+    carousel = Carousel.objects.prefetch_related('translations').all()
+    teammates = TeamMate.objects.prefetch_related('translations').filter(show=True).filter(high_rank=True)
+    about_us = AboutUs.objects.prefetch_related('translations').all()
     project_w_photo = None
     for proj in projects_for_main:
         if proj.photo:
@@ -44,8 +44,9 @@ def main_page(request):
 
 
 def team(request):
-    high_teammates = TeamMate.objects.filter(show=True).filter(high_rank=True)
-    ordinary_teammates = TeamMate.objects.filter(show=True).filter(high_rank=False)
+    teammates = TeamMate.objects.prefetch_related('translations').filter(show=True)
+    high_teammates = teammates.filter(high_rank=True)
+    ordinary_teammates = teammates.filter(high_rank=False)
     context = {
         'high_teammates': high_teammates,
         'ordinary_teammates': ordinary_teammates,
@@ -101,7 +102,11 @@ class ShowProject(DetailView):
 
 class DocumentListView(ListView):
     model = Document
-    template_name = 'projects/documents.html'
+    template_name = 'projects/docs.html'
+
+    def get_queryset(self):
+        return [{"doc": x, "right_is_empty": i % 6 == 2, "left_is_empty": i % 6 == 3} for i, x in
+                enumerate(super().get_queryset())]
 
     def get_context_data(self, *args, **kwargs):
         context = super(DocumentListView, self).get_context_data(*args, **kwargs)

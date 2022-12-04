@@ -61,6 +61,7 @@
     height: 100%;
     border-radius: 30px;
     overflow: hidden;
+    min-height: 300px;
 }
 
 .projects__suggestion-front-img img {    
@@ -74,6 +75,7 @@
     top: 60px;
     width: 80%;
     transform: scaleX(-1);
+    min-height: 300px;
 }
 
 .projects__suggestion-back:before {

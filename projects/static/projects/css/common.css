@@ -15,6 +15,19 @@ h3 {
     font-size: 30px;
     font-weight: normal;
 }
+a {
+    color: #00003c;
+    text-decoration: none;
+}
+.header a:hover {
+     color: rgba(0, 0, 0, 0.2);
+}
+.header a {
+     color: #00003c;
+}
+.nav-burger-menu a{
+    color:white;
+}
 .button {
     background: #4F4B69;
     border-radius: 30px;
@@ -81,6 +94,8 @@ h3 {
     width: 60px;   
     line-height: 90px;
     cursor: pointer;
+    border: none;
+    height: 90px;
 }
 nav .is-active {
     color: #4F4B69;
@@ -132,6 +147,9 @@ nav .is-active {
 .button.light:hover {
     background: #d0cde2;
     transition: 0.1s ease-in;
+}
+.button a {
+    color: white;
 }
 .tg {
     display: inline-block;
@@ -290,6 +308,7 @@ nav .is-active {
         width: 40px;   
         line-height: 74px;
         font-size: 14px;
+        height: 74px;
     }
     .en-ru__var {
         position: relative;

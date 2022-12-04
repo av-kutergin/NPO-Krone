@@ -1,23 +1,23 @@
 import datetime
 import os
 import random
+import shutil
 from io import BytesIO
 
-import fitz
 import qrcode
 from ckeditor.fields import RichTextField
 from django.core.files import File
+from django.core.files.images import ImageFile
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from parler.fields import TranslatedField
 from parler.models import TranslatedFields, TranslatableModel
 from phonenumber_field.modelfields import PhoneNumberField
 
 from Krone.settings import MEDIA_ROOT
-from projects.utils import get_uuid_id, COLORS, get_day_word, calculate_signature
+from projects.utils import get_uuid_id, COLORS, calculate_signature, pdf2png
 
 
 class Project(TranslatableModel):
@@ -33,7 +33,6 @@ class Project(TranslatableModel):
     qr_reveal_date = models.DateField(verbose_name='Дата, когда откроется qr-код')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
     photo = models.ImageField(blank=True, verbose_name='Фото')
-    back_photo = models.ImageField(blank=True, verbose_name='ФотоПозади')
     show_on_main = models.BooleanField(default=False, verbose_name='Отображать на главной странице')
     # vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест', editable=False, blank=True)
 
@@ -195,6 +194,7 @@ class Carousel(TranslatableModel):
     img_scale = models.FloatField(verbose_name='Масштаб картинки', default=0.0)
     collapsed_content = models.CharField(max_length=100, verbose_name='Контент для свёрнутого представления', null=True)
     position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
+    project = models.ForeignKey('Project', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.display_name
@@ -255,26 +255,22 @@ def set_guest_qr(sender, instance, **kwargs):
 def set_doc_image(sender, instance, **kwargs):
     if not instance.image:
         filepath = instance.file.path
-        img_filepath = filepath + '.png'
-        doc = fitz.open(filepath)  # open document
         name = filepath.split('/')[-1]
-        print('______________', name)
-        DPI = 300  # the desired image resolution
-        ZOOM = DPI / 72  # zoom factor, standard dpi is 72
-        magnify = fitz.Matrix(ZOOM, ZOOM)  # takes care of zooming
-        for page in doc:
-            pix = page.get_pixmap(matrix=magnify)  # make page image
-            pix.set_dpi(DPI, DPI)  # store dpi info in image
-            pix.pil_save(img_filepath)
-            instance.image = img_filepath
-            post_save.disconnect(set_doc_image, sender=Document)
-            instance.save()
-            post_save.connect(set_doc_image, sender=Document)
-            break
+        print('__________________im in postsave')
+        image = pdf2png(instance)
+        image.pil_save(f'{MEDIA_ROOT}/tmp/{name}.png')
+        with open(f'{MEDIA_ROOT}/tmp/{name}.png', 'r') as image_file:
+            blob = BytesIO()
+            image_file.save(blob, 'PNG')
+            image_file = ImageFile(file=image_file)
+            instance.image.save(f'{name}.PNG', File(image_file), save=False)
+        # instance.image = image_file
+        try:
+            shutil.rmtree(f'{MEDIA_ROOT}/tmp/')
+        except OSError:
+            pass
+        print('__________________im in postsave instance photo is: ', instance.image)
 
-        # for page in doc:
-        #     pix = page.get_pixmap(matrix=magnify)  # make page image
-        #     pix.set_dpi(DPI, DPI)  # store dpi info in image
-        #     pix.save("page-%04i.png" % (page.number + 1))
-        #     break
-
+        post_save.disconnect(set_doc_image, sender=Document)
+        instance.save()
+        post_save.connect(set_doc_image, sender=Document)

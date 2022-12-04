@@ -35,7 +35,7 @@ class ProjectAdmin(TranslatableAdmin):
     list_display_links = ('name',)
     list_filter = ('date',)
     fields = ('name', 'content', 'content_brief', 'howto',
-              'total_places', 'date', 'qr_reveal_date', 'slug', 'photo', 'back_photo', 'show_on_main'
+              'total_places', 'date', 'qr_reveal_date', 'slug', 'photo', 'show_on_main'
               )
     actions = [make_carousel]
 
@@ -71,6 +71,7 @@ class CarouselAdmin(TranslatableAdmin):
     )
 
     change_list_template = str(BASE_DIR) + '/templates/admin/change_list_carousel.html'
+    change_form_template = str(BASE_DIR) + '/templates/admin/change_form_carousel.html'
 
 
 @admin.register(Guest)
