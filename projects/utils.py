@@ -38,10 +38,7 @@ def get_day_word(num):
 
 
 def pdf2png(obj):
-    print('__________________im in pdf2png, obj is: ', obj)
     filepath = obj.file.path
-    name = filepath.split('/')[-1]
-    img_filepath = f'{MEDIA_ROOT}/{name}.png'
     doc = fitz.open(filepath)  # open document's first page
     page = doc[0]
     dpi = 300  # the desired image resolution
@@ -49,26 +46,8 @@ def pdf2png(obj):
     magnify = fitz.Matrix(zoom, zoom)  # takes care of zooming
     image = page.get_pixmap(matrix=magnify)  # make page image
     image.set_dpi(dpi, dpi)  # store dpi info in image
-    # image.pil_save(img_filepath)
-    print('__________________im in pdf2png, returning: ', img_filepath)
-    return image
-
-# image_temp_file = NamedTemporaryFile(delete=True)
-#
-# in_memory_image = open('/path/to/file', 'rb')
-# # Write the in-memory file to the temporary file
-# # Read the streamed image in sections
-#
-# for block in in_memory_image.read(1024 * 8):
-#
-#     # If no more file then stop
-#     if not block:
-#         break  # Write image block to temporary file
-#     image_temp_file.write(block)
-#
-# file_name = 'temp.png'  # Choose a unique name for the file
-# image_temp_file.flush()
-# temp_file = files.File(image_temp_file, name=file_name)
+    stream = image.pil_tobytes(format="PNG", optimize=True)
+    return stream
 
 
 # PAYMENTS

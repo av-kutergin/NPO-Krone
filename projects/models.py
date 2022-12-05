@@ -7,6 +7,7 @@ from io import BytesIO
 import qrcode
 from ckeditor.fields import RichTextField
 from django.core.files import File
+from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
 from django.db import models
 from django.db.models.signals import post_save
@@ -256,20 +257,8 @@ def set_doc_image(sender, instance, **kwargs):
     if not instance.image:
         filepath = instance.file.path
         name = filepath.split('/')[-1]
-        print('__________________im in postsave')
-        image = pdf2png(instance)
-        image.pil_save(f'{MEDIA_ROOT}/tmp/{name}.png')
-        with open(f'{MEDIA_ROOT}/tmp/{name}.png', 'r') as image_file:
-            blob = BytesIO()
-            image_file.save(blob, 'PNG')
-            image_file = ImageFile(file=image_file)
-            instance.image.save(f'{name}.PNG', File(image_file), save=False)
-        # instance.image = image_file
-        try:
-            shutil.rmtree(f'{MEDIA_ROOT}/tmp/')
-        except OSError:
-            pass
-        print('__________________im in postsave instance photo is: ', instance.image)
+        stream = pdf2png(instance)
+        instance.image.save(f'{name}.png', ContentFile(stream), save=False)
 
         post_save.disconnect(set_doc_image, sender=Document)
         instance.save()
