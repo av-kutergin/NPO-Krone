@@ -23,23 +23,24 @@ from projects.utils import get_uuid_id, COLORS, calculate_signature, pdf2png
 
 class Project(TranslatableModel):
     translations = TranslatedFields(
-        name=models.CharField(max_length=100, verbose_name='Название'),
-        content_brief=RichTextField(blank=True, verbose_name='Контент кратко'),
-        content=RichTextField(blank=True, verbose_name='Контент'),
-        howto=models.TextField(max_length=200, verbose_name='Как добраться'),
+        name=models.CharField(max_length=100, verbose_name=_('Название')),
+        content=RichTextField(blank=True, verbose_name=_('Контент')),
+        content_brief=models.CharField(blank=True, verbose_name=_('Контент кратко')),
+        summary=models.CharField(blank=True, verbose_name=_('В двух словах')),
+        howto=models.TextField(max_length=200, verbose_name=_('Как добраться')),
     )
-    price = models.DecimalField(max_digits=5, decimal_places=0, verbose_name='Стоимость входа')
-    date = models.DateTimeField(verbose_name='Дата проведения')
-    total_places = models.PositiveIntegerField(verbose_name='Количество мест')
-    qr_reveal_date = models.DateField(verbose_name='Дата, когда откроется qr-код')
+    price = models.DecimalField(max_digits=5, decimal_places=0, verbose_name=_('Стоимость входа'))
+    date = models.DateTimeField(verbose_name=_('Дата проведения'))
+    total_places = models.PositiveIntegerField(verbose_name=_('Количество мест'))
+    qr_reveal_date = models.DateField(verbose_name=_('Дата, когда откроется qr-код'))
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
-    photo = models.ImageField(blank=True, verbose_name='Фото')
-    show_on_main = models.BooleanField(default=False, verbose_name='Отображать на главной странице')
+    photo = models.ImageField(blank=True, verbose_name=_('Фото'))
+    show_on_main = models.BooleanField(default=False, verbose_name=_('Отображать на главной странице'))
     # vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест', editable=False, blank=True)
 
     class Meta:
-        verbose_name = 'Проект'
-        verbose_name_plural = 'Проекты'
+        verbose_name = _('Проект')
+        verbose_name_plural = _('Проекты')
         ordering = ['-date']
 
     def __str__(self):
@@ -52,16 +53,15 @@ class Project(TranslatableModel):
     #     return self.date > datetime.date.today()
 
     def is_over(self):
-        return (self.date - datetime.datetime.now()).days < -1
+        result = (self.date - datetime.datetime.now()).days < -1
+        print(self.name, result)
+        return result
 
     def is_it_time_to_reveal_howto(self):
         return datetime.date.today() >= self.qr_reveal_date
 
     def days_to_event(self):
         return (self.date - datetime.datetime.now()).days
-        # days = (self.date - datetime.datetime.now()).days
-        # return _(f'До мероприятия осталось: {days} {get_day_word(days)}')
-        # YAGNI
 
     def has_vacant(self):
         return int(self.total_places) - len(self.guest_set.all().filter(paid=True))
@@ -76,19 +76,15 @@ class Project(TranslatableModel):
                 self.content_brief = self.content[:200]
 
     @staticmethod
-    def make_carousel(instance):
-        new_obj = Carousel.objects.create(display_name='', background_image=b'', content='')
-        instance.set_current_language('ru')
-        new_obj.set_current_language('ru')
-        new_obj.display_name = instance.name
-        new_obj.background_image = instance.photo
-        new_obj.content = instance.content
-        instance.set_current_language('en')
-        new_obj.set_current_language('en')
-        new_obj.display_name = instance.name
-        new_obj.background_image = instance.photo
-        new_obj.content = instance.content
-        new_obj.save()
+    def make_carousel(project):
+        new_cariousel = Carousel.objects.create(display_name='', background_image=b'', content='')
+        for lang in ['ru', 'en']:
+            project.set_current_language(lang)
+            new_cariousel.set_current_language(lang)
+            new_cariousel.display_name = project.name
+            new_cariousel.background_image = project.photo
+            new_cariousel.content = project.sumamry
+        new_cariousel.save()
 
 
     # IF NEEDED
@@ -163,7 +159,7 @@ class Document(TranslatableModel):
         name=models.CharField(max_length=100, blank=True, verbose_name='Название', unique=True),
     )
     file = models.FileField(verbose_name='Файл')
-    image = models.FileField(verbose_name='рендер', blank=True)  # editable=False,
+    image = models.FileField(verbose_name='рендер', blank=True, editable=False)
 
     class Meta:
         verbose_name = 'Документ'
@@ -254,6 +250,7 @@ def set_guest_qr(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Document)
 def set_doc_image(sender, instance, **kwargs):
+    instance.clean()
     if not instance.image:
         filepath = instance.file.path
         name = filepath.split('/')[-1]

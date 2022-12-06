@@ -59,7 +59,7 @@ def projects(request):
     all_projects = Project.objects.all()
     context = {
         'title': _('Проекты'),
-        'projects': all_projects,
+        'all_projects': all_projects,
     }
     return render(request, 'projects/projects.html', context)
 
@@ -105,8 +105,7 @@ class DocumentListView(ListView):
     template_name = 'projects/docs.html'
 
     def get_queryset(self):
-        return [{"doc": x, "right_is_empty": i % 6 == 2, "left_is_empty": i % 6 == 3} for i, x in
-                enumerate(super().get_queryset())]
+        return [{"doc": x, "right_is_empty": i % 6 == 2, "left_is_empty": i % 6 == 3} for i, x in enumerate(super().get_queryset())]
 
     def get_context_data(self, *args, **kwargs):
         context = super(DocumentListView, self).get_context_data(*args, **kwargs)

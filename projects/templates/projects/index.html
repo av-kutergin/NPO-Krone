@@ -122,7 +122,7 @@
                     {% for p in projects_for_main %}
                 <div class="projects__descriptions">
                     <div class="projects__description">
-                        <h3>{{ p }}</h3>
+                        <h3>{% blocktranslate with name=p.name %} Проект "{{ name }}" {% endblocktranslate %}</h3>
                         <p class="projects__description-text">{{ p.content_brief|safe }}</p>
                         <a class="projects__go-to-project button dark" href="{{ p.get_absolute_url }}">{% translate "Узнать больше" %}</a>
                     </div>

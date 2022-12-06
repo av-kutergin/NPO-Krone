@@ -5,9 +5,10 @@ from datetime import date, datetime, timedelta
 from django.core.files.temp import NamedTemporaryFile
 from django.contrib.auth.models import User
 from django.db.models.fields import files
+from django.db.models.signals import post_save
 from django.test import TestCase, override_settings
 
-from projects.models import Project, Guest, TeamMate, SimpleDocument, DonateButton, Carousel
+from projects.models import Project, Guest, TeamMate, DonateButton, Carousel, Document, set_doc_image
 from projects.utils import get_uuid_id, calculate_signature
 
 TEST_DIR = 'test_data'
@@ -145,9 +146,11 @@ class ModelTests(TestCase):
     def test_document_clean_str(self):
         with NamedTemporaryFile() as temp:
             file = files.File(temp, name='my_file.pdf')
-            self.simple_doc_1 = SimpleDocument.objects.create(file=file)
+            post_save.disconnect(set_doc_image, sender=Document)
+            self.simple_doc_1 = Document.objects.create(file=file)
             self.simple_doc_1.clean()
             self.assertEqual(str(self.simple_doc_1), 'my_file.pdf')
+            post_save.connect(set_doc_image, sender=Document)
 
     # Test Donation
     def test_get_donation(self):

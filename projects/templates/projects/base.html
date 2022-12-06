@@ -91,7 +91,7 @@
     <div class="container">
 
         <div class="icon">
-            <img src="{% static 'projects/img/logo.svg' %}" alt="ох епта как так">
+            <img src="{% static 'projects/img/logo.svg' %}" alt="">
         </div>
         <div class="nav">
             <ul>
@@ -108,6 +108,11 @@
         </div>
     </div>
 </footer>
+
+{% block javascript %}
+    <script type="text/javascript" src="{{ static 'projects/js/main.js" ></script>
+    <script type="text/javascript" src="{{ static 'projects/js/common.js" ></script>
+{% endblock javascript %}
 
 
 </body>

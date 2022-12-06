@@ -5,14 +5,15 @@ from datetime import datetime, timedelta, date
 from django.contrib.auth.models import User
 from django.core.files.temp import NamedTemporaryFile
 from django.db.models.fields import files
+from django.db.models.signals import post_save
 from django.test import RequestFactory, Client
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from projects.models import Project, Guest, SimpleDocument, ReportDocument
+from projects.models import Project, Guest, Document, set_doc_image
 from projects.utils import get_uuid_id
 from projects.views import main_page, team, projects, contacts, donate, sitemap, login_page, ShowProject, \
-    DocumentListView, ReportListView, download_file, display_document, how_to_view, add_guest, guest_list
+    DocumentListView, download_file, how_to_view, add_guest, guest_list
 
 TEST_DIR = 'test_data'
 
@@ -55,17 +56,14 @@ class ViewsTests(TestCase):
         )
         cls.guest_1.save()
 
-        cls.simple_document_1 = SimpleDocument.objects.create(
+        cls.simple_document_1 = Document.objects.create(
             id=1,
             file=files.File(NamedTemporaryFile(), name='my_simple_document_1.pdf')
         )
+        post_save.disconnect(set_doc_image, sender=Document)
         cls.simple_document_1.save()
+        post_save.connect(set_doc_image, sender=Document)
 
-        cls.report_document_1 = ReportDocument.objects.create(
-            id=1,
-            file=files.File(NamedTemporaryFile(), name='my_report_document_1.pdf')
-        )
-        cls.report_document_1.save()
         cls.client = Client()
 
     def test_main_page(self):
