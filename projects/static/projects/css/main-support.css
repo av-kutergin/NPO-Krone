@@ -1,5 +1,5 @@
 .support {
-    height: 590px;
+    min-height: 590px;
     padding: 80px 0 0 0;
     background: #4F4B69;
     color: white;
@@ -9,9 +9,18 @@
     margin: 60px 0;
 }
 
-.support p {
+.support__text {
     width: 45%;
     font-size: 18px;
+}
+
+.support__text .button {
+    display: inline-block;
+    margin-right: 20px; 
+}
+
+.support__text .button:last-child {
+    margin-bottom: 20px; 
 }
 
 .support .button {
@@ -23,6 +32,7 @@
     right: 0;
     top: 0; 
     width: 45%;
+    margin-bottom: 60px;
 }
 
 .support__img-front {
@@ -69,7 +79,7 @@
 
 @media (max-width: 1500px) {
     .support {
-        height: 390px;
+        min-height: 450px;
         padding: 40px 0 0 0;
     }
 
@@ -77,8 +87,7 @@
         margin: 50px 0;
     }
 
-    .support p {
-        width: 45%;
+    .support__text {
         font-size: 16px;
     }
 
@@ -110,7 +119,7 @@
         margin: 50px 0;
     }
 
-    .support p {
+    .support__text {
         width: 90%;
         font-size: 16px;
     }

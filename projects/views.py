@@ -64,6 +64,51 @@ def projects(request):
     return render(request, 'projects/projects.html', context)
 
 
+class ShowProject(DetailView):
+    model = Project
+    template_name = 'projects/project.html'
+    slug_url_kwarg = 'project_slug'
+    context_object_name = 'project'
+
+
+def add_guest(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
+    context = {
+        'event': project,
+        'title': _('Регистрация на мероприятие')
+    }
+    if request.method == 'POST':
+        form = AddGuestForm(request.POST)
+        if form.is_valid():
+            new_guest = form.save(commit=False)
+            new_guest.project = project
+            new_guest.save()
+            context['guest'] = new_guest
+            payment_link = generate_payment_link(
+                cost=project.price,
+                description=str(new_guest.ticket_uid),
+            )
+            return redirect(payment_link)
+    else:
+        form = AddGuestForm()
+    context['form'] = form
+    return render(request, 'projects/participate.html', context)
+
+
+class DocumentListView(ListView):
+    model = Document
+    template_name = 'projects/docs.html'
+
+    def get_queryset(self):
+        return [{"doc": x, "right_is_empty": i % 6 == 2, "left_is_empty": i % 6 == 3} for i, x in enumerate(super().get_queryset())]
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(DocumentListView, self).get_context_data(*args, **kwargs)
+        context['title'] = _('Документы')
+        return context
+
+
+####___________________________________####
 def contacts(request):
     return render(request, 'projects/contacts.html', {'title': _('Контакты')})
 
@@ -91,26 +136,6 @@ def login_page(request):
     else:
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
-
-
-class ShowProject(DetailView):
-    model = Project
-    template_name = 'projects/project_page.html'
-    slug_url_kwarg = 'project_slug'
-    context_object_name = 'project'
-
-
-class DocumentListView(ListView):
-    model = Document
-    template_name = 'projects/docs.html'
-
-    def get_queryset(self):
-        return [{"doc": x, "right_is_empty": i % 6 == 2, "left_is_empty": i % 6 == 3} for i, x in enumerate(super().get_queryset())]
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(DocumentListView, self).get_context_data(*args, **kwargs)
-        context['title'] = _('Документы')
-        return context
 
 
 def download_file(request, file_type, pk):
@@ -151,30 +176,6 @@ def how_to_view(request, project_slug, ticket_uid):
         'title': _('Как нас найти'),
     }
     return render(request, 'projects/how_to_page.html', context)
-
-
-def add_guest(request, project_slug):
-    project = Project.objects.get(slug=project_slug)
-    context = {
-        'event': project,
-        'title': _('Регистрация на мероприятие')
-    }
-    if request.method == 'POST':
-        form = AddGuestForm(request.POST)
-        if form.is_valid():
-            new_guest = form.save(commit=False)
-            new_guest.project = project
-            new_guest.save()
-            context['guest'] = new_guest
-            payment_link = generate_payment_link(
-                cost=project.price,
-                description=str(new_guest.ticket_uid),
-            )
-            return redirect(payment_link)
-    else:
-        form = AddGuestForm()
-    context['form'] = form
-    return render(request, 'projects/guest-registration.html', context)
 
 
 @login_required()

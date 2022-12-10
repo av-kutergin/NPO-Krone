@@ -34,7 +34,7 @@ class ProjectAdmin(TranslatableAdmin):
     list_display = ('id', 'name', 'date', 'total_places',)
     list_display_links = ('name',)
     list_filter = ('date',)
-    fields = ('name', 'content', 'content_brief', 'howto',
+    fields = ('name', 'content', 'content_brief', 'summary', 'howto',
               'total_places', 'date', 'price', 'qr_reveal_date', 'slug', 'photo', 'show_on_main'
               )
     actions = [make_carousel]

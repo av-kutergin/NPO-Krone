@@ -25,8 +25,8 @@ class Project(TranslatableModel):
     translations = TranslatedFields(
         name=models.CharField(max_length=100, verbose_name=_('Название')),
         content=RichTextField(blank=True, verbose_name=_('Контент')),
-        content_brief=models.CharField(blank=True, verbose_name=_('Контент кратко')),
-        summary=models.CharField(blank=True, verbose_name=_('В двух словах')),
+        content_brief=models.TextField(max_length=200, blank=True, verbose_name=_('Контент кратко')),
+        summary=models.CharField(max_length=50, blank=True, verbose_name=_('В двух словах')),
         howto=models.TextField(max_length=200, verbose_name=_('Как добраться')),
     )
     price = models.DecimalField(max_digits=5, decimal_places=0, verbose_name=_('Стоимость входа'))
