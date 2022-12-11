@@ -1,0 +1,182 @@
+.team {
+    position: relative;
+    margin-bottom: 60px;
+}
+
+.team.is-top {
+    background: #4F4B69;
+    padding-bottom: 60px;
+}
+
+.team.is-top h2 {
+    font-size: 30px;
+    padding: 60px 0 50px 0;
+    color: #fff;
+}
+
+.team h2 {
+    font-size: 30px;
+    padding: 60px 0 50px 0;
+    color: #000;
+}
+
+.team__teammates {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.teammate {
+    position: relative;
+    width: 31%;
+    flex: 31% 0 0;
+    margin: 0 2.3% 50px 0;
+    border-radius: 30px;
+}
+
+.teammate:before {
+    content: '';
+    position: absolute;
+    width: 98%;
+    height: 98%;
+    left: 15px;
+    top: -10px;
+    border: 2px solid #7B8AA8;
+    border-radius: 30px;
+    z-index: 0;
+}
+
+.teammate .card-gradient {
+    z-index: 2;
+}
+
+.team.is-top .teammate:before {
+    border: 2px solid #7B8AA8;
+}
+
+.teammate__img {
+    position: relative;
+    z-index: 1;
+}
+
+.teammate__img img {
+    width: 100%;
+    border-radius: 30px;
+}
+
+.teammate__text {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    width: 100%;
+    color: white;
+    z-index: 3;
+}
+
+.teammate__name {
+    width: 80%;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 30px;
+    margin-bottom: 5px;
+    z-index: 3;
+}
+
+.teammate__description {
+    font-size: 18px;
+    width: 60%;
+}
+
+.teammate__tg {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    overflow: hidden;    
+    z-index: 5;
+}
+
+@media (max-width: 1500px) {
+    .team {
+        margin-bottom: 100px;
+    }
+
+    .team h2 {
+        margin: 30px 0;
+    }
+
+    .teammate__text {
+        bottom: 20px;
+        left: 20px;
+    }
+
+    .teammate__name {
+        font-size: 24px;
+    }
+
+    .teammate__description {
+        font-size: 16px;
+        width: 80%;
+    }
+
+    .teammate:before {
+        left: 10px;
+        top: -10px;
+    }
+}
+
+@media (max-width: 900px) {
+    .team.is-top h2 {
+        font-size: 24px;
+        padding: 40px 0 30px 0;
+    }
+
+    .team h2 {
+        font-size: 24px;
+        padding: 60px 0 30px 0;
+    }
+
+    .teammate {
+        width: 45%;
+        flex: 45% 0 0;
+        margin: 0 5% 30px 0;
+    }
+
+    .teammate__text {
+        position: absolute;
+        bottom: 40px;
+        left: 40px;
+        width: 100%;
+        color: white;
+    }
+
+    .teammate__name {
+        font-size: 16px;
+    }
+
+    .teammate__description {
+        position: relative; 
+        font-size: 12px;
+        width: 80%;
+    }
+
+    .teammate__tg {
+        transform: scale(0.8);
+        transform-origin: right top;
+    }
+}
+
+@media (max-width: 600px) {
+    .teammate {
+        width: 100%;
+        flex: 100% 0 0;
+        margin: 0 0 30px 0;
+    }
+
+    .teammate__name {
+        font-size: 24px;
+    }
+
+    .teammate__description {
+        font-size: 16px;
+        width: 80%;
+    }
+}

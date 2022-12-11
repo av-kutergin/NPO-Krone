@@ -1,0 +1,37 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load language_selector %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'projects/css/main-support.css' %}">
+{% endblock extrastyle %}
+
+{% block content %}
+
+    <div class="support">
+        <div class="container">
+            <h2>{% translate "Поддержка" %}</h2>
+            <div class="support__text">
+                <p>{% translate "Наша организация не является коммерческой, поэтому вы можете материально поддержать нас, чтобы у нас была возможность продолжать организовывать мероприятия и помогать людям" %}</p>
+                <p>{% translate "Мы будем рады любой помощи" %}</p>
+                {% for d in donations %}
+                    {% if d.show %}
+                        <script type="text/javascript" src="https://auth.robokassa.ru/Merchant/bundle/robokassa_iframe.js"></script>
+                        <input  type="submit" class="button light" value='{{ d.amount }} ₽' onclick="Robokassa.StartPayment({
+                             MerchantLogin: '{{ merchant_login }}',
+                             OutSum: '{{ d.amount }}',
+                             Description: 'donation',
+                             SignatureValue: '{{ d.get_hash }}'})">
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="support__img">
+                <div class="support__img-front"><img src="{% static 'projects/img/photo_sup.jpg' %}" alt=""></div>
+                <div class="support__img-back"><img src="{% static 'projects/img/photo_sup.jpg' %}" alt=""></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

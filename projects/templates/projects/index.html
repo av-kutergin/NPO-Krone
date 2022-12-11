@@ -41,7 +41,11 @@
                                         <div class="carousel-images__text">
                                             <h3>{{ c.display_name }}</h3>
                                             <div class="collapsed-h3">{{ c.collapsed_content }}</div>
-                                            <p>{{ c.content|safe }}</p>
+
+                                            {% if c.project %}
+                                            <p>{{ c.project.get_absolute_url }}</p>
+                                            {% endif %}
+
                                         </div>
                                     </div>
                                 </div>

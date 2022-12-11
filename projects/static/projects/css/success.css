@@ -1,0 +1,100 @@
+.success .container {
+    position: relative;
+    margin: auto;
+    left: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.success h3 {
+    font-size: 30px;
+}
+
+.success__thanks {
+    font-size: 18px;
+    margin-bottom: 60px;
+}
+
+.success__heart {
+    position: relative;
+    margin-bottom: 60px;
+    transition: 0.1s ease-out;
+}
+
+.success__heart {
+    position: relative;
+    margin-bottom: 60px;
+}
+
+.success__heart.bumped {
+    transform: scale(1.1);
+}
+
+.success__thanks {
+    font-size: 18px;
+}
+
+.heart {
+    transition: 0.1s ease-out;
+}
+
+.heart.splashed {
+    transform: scale(1.2);
+    filter: blur(1px) brightness(1.5);
+}
+
+.h {
+    position: absolute;
+    transform-origin: center;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    z-index: -1;
+}
+
+.h:nth-child(8n+1) {
+    filter: invert(40%) sepia(99%) saturate(1025%) hue-rotate(324deg) brightness(97%) contrast(92%);
+}
+
+.h:nth-child(8n+2) {
+    filter: invert(85%) sepia(32%) saturate(2266%) hue-rotate(316deg) brightness(101%) contrast(91%);
+}
+
+.h:nth-child(8n+3) {
+    filter: invert(82%) sepia(35%) saturate(766%) hue-rotate(349deg) brightness(102%) contrast(103%);
+}
+
+.h:nth-child(8n+4) {
+    filter: invert(63%) sepia(67%) saturate(350%) hue-rotate(96deg) brightness(88%) contrast(88%);
+}
+
+.h:nth-child(8n+5) {
+    filter: invert(63%) sepia(67%) saturate(350%) hue-rotate(96deg) brightness(88%) contrast(88%);
+}
+
+.h:nth-child(8n+6) {
+    filter: invert(65%) sepia(72%) saturate(710%) hue-rotate(165deg) brightness(98%) contrast(92%);
+}
+
+.h:nth-child(8n+7) {
+    filter: invert(49%) sepia(11%) saturate(1968%) hue-rotate(174deg) brightness(90%) contrast(95%);
+}
+
+.h:nth-child(8n+8) {
+    filter: invert(54%) sepia(21%) saturate(456%) hue-rotate(182deg) brightness(96%) contrast(86%);
+}
+
+@media (max-width: 1500px) {
+}
+
+@media (max-width: 1100px) {
+}
+
+@media (max-width: 900px) {
+}
+
+@media (max-width: 600px) {
+}

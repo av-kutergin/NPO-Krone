@@ -1,0 +1,185 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load language_selector %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'projects/css/success.css' %}">
+{% endblock extrastyle %}
+
+{% block content %}
+
+{% if guest %}
+    <div class="success">    
+        <div class="container">
+            <h2>{% translate "Оплата прошла успешно" %}</h2>
+            <div class="success__thanks">{% translate "Оплата прошла успешно" %}</div>
+            <div class="success__heart">
+                {% for n in range(49) %}
+                    <img src="{% static 'projects/img/heart.svg %}" alt="" class="heart" onmouseenter="pet=true" onmouseleave="pet=false" onclick="splash()">
+                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-{{ n }}">
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-1">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-2">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-3">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-4">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-5">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-6">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-7">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-8">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-9">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-10">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-11">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-12">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-13">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-14">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-15">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-16">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-17">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-18">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-19">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-20">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-21">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-22">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-23">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-24">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-25">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-26">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-27">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-28">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-29">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-30">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-31">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-32">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-33">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-34">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-35">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-36">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-37">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-38">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-39">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-40">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-41">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-42">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-43">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-44">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-45">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-46">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-47">-->
+<!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-48">-->
+                {% endfor %}
+            </div>
+            <div class="success__back"><a href="{{ main_page }}">{% translate "Вернуться на главную" %}</a></div>
+        </div>
+    </div>
+{% else %}
+<div style="font-size:20px; text-align: center;">
+    <p>{% translate "Спасибо за Ваше щедрое пожертвование!" %}</p>
+</div>
+{% endif %}
+
+{% block javascript %}
+{% block.super() %}
+    <script> 
+        let index = 0
+        let maxIndex = 48
+        let animations = {}
+        let pet = false
+
+        window.addEventListener('load', () => {
+            setInterval(() => {
+                if (!pet) {
+                    bump()
+                }
+            }, 3000)
+            setInterval(() => {
+                if (pet) {
+                    bump()
+                }
+            }, 1500)
+            setInterval(() => {
+                if (pet) {
+                    radiate()
+                }
+            }, 300)
+        })
+
+        async function bump() {
+            shine()
+            document.querySelector('.success__heart').classList.add('bumped');
+            await sleep(200)
+            document.querySelector('.success__heart').classList.remove('bumped');
+            await sleep(500)
+            shine()
+            document.querySelector('.success__heart').classList.add('bumped');
+            await sleep(200)
+            document.querySelector('.success__heart').classList.remove('bumped');
+            await sleep(200)
+        }
+
+        async function shine() {
+            createAnimation(index, [0.2, 0], [0.6, 3], [0, 0], [0, 0], [0, random(-10, 10)], 2)
+            index = (index + 1) % (maxIndex + 1)
+        }
+
+        async function radiate() {
+            createAnimation(index, [0.8, 0], [0.6, 2], [0, 0], [0, 0], [0, 0], 2)
+            index = (index + 1) % (maxIndex + 1)
+        }
+
+        async function splash() {
+            document.querySelector('.heart').classList.add('splashed');
+            await sleep(200)
+            document.querySelector('.heart').classList.remove('splashed');
+
+            for (let i=0; i<3; i++) {
+                createAnimation(index, [random(0.5, 1), 0], [random(0.2, 0.6), random(0.6, 4)], [random(-60, 60), random(-60, 60)], [random(-60, 60), random(-60, 60)], [random(-30, 30), random(-30, 30)], random(0.5, 2))
+                index = (index + 1) % (maxIndex + 1)
+            }
+
+            await sleep(200)
+
+            for (let i=0; i<5; i++) {
+                createAnimation(index, [random(0.5, 1), 0], [random(0.2, 0.6), random(0.6, 4)], [random(-60, 60), random(-60, 60)], [random(-60, 60), random(-60, 60)], [random(-30, 30), random(-30, 30)], random(1, 2))
+                await sleep(100)
+                index = (index + 1) % (maxIndex + 1)
+            }
+        }
+
+        async function createAnimation(index, opacity, scale, xPos, yPos, rotation, time) {
+            if (animations[index]) {
+                return;
+            }
+            animations[index] = document.querySelector(`.h-${index}`);
+            let a = animations[index];
+            a.style.transition = 'none'
+            a.style.opacity = opacity[0]
+            a.style.transform = `translate(${-50 + xPos[0]}%, ${-50 + yPos[0]}%) scale(${scale[0]}) rotate(${rotation[0]}deg)`
+            flushCss(a);
+            a.style.transition = `${time}s all ease-out`
+            a.style.opacity = opacity[1]
+            a.style.transform = `translate(${-50 + xPos[0]}%, ${-50 + yPos[0]}%) scale(${scale[1]}) rotate(${rotation[1]}deg)`
+            setTimeout(() => freeAnimation(index), time)
+        }
+
+        function freeAnimation(index) {
+            animations[index] = null
+        }
+
+        async function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms))
+        }
+
+        function flushCss(element) {
+            // By reading the offsetHeight property, we are forcing
+            // the browser to flush the pending CSS changes (which it
+            // does to ensure the value obtained is accurate).
+            element.offsetHeight;
+        }
+
+        function random(from, to) {
+            return from + Math.random() * (to - from);
+        }
+    </script>
+{% endblock javascript %}
+{% endblock content %}

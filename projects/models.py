@@ -84,6 +84,7 @@ class Project(TranslatableModel):
             new_cariousel.display_name = project.name
             new_cariousel.background_image = project.photo
             new_cariousel.content = project.sumamry
+            new_cariousel.project = project
         new_cariousel.save()
 
 

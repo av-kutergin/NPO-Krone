@@ -1,0 +1,64 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load language_selector %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'projects/css/projects.css' %}">
+{% endblock extrastyle %}
+
+{% block content %}
+
+    <div class="projects">    
+        <div class="container">
+
+            <h2>{% translate "Наши проекты" %}</h2>
+            {% for p in all_projects %}
+            <div class="project">
+                <div class="project__content-column">
+                    <div class="project__title">
+                        <h3>{% blocktranslate with name=p.name %} Проект {{name}} {% endblocktranslate %}</h3>
+                        <div class="project__date {% if p.is_over or not p.has_vacant %} is-old {%endif%}">
+                            <div class="project__date-text">{{ p.date.date }}</div>
+                        </div>
+                    </div>
+                    {% if p.is_over %}
+                        <div class="project__state">{% translate "Мероприятие уже прошло" %}</div>
+                    {% elif p.has_vacant %}
+                        <div class="project__state">{% translate "Еще есть свободные места" %}</div>
+                    {% else %}
+                    <div class="project__state">{% translate "Мероприятие скоро начнётся" %}</div>
+                    {% endif %}
+                    <div class="project__short-content">{{ p.content_brie|safe }}</div>
+                    <div class="button dark"><a href="{{ p.get_absolute_url }}">{% translate "Узнать больше" %}</a></div>
+                </div>
+                {% if p.photo %}
+                <div class="project__photo-column">
+                    <div class="project__photo">
+                        <div class="project__photo-back">
+                            <div class="project__photo-back-img">
+                                <img src="{{ p.photo.url }}" alt="">
+                            </div>
+                        </div>
+                        <div class="project__photo-front">
+                            <div class="project__photo-front-img">
+                                <img src="{ p.photo.url }}" alt="">
+                            </div>
+                            <div class="card-gradient"></div>
+                            <div class="project__photo-text">
+                                <div class="project__photo-name">{{ p.name }}</div>
+                                {% if not p.is_over %}
+                                <div class="project__photo-go-to button dark"><a href="{{ p.get_absolute_url }}">{% translate "Хочу участвовать" %}</a></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+

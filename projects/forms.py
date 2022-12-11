@@ -22,10 +22,10 @@ class AddGuestForm(forms.ModelForm):
             'telegram': forms.TextInput(attrs={'class': 'form-item__input'}),
         }
         labels = {
-            'firstname': _('Имя'),
-            'lastname': _('Фамилия'),
-            'phone': _('Телефон'),
+            'firstname': _('Имя*'),
+            'lastname': _('Фамилия*'),
+            'phone': _('Телефон*'),
             'telegram': _('Телеграм'),
             'email': _('Электронная почта'),
-            'birthdate': _('Дата рождения'),
+            'birthdate': _('Дата рождения*'),
         }

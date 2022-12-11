@@ -108,9 +108,34 @@ class DocumentListView(ListView):
         return context
 
 
-####___________________________________####
-def contacts(request):
-    return render(request, 'projects/contacts.html', {'title': _('Контакты')})
+def payment_success(request):
+    if check_success_payment(request):
+        param_request = parse_response(request)
+        description = param_request['description']
+        if description != 'donation':
+            guest = Guest.objects.get(ticket_uid=description)
+            # project = guest.project
+            # image_data = bytes(guest.qr.read())
+            # message_text = _(f'''К сообщению прикреплён Ваш QR для входа на мероприятие: {project.name}
+            # За сутки до мероприятия на странице, на которую ведёт Ваш QR, появится подробная интрукция о том, как нас найти.
+            # ''')
+            # message = EmailMessage(
+            #     _(f'Ваш QR для входа на мероприятие: {project.name}'),
+            #     message_text,
+            #     os.environ['EMAIL_HOST_USER'],
+            #     [guest.email]
+            # )
+            # message.attach(guest.qr.name, image_data, 'image/png')
+            # message.send()
+
+            context = {
+                'title': _('Успешная оплата'),
+                'guest': guest,
+                }
+            # return render(request, 'projects/success.html', context)
+        else:
+            context = {'title': _('Успешная оплата'), }
+        return render(request, 'projects/success.html', context)
 
 
 def donate(request):
@@ -119,7 +144,12 @@ def donate(request):
         'donations': donation_options,
         'title': _('Донат'),
     }
-    return render(request, 'projects/donate.html', context)
+    return render(request, 'projects/support.html', context)
+
+
+####___________________________________####
+def contacts(request):
+    return render(request, 'projects/contacts.html', {'title': _('Контакты')})
 
 
 def sitemap(request):
@@ -218,37 +248,6 @@ def guest_list(request, project_slug):
         'title': _('Список гостей')
     }
     return render(request, 'projects/guest_list.html', context)
-
-
-def payment_success(request):
-    if check_success_payment(request):
-        param_request = parse_response(request)
-        description = param_request['description']
-        if description != 'donation':
-            guest = Guest.objects.get(ticket_uid=description)
-            # project = guest.project
-            # image_data = bytes(guest.qr.read())
-            # message_text = _(f'''К сообщению прикреплён Ваш QR для входа на мероприятие: {project.name}
-            # За сутки до мероприятия на странице, на которую ведёт Ваш QR, появится подробная интрукция о том, как нас найти.
-            # ''')
-            # message = EmailMessage(
-            #     _(f'Ваш QR для входа на мероприятие: {project.name}'),
-            #     message_text,
-            #     os.environ['EMAIL_HOST_USER'],
-            #     [guest.email]
-            # )
-            # message.attach(guest.qr.name, image_data, 'image/png')
-            # message.send()
-
-            context = {
-                'title': _('Успешная оплата'),
-                'guest': guest,
-                }
-            return render(request, 'projects/payment-succeed-qr.html', context)
-
-        else:
-            context = {'title': _('Успешная оплата'), }
-            return render(request, 'projects/payment-succeed-qr.html', context)
 
 
 # Получение уведомления об исполнении операции (ResultURL).
