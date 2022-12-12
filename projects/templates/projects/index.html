@@ -21,7 +21,7 @@
                 <div class="punchline-wrapper">
                     <div class="punchline__main"><h2>{% translate "Мы объединяем людей" %}</h2></div>
                     <div class="punchline__sub">{% translate "организуем культурные, развлекательные и иные массовые мероприятия, направленные на достижение цели АНО “Крона”" %}</div>
-                    <div class="punchline__button button"><a href="{% url 'projects' %}">{% translate "Узнать больше" %}</a></div>
+                    <a href="{% url 'projects' %}"><div class="punchline__button button">{% translate "Узнать больше" %}</div></a>
                 </div>
             </div>
             <div class="carousel-images">
@@ -123,15 +123,15 @@
         <div class="container">
             <h2>{% translate "Наши проекты" %}</h2>
             <div class="projects-wrapper">
-                    {% for p in projects_for_main %}
                 <div class="projects__descriptions">
-                    <div class="projects__description">
-                        <h3>{% blocktranslate with name=p.name %} Проект "{{ name }}" {% endblocktranslate %}</h3>
-                        <p class="projects__description-text">{{ p.content_brief|safe }}</p>
-                        <a class="projects__go-to-project button dark" href="{{ p.get_absolute_url }}">{% translate "Узнать больше" %}</a>
-                    </div>
-                </div>
+                    {% for p in projects_for_main %}
+                        <div class="projects__description">
+                            <h3>{% blocktranslate with name=p.name %} Проект "{{ name }}" {% endblocktranslate %}</h3>
+                            <p class="projects__description-text">{{ p.content_brief|safe }}</p>
+                            <a class="projects__go-to-project button dark" href="{{ p.get_absolute_url }}">{% translate "Узнать больше" %}</a>
+                        </div>
                     {% endfor %}
+                </div>
             {% if project_w_photo %}
                 <div class="projects__suggestion">
                     <div class="projects__suggestion-back">
@@ -146,7 +146,7 @@
                         <div class="card-gradient"></div>
                         <div class="projects__suggestion-text">
                             <div class="projects__suggestion-name">{{ project_w_photo.name }}</div>
-                            <div class="projects__suggestion-go-to button dark"><a href="{{ project_w_photo.get_absolute_url }}">{% translate "Хочу участвовать" %}</a></div>
+                            <a href="{{ project_w_photo.get_absolute_url }}"><div class="projects__suggestion-go-to button dark">{% translate "Хочу участвовать" %}</div></a>
                         </div>
                     </div>
                 </div>
@@ -224,3 +224,5 @@
         </div>
     </div>
 {% endblock content %}
+
+<script src="{% static 'projects/js/main.js' %}"></script>

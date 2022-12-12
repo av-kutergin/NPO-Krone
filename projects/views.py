@@ -95,19 +95,6 @@ def add_guest(request, project_slug):
     return render(request, 'projects/participate.html', context)
 
 
-class DocumentListView(ListView):
-    model = Document
-    template_name = 'projects/docs.html'
-
-    def get_queryset(self):
-        return [{"doc": x, "right_is_empty": i % 6 == 2, "left_is_empty": i % 6 == 3} for i, x in enumerate(super().get_queryset())]
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(DocumentListView, self).get_context_data(*args, **kwargs)
-        context['title'] = _('Документы')
-        return context
-
-
 def payment_success(request):
     if check_success_payment(request):
         param_request = parse_response(request)
@@ -145,6 +132,21 @@ def donate(request):
         'title': _('Донат'),
     }
     return render(request, 'projects/support.html', context)
+
+
+class DocumentListView(ListView):
+    model = Document
+    template_name = 'projects/docs.html'
+
+    def get_queryset(self):
+        return [{"doc": x, "right_is_empty": i % 6 == 2, "left_is_empty": i % 6 == 3} for i, x in enumerate(super().get_queryset())]
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(DocumentListView, self).get_context_data(*args, **kwargs)
+        context['title'] = _('Документы')
+        return context
+
+
 
 
 ####___________________________________####
@@ -283,23 +285,12 @@ def p_list(request):
 
 
 def make_carousel(request, project_slug):
-    if project_slug:
-        project = Project.objects.get(slug=project_slug)
-        Project.make_carousel(project)
-    else:
-        Project.make_carousel()
+    project = Project.objects.get(slug=project_slug)
+    Project.make_carousel(project)
     return HttpResponseRedirect(reverse('admin:index'))
 
 
 def make_default_carousel(request):
-    new_obj = Carousel.objects.create(display_name='', background_image=b'', content='')
-    new_obj.set_current_language('ru')
-    new_obj.display_name = 'DefaultRu'
-    new_obj.background_image = b''
-    new_obj.content = 'DefaultRu'
-    new_obj.set_current_language('en')
-    new_obj.display_name = 'DefaultEn'
-    new_obj.background_image = b''
-    new_obj.content = 'DefaultEn'
-    new_obj.save()
+    Project.make_carousel()
     return HttpResponseRedirect(reverse('admin:index'))
+

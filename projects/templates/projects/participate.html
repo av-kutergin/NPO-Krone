@@ -26,67 +26,23 @@
                 <form class="participate__form-column participate__form" action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
 
+                    <div class="form-error" style="flex: 100% 0 0">{{ form.non_field_errors }}</div>
+
                     {% for f in form %}
                         {% if not f.errors %}
-                            <div>{{ f.label_tag }}<br>{{ f }}</div>
+                            <div class="participate__form-item form-item">
+                                <div class="form-item__label">{{ f.label_tag }}</div>
+                                <div class="form-item__input">{{ f }}</div>
+                            </div>
                         {% else %}
-                            <div>{{ f.errors }}{{ f }}</div>
+                                <div class="form-item__label">{{ f.errors }}</div>
+                                <div class="form-item__input">{{ f }}</div>
                         {% endif %}
                     {% endfor %}
-                    <div class="form-error">{{ form.non_field_errors }}</div>
-
-                    <div class="participate__form-item form-item">
-                        <div class="form-item__label">
-                            <label for="firstname">Имя*</label>
-                        </div>
-                        <div class="form-item__input">
-                            <input type="text" id="firstname" name="firstname" placeholder="Имя" pattern="[a-zA-Zа-яА-Я\- \(\)]+">
-                        </div>
-                    </div>
-                    <div class="participate__form-item form-item">
-                        <div class="form-item__label">
-                            <label for="lastname">Фамилия*</label>
-                        </div>
-                        <div class="form-item__input">
-                            <input type="text" id="lastname" name="lastname" placeholder="Фамилия" pattern="[a-zA-Zа-яА-Я\- \(\)]+">
-                        </div>
-                    </div>
-                    <div class="participate__form-item form-item">
-                        <div class="form-item__label">
-                            <label for="phone">Телефон*</label>
-                        </div>
-                        <div class="form-item__input">
-                            <input type="text" id="phone" name="phone" placeholder="+7 (900) 000-00-00" pattern="[\d\+ \(\)#\*]+">
-                        </div>
-                    </div>
-                    <div class="participate__form-item form-item">
-                        <div class="form-item__label">
-                            <label for="tg">Телеграм</label>                            
-                        </div>
-                        <div class="form-item__input">
-                            <input type="text" id="tg" name="tg" placeholder="telegram">
-                        </div>
-                    </div>
-                    <div class="participate__form-item form-item">
-                        <div class="form-item__label">
-                            <label for="mail">Электронная почта</label>
-                        </div>
-                        <div class="form-item__input">
-                            <input type="text" id="mail" name="mail" placeholder="email@mail.ru" pattern=".+@.+\..+">
-                        </div>
-                    </div>
-                    <div class="participate__form-item form-item">
-                        <div class="form-item__label">
-                            <label for="birthdate">Дата рождения*</label>
-                        </div>
-                        <div class="form-item__input">
-                            <input type="date" id="birthdate" name="birthdate">
-                        </div>
-                    </div>
                     <div class="participate__form-cost">
                         {% translate "Взнос за участие:" %} {{ event.price }}
                     </div>
-                    <submit class="participate__submit button dark">Оплатить</submit>
+                        <input class="participate__submit button dark" type="submit" value='{% translate "Оплатить" %}'>
                 </form>
 
                 <div class="participate__photo-column">

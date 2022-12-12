@@ -31,7 +31,7 @@
                     <div class="project__state">{% translate "Мероприятие скоро начнётся" %}</div>
                     {% endif %}
                     <div class="project__short-content">{{ p.content_brie|safe }}</div>
-                    <div class="button dark"><a href="{{ p.get_absolute_url }}">{% translate "Узнать больше" %}</a></div>
+                    <a href="{{ p.get_absolute_url }}"><div class="button dark">{% translate "Узнать больше" %}</div></a>
                 </div>
                 {% if p.photo %}
                 <div class="project__photo-column">
@@ -43,21 +43,21 @@
                         </div>
                         <div class="project__photo-front">
                             <div class="project__photo-front-img">
-                                <img src="{ p.photo.url }}" alt="">
+                                <img src="{{ p.photo.url }}" alt="">
                             </div>
                             <div class="card-gradient"></div>
                             <div class="project__photo-text">
                                 <div class="project__photo-name">{{ p.name }}</div>
                                 {% if not p.is_over %}
-                                <div class="project__photo-go-to button dark"><a href="{{ p.get_absolute_url }}">{% translate "Хочу участвовать" %}</a></div>
+                                <a href="{{ p.get_absolute_url }}"><div class="project__photo-go-to button dark">{% translate "Хочу участвовать" %}</div></a>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endif %}
-                {% endfor %}
             </div>
+                {% endfor %}
         </div>
     </div>
 {% endblock content %}

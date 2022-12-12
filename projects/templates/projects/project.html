@@ -27,7 +27,7 @@
                         {{ project.content|safe }}
                     </div>
 
-                    <div class="button dark"><a href="{% url 'participate' project_slug=project.slug %}">{% translate "Хочу участвовать" %}</a></div>
+                    <a href="{% url 'participate' project_slug=project.slug %}"><div class="button dark">{% translate "Хочу участвовать" %}</div></a>
                 {% else %}
             </div>
 

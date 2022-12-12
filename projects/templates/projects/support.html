@@ -19,7 +19,7 @@
                 {% for d in donations %}
                     {% if d.show %}
                         <script type="text/javascript" src="https://auth.robokassa.ru/Merchant/bundle/robokassa_iframe.js"></script>
-                        <input  type="submit" class="button light" value='{{ d.amount }} ₽' onclick="Robokassa.StartPayment({
+                        <input  type="submit" class="participate__submit button" value='{{ d.amount }} ₽' onclick="Robokassa.StartPayment({
                              MerchantLogin: '{{ merchant_login }}',
                              OutSum: '{{ d.amount }}',
                              Description: 'donation',

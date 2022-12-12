@@ -34,7 +34,7 @@ class Project(TranslatableModel):
     total_places = models.PositiveIntegerField(verbose_name=_('Количество мест'))
     qr_reveal_date = models.DateField(verbose_name=_('Дата, когда откроется qr-код'))
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=None)
-    photo = models.ImageField(blank=True, verbose_name=_('Фото'))
+    photo = models.ImageField(blank=True, verbose_name=_('Фото'), upload_to='projects_photos/%Y/')
     show_on_main = models.BooleanField(default=False, verbose_name=_('Отображать на главной странице'))
     # vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест', editable=False, blank=True)
 
@@ -76,16 +76,27 @@ class Project(TranslatableModel):
                 self.content_brief = self.content[:200]
 
     @staticmethod
-    def make_carousel(project):
+    def make_carousel(project=None):
         new_cariousel = Carousel.objects.create(display_name='', background_image=b'', content='')
-        for lang in ['ru', 'en']:
-            project.set_current_language(lang)
-            new_cariousel.set_current_language(lang)
-            new_cariousel.display_name = project.name
-            new_cariousel.background_image = project.photo
-            new_cariousel.content = project.sumamry
-            new_cariousel.project = project
-        new_cariousel.save()
+        if project:
+            for lang in ['ru', 'en']:
+                project.set_current_language(lang)
+                new_cariousel.set_current_language(lang)
+                new_cariousel.display_name = project.name
+                new_cariousel.background_image = project.photo
+                new_cariousel.content = project.sumamry
+                new_cariousel.project = project
+            new_cariousel.save()
+        else:
+            new_cariousel.set_current_language('ru')
+            new_cariousel.display_name = 'DefaultRu'
+            new_cariousel.background_image = b''
+            new_cariousel.content = 'DefaultRu'
+            new_cariousel.set_current_language('en')
+            new_cariousel.display_name = 'DefaultEn'
+            new_cariousel.background_image = b''
+            new_cariousel.content = 'DefaultEn'
+            new_cariousel.save()
 
 
     # IF NEEDED
@@ -104,12 +115,12 @@ class Guest(models.Model):
     lastname = models.CharField(max_length=100, verbose_name='Фамилия')
     birthdate = models.DateField(verbose_name='Дата рождения')
     phone = PhoneNumberField(verbose_name='Телефон')
-    email = models.EmailField(verbose_name='Электронная почта')
-    telegram = models.CharField(max_length=30, verbose_name='Телеграм')
+    email = models.EmailField(blank=True, verbose_name='Электронная почта')
+    telegram = models.CharField(blank=True, max_length=30, verbose_name='Телеграм')
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name='Проект')
     ticket_uid = models.CharField(default=get_uuid_id, verbose_name='UID билета',
                                   max_length=40, unique=True)
-    qr = models.ImageField(blank=True, editable=False)
+    qr = models.ImageField(blank=True, editable=False, upload_to='guest_QRs/%Y/')
     arrived = models.BooleanField(default=False, verbose_name='Пришёл')
     paid = models.BooleanField(default=False, verbose_name='Оплачено', editable=False)
 
@@ -141,7 +152,7 @@ class TeamMate(TranslatableModel):
         description=models.TextField(blank=True, verbose_name='Описание'),
     )
     high_rank = models.BooleanField(default=False, verbose_name='Верхнее звено')
-    avatar = models.ImageField(blank=True, verbose_name='Фото')
+    avatar = models.ImageField(blank=True, verbose_name='Фото', upload_to='team_avatars/')
     show = models.BooleanField(default=True, verbose_name='Отображать на сайте')
     telegram = models.CharField(blank=True, max_length=100, verbose_name='Телеграм')
 
@@ -159,8 +170,8 @@ class Document(TranslatableModel):
     translations = TranslatedFields(
         name=models.CharField(max_length=100, blank=True, verbose_name='Название', unique=True),
     )
-    file = models.FileField(verbose_name='Файл')
-    image = models.FileField(verbose_name='рендер', blank=True, editable=False)
+    file = models.FileField(verbose_name='Файл', upload_to='documents/pdf/')
+    image = models.FileField(verbose_name='рендер', blank=True, editable=False, upload_to='documents/png/')
 
     class Meta:
         verbose_name = 'Документ'
@@ -186,7 +197,7 @@ class Carousel(TranslatableModel):
         display_name=models.CharField(max_length=100, verbose_name='Наименование', default=_('Некоторое')),
         content=RichTextField(verbose_name='Контент', null=True, default=_('')),
     )
-    background_image = models.ImageField(verbose_name='Картинка фона', null=True)
+    background_image = models.ImageField(verbose_name='Картинка фона', null=True, upload_to='carousel/%Y/')
     img_offset_x = models.FloatField(verbose_name='Смещение картинки x', default=0.0)
     img_offset_y = models.FloatField(verbose_name='Смещение картинки y', default=0.0)
     img_scale = models.FloatField(verbose_name='Масштаб картинки', default=0.0)

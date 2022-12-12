@@ -45,11 +45,11 @@
         <div class="en-ru">
             <form action="{% url 'set_language' %}" method="post" id="form_ru">
                   {% csrf_token %}
-                <input name="next" type="hidden" value="/ru/" />
+                <input name="next" type="hidden" value="/ru/{{request.get_full_path|slice:"4:"}}" />
             </form>
             <form action="{% url 'set_language' %}" method="post" id="form_en">
                   {% csrf_token %}
-                <input name="next" type="hidden" value="/en/" />
+                <input name="next" type="hidden" value="/en/{{request.get_full_path|slice:"4:"}}" />
             </form>
 
             <button class="en-ru__var en-ru__ru {% if LANGUAGE_CODE == 'ru' %} is-active {% endif %}" type="submit" form="form_ru" value="Submit">RU
@@ -108,6 +108,8 @@
         </div>
     </div>
 </footer>
+
+<script src="{% static 'projects/js/common.js' %}"></script>
 
 </body>
 </html>

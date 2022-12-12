@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="doc__over">
                                     <div class="doc__over-title">{{ obj.doc.name }}</div>
-                                    <div class="doc__over-sownload-button button dark"><a href="{{ obj.doc.download }}">{% translate "Скачать" %}</a></div>
+                                    <a href="{{ obj.doc.download }}"><div class="doc__over-sownload-button button dark">{% translate "Скачать" %}</div></a>
                                 </div>
                             </div>
                         </div>
@@ -44,19 +44,15 @@
                                 </div>
                                 <div class="doc__over">
                                     <div class="doc__over-title">{{ obj.doc.name }}</div>
-                                    <div class="doc__over-sownload-button button dark"><a href="{{ obj.doc.download }}">Скачать</a></div>
+                                    <a href="{{ obj.doc.download }}"><div class="doc__over-sownload-button button dark">{% translate "Скачать" %}</div></a>
                                 </div>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="doc-wrapper">
                             <div class="doc">
                                 <div class="doc__preview">
                                     <img src="{{ obj.doc.image.url }}" alt="">
                                 </div>
                                 <div class="doc__over">
                                     <div class="doc__over-title">{{ obj.doc.name }}</div>
-                                    <div class="doc__over-sownload-button button dark"><a href="{{ obj.doc.download }}">Скачать</a></div>
+                                    <a href="{{ obj.doc.download }}"><div class="doc__over-sownload-button button dark">{% translate "Скачать" %}</div></a>
                                 </div>
                             </div>
                         </div>

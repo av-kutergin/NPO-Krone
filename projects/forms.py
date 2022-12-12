@@ -14,12 +14,12 @@ class AddGuestForm(forms.ModelForm):
         model = Guest
         fields = ['firstname', 'lastname',  'phone', 'telegram', 'email', 'birthdate']
         widgets = {
-            'firstname': forms.TextInput(attrs={'class': 'form-form-item__input'}),
-            'lastname': forms.TextInput(attrs={'class': 'form-item__input'}),
-            'birthdate': forms.DateInput(attrs={'class': 'form-item__input'}),
-            'phone': forms.TextInput(attrs={'class': 'form-item__input'}),
-            'email': forms.EmailInput(attrs={'class': 'form-item__input'}),
-            'telegram': forms.TextInput(attrs={'class': 'form-item__input'}),
+            'firstname': forms.TextInput(attrs={'placeholder': _('Имя')}),
+            'lastname': forms.TextInput(attrs={'placeholder': _('Фамилия')}),
+            'birthdate': forms.DateInput(attrs={'type': 'date'}),
+            'phone': forms.TextInput(attrs={'placeholder': _('+70000000000')}),
+            'email': forms.EmailInput(attrs={'placeholder': 'email@email.ru'}),
+            'telegram': forms.TextInput(attrs={'placeholder': 'Telegram'}),
         }
         labels = {
             'firstname': _('Имя*'),
