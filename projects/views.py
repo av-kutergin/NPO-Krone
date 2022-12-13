@@ -279,18 +279,18 @@ def p_list(request):
     list_of_p = Project.objects.all()
     context = {
         'list_of_p': list_of_p,
-        'title': _('Список гостей')
+        'title': _('Список проектов')
     }
     return render(request, 'projects/p_list.html', context)
 
 
 def make_carousel(request, project_slug):
     project = Project.objects.get(slug=project_slug)
-    Project.make_carousel(project)
+    Project.make_carousel_from_project(project)
     return HttpResponseRedirect(reverse('admin:index'))
 
 
 def make_default_carousel(request):
-    Project.make_carousel()
+    Project.make_carousel_default()
     return HttpResponseRedirect(reverse('admin:index'))
 

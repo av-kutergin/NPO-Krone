@@ -46,6 +46,10 @@
                                     <div class="doc__over-title">{{ obj.doc.name }}</div>
                                     <a href="{{ obj.doc.download }}"><div class="doc__over-sownload-button button dark">{% translate "Скачать" %}</div></a>
                                 </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="doc-wrapper">
                             <div class="doc">
                                 <div class="doc__preview">
                                     <img src="{{ obj.doc.image.url }}" alt="">

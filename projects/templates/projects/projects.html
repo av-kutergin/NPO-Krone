@@ -30,7 +30,7 @@
                     {% else %}
                     <div class="project__state">{% translate "Мероприятие скоро начнётся" %}</div>
                     {% endif %}
-                    <div class="project__short-content">{{ p.content_brie|safe }}</div>
+                    <div class="project__short-content">{{ p.content_brief|safe }}</div>
                     <a href="{{ p.get_absolute_url }}"><div class="button dark">{% translate "Узнать больше" %}</div></a>
                 </div>
                 {% if p.photo %}
@@ -49,7 +49,7 @@
                             <div class="project__photo-text">
                                 <div class="project__photo-name">{{ p.name }}</div>
                                 {% if not p.is_over %}
-                                <a href="{{ p.get_absolute_url }}"><div class="project__photo-go-to button dark">{% translate "Хочу участвовать" %}</div></a>
+                                <a href="{% url 'participate' project_slug=p.slug %}"><div class="project__photo-go-to button dark">{% translate "Хочу участвовать" %}</div></a>
                                 {% endif %}
                             </div>
                         </div>

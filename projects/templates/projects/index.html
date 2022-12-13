@@ -15,7 +15,7 @@
 
 {% block content %}
 
-    <div class="carousel" data-count="3">
+    <div class="carousel" data-count="{{carousel|length}}">
         <div class="container">
             <div class="punchline">
                 <div class="punchline-wrapper">
@@ -27,7 +27,7 @@
             <div class="carousel-images">
                 {% for c in carousel %}
                     {% if c.position %}
-                        {% if c.position == 1 %}
+                        {% if forloop.counter == 1 %}
                             <div class="carousel-images__card is-active" onmouseenter="cardHovered(event)">
                                 <div class="carousel-images__card-contentwrapper">
                                     <div class="carousel-images__tg tg">
@@ -43,34 +43,32 @@
                                             <div class="collapsed-h3">{{ c.collapsed_content }}</div>
 
                                             {% if c.project %}
-                                            <p>{{ c.project.get_absolute_url }}</p>
+                                                <a href="{{ c.project.get_absolute_url }}"><div class="button dark">{% translate "Узнать больше" %}</div></a>
                                             {% endif %}
 
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        {% else %}
+                            <div class="carousel-images__card" onmouseenter="cardHovered(event)">
+                                <div class="carousel-images__card-contentwrapper">
+                                    <div class="carousel-images__img">
+                                        <div>
+                                            <img src="{{ c.background_image.url }}" alt="">
+                                        </div>
+                                        <div class="carousel-images__text">
+                                            <h3>{{ c.display_name }}</h3>
+                                            <div class="collapsed-h3">{{ c.collapsed_content }}</div>
+                                            {% if c.project %}
+                                                <a href="{{ c.project.get_absolute_url }}"><div class="button dark">{% translate "Узнать больше" %}</div></a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% endif %}
-
-                    <div class="carousel-images__card" onmouseenter="cardHovered(event)">
-                        <div class="carousel-images__card-contentwrapper">
-                            <div class="carousel-images__tg tg">
-                                <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
-                                <div class="tg__text">@telegram_krona</div>
-                            </div>
-                            <div class="carousel-images__img">
-                                <div>
-                                    <img src="{{ c.background_image.url }}" alt="">
-                                </div>
-                                <div class="carousel-images__text">
-                                    <h3>{{ c.display_name }}</h3>
-                                    <div class="collapsed-h3">{{ c.collapsed_content }}</div>
-                                    <p><a class="button dark">{{ c.content|safe }}</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
+                    {% endif %}
                 {% endfor %}
 <!--                <div class="carousel-images__card" onmouseenter="cardHovered(event)">-->
 <!--                    <div class="carousel-images__card-contentwrapper">-->
@@ -165,7 +163,13 @@
             <div class="team__teammates">
                 {% for t in teammates %}
                 <div class="team__teammate teammate">
+                    {% if not t.avatar %}
+                    <div class="teammate__img"><img src="{% static 'projects/img/default_avatar.jpg' %}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    {% else %}
                     <div class="teammate__img"><img src="{{ t.avatar.url }}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    {% endif %}
                     <div class="card-gradient"></div>
                     <div class="teammate__text">
                         <div class="teammate__name">{{ t.name }}</div>
@@ -223,6 +227,6 @@
             </div>
         </div>
     </div>
+    <script src="{% static 'projects/js/main.js' %}"></script>
 {% endblock content %}
 
-<script src="{% static 'projects/js/main.js' %}"></script>
