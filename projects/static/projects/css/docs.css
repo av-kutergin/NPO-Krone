@@ -48,17 +48,17 @@
 
 .doc__preview {
     position: relative;
-    left: 5%;
-    top: 5%;
-    width: 90%;
-    height: 90%;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
     overflow: hidden;
     filter: blur(0px) brightness(1);
-    transition: filter 0.2s ease-in;
+    transition: 0.4s ease-in;
 }
 
 .doc:hover .doc__preview {
-    filter: blur(4px) brightness(1.05);
+    filter: blur(4px);
+    opacity: 0.5;
 }
 
 .doc__preview img {
@@ -142,6 +142,9 @@
     margin-bottom: 15px;    
     text-align: center;
     padding: 0 20px;
+    *background: #ffffff70;
+    border-radius: 30px;
+    padding: 10px;
 }
 
 @media (max-width: 1500px) {
