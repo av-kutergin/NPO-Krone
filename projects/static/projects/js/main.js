@@ -14,16 +14,21 @@ let global = {
     },
     carousel: {
         isAnimationInProcess: false,
-        animationTime: 300
+        animationTime: 300,
+        hovered: null
     }
 }
 
 function cardHovered(event) {
     if (!global.carousel.isAnimationInProcess) {
         Array.from(document.querySelectorAll('.carousel-images__card')).forEach(x => {
-            x.classList.remove('is-active')
+            let target = event.target.closest('.carousel-images__card')
+            if (x === target) {
+                x.classList.add('is-active')
+            } else {
+                x.classList.remove('is-active')
+            }
         });
-        event.target.classList.add('is-active')
         global.carousel.isAnimationInProcess = true
         setTimeout(() => global.carousel.isAnimationInProcess = false, global.carousel.animationTime)
     }
