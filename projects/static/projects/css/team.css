@@ -29,6 +29,7 @@
 .teammate {
     position: relative;
     width: 31%;
+    min-height: 200px;
     flex: 31% 0 0;
     margin: 0 2.3% 50px 0;
     border-radius: 30px;
