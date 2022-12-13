@@ -8,13 +8,16 @@
 
 .team__teammates {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: start;
 }
 
 .teammate {
     position: relative;
-    width: 30%;
+    width: 31%;
     min-height: 200px;
+    flex: 31% 0 0;
+    margin: 0 2.3% 50px 0;
     border-radius: 30px;
 }
 
@@ -32,7 +35,9 @@
 
 .teammate__img img {
     width: 100%;
+    height: 100%;
     border-radius: 30px;
+    object-fit: cover;
 }
 
 .teammate__text {
