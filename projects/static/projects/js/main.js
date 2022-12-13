@@ -65,7 +65,7 @@ window.addEventListener('load', () => {
 })
 
 window.addEventListener('resize', () => {
-    initializeCardsScrolling()
+    //initializeCardsScrolling()
 })
 
 window.addEventListener('scroll', (event) => {
