@@ -19,9 +19,6 @@ a {
     color: #00003c;
     text-decoration: none;
 }
-.header a:hover {
-     color: rgba(0, 0, 0, 0.2);
-}
 .header a {
      color: #00003c;
 }
@@ -67,20 +64,23 @@ a {
     line-height: 90px;
     cursor: pointer;    
     white-space: nowrap;
-
     /* hover special effect */
     filter: contrast(3);
-    background: url('../img/logo.svg');
-    background-size: 300% 200%;
-    background-position: 50% 100%;
-    background-repeat: no-repeat;
-    color: rgba(0, 0, 0, 1);
+    background: url('../img/bgrainbowtext.png');
+    background-size: contain;
+    background-position: 0 0px;
+    background-repeat: repeat;
     -webkit-background-clip: text;
-    transition: 0.3s ease-in;
+    transition: background-position 0.5s ease-out;
 }
 .nav ul li:hover {
-    background-position: 50% 65%; 
-    color: rgba(0, 0, 0, 0.2);           
+    background-position: 0 20px;         
+}
+.nav ul li a {
+    transition: 0.3s ease-in;
+}
+.nav ul li:hover a {
+    color: rgba(0, 0, 0, 0.2);
 }
 .nav .is-active {
     color: #4F4B69;
@@ -103,22 +103,20 @@ nav .is-active {
 }
 .en-ru__var {
     position: relative;
-    /* hover special effect */
     filter: contrast(3);
-    background: url('../img/logo.svg');
-    background-size: 300% 300%;
-    background-position: 50% 45%;
-    background-repeat: no-repeat;
+    background: url('../img/bgrainbowtext.png');
+    background-size: contain;
+    background-position: 0 0px;
+    background-repeat: repeat;
     -webkit-background-clip: text;
-    color: rgba(0, 0, 0, 1);
-    transition: 0.3s ease-in;
+    transition: background-position 0.5s ease-out;
 }
 .en-ru__var.is-active {
     font-weight: bold;
 }
 .en-ru__var:hover {
-    background-position: 50% 53%;
-    color: rgba(0, 0, 0, 0.2);           
+    background-position: 0 10px;  
+    color: rgba(0, 0, 0, 0.2);       
 }
 .nav-burger-menu {
     display: none;
@@ -221,20 +219,9 @@ nav .is-active {
     .container {
         position: relative;
         width: 860px;
-        /*overflow: hidden;*/
     }
     .nav ul li {
         margin: 0 12px;
-
-        /* hover special effect */
-        filter: contrast(3);
-        background: url('../img/logo.svg');
-        background-size: 300% 200%;
-        background-position: 50% 100%;
-        background-repeat: no-repeat;
-        color: rgba(0, 0, 0, 1);
-        -webkit-background-clip: text;
-        transition: 0.3s ease-in;
     }
     .en-ru__en, .en-ru__ru {     
         width: 40px;   
@@ -287,44 +274,12 @@ nav .is-active {
     }
     .nav ul li {
         margin: 0 10px;
-        line-height: 74px;
-        font-size: 14px;
-
-        /* hover special effect */
-        filter: contrast(3);
-        background: url('../img/logo.svg');
-        background-size: 300% 200%;
-        background-position: 50% 100%;
-        background-repeat: no-repeat;
-        color: rgba(0, 0, 0, 1);
-        -webkit-background-clip: text;
-        transition: 0.3s ease-in;
-    }
-    .nav ul li:hover {
-        background-position: 50% 65%; 
-        color: rgba(0, 0, 0, 0.2);           
     }
     .en-ru__en, .en-ru__ru {     
         width: 40px;   
-        line-height: 74px;
+        line-height: 90px;
         font-size: 14px;
-        height: 74px;
-    }
-    .en-ru__var {
-        position: relative;
-        /* hover special effect */
-        filter: contrast(3);
-        background: url('../img/logo.svg');
-        background-size: 300% 300%;
-        background-position: 50% 45%;
-        background-repeat: no-repeat;
-        -webkit-background-clip: text;
-        color: rgba(0, 0, 0, 1);
-        transition: 0.3s ease-in;
-    }
-    .en-ru__var:hover {
-        background-position: 50% 53%;
-        color: rgba(0, 0, 0, 0.2);           
+        line-height: 90px;
     }
     .button {
         padding: 10px 30px;
