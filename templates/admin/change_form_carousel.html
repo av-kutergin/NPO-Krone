@@ -12,57 +12,87 @@
 {% endblock %}
 
 {% block content %}
-{{ block.super }}
-<div class="carousel-images__card is-active" onmouseenter="cardHovered(event)">
-                    <div class="carousel-images__card-contentwrapper">
-                        <div class="carousel-images__tg tg">
-                            <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
-                            <div class="tg__text">@telegram_krona</div>
-                        </div>
-                        <div class="carousel-images__img">
-                            <div>
-                                <img src="img/p-2.jpg" alt="">
-                            </div>
-                            <div class="carousel-images__text">
-                                <h3>Наша задача</h3>
-                                <div class="collapsed-h3">АНО «Крона»</div>
-                                <p>Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент</p>
-                            </div>
-                        </div>
-                    </div>
+<div>
+    <div class="carousel-images__card is-active" onmouseenter="cardHovered(event)" style="margin-bottom:30px;">
+        <div class="carousel-images__card-contentwrapper">
+            <div class="carousel-images__tg tg">
+                <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
+                <div class="tg__text">@telegram_krona</div>
+            </div>
+            <div class="carousel-images__img">
+                <div class="images__img-div">
+                    <img src="img/p-2.jpg" alt="">
                 </div>
-<div class="carousel-images__card" onmouseenter="cardHovered(event)">
-                    <div class="carousel-images__card-contentwrapper">
-                        <div class="carousel-images__tg tg">
-                            <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
-                            <div class="tg__text">@telegram_krona</div>
-                        </div>
-                        <div class="carousel-images__img">
-                            <div>
-                                <img src="img/p-2.jpg" alt="">
-                            </div>
-                            <div class="carousel-images__text">
-                                <h3>Наша задача</h3>
-                                <div class="collapsed-h3">АНО «Крона»</div>
-                                <p>Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="carousel-images__text">
+                    <h3>Наша задача</h3>
+                    <div class="collapsed-h3">АНО «Крона»</div>
+                    <p>Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент</p>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="carousel-images__card" onmouseenter="cardHovered(event)" style="margin-bottom: 30px;">
+        <div class="carousel-images__card-contentwrapper">
+            <div class="carousel-images__tg tg">
+                <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
+                <div class="tg__text">@telegram_krona</div>
+            </div>
+            <div class="carousel-images__img">
+                <div class="images__img-div">
+                    <img src="img/p-2.jpg" alt="">
+                </div>
+                <div class="carousel-images__text">
+                    <h3>Наша задача</h3>
+                    <div class="collapsed-h3">АНО «Крона»</div>
+                    <p>Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
 setInterval(() => {
     let displayName = document.querySelector('input[name="display_name"]')
     document.querySelectorAll('.carousel-images__text h3').forEach(x => x.innerHTML = displayName.value)
-    let content = document.querySelector('.cke_editable')
-    document.querySelectorAll('.carousel-images__text p').forEach(x => x.innerHTML = content.innerHTML)
+    try {
+        let content = document.querySelector('.cke_wysiwyg_frame').contentWindow.document.querySelector('.cke_editable')
+        document.querySelectorAll('.carousel-images__text p').forEach(x => x.innerHTML = content.innerHTML)
+    } catch {
+        /*swallow*/
+    }
     let collapsed_content = document.querySelector('input[name="collapsed_content"]')
     document.querySelectorAll('.collapsed-h3').forEach(x => x.innerHTML = collapsed_content.value)
 
     let back_image = document.querySelector('input[name="background_image"]')
     if (back_image.files && back_image.files[0]) {
         var reader = new FileReader();
-        document.querySelector('.carousel-images__img img').src = URL.createObjectURL(back_image.files[0])
+        document.querySelectorAll('.carousel-images__img img').forEach(x => {
+            x.src = URL.createObjectURL(back_image.files[0])
+        })
+    } else {
+        document.querySelectorAll('.carousel-images__img img').forEach(x => {
+            x.src = document.querySelector('.field-background_image a').getAttribute('href')
+        })
     }
+
+    document.querySelector('input[name="img_scale"]').setAttribute('step', 10)
+    let scale = +document.querySelector('input[name="img_scale"]').value
+    document.querySelectorAll('.carousel-images__img img').forEach(a => {
+        a.style.width = `${scale}%`
+    })
+
+    document.querySelector('input[name="img_offset_x"]').setAttribute('step', 30)
+    let x = +document.querySelector('input[name="img_offset_x"]').value
+    document.querySelectorAll('.carousel-images__img img').forEach(a => {
+        a.style.left = `calc(50% + ${x}px)`
+    })
+
+    document.querySelector('input[name="img_offset_y"]').setAttribute('step', 30)
+    let y = +document.querySelector('input[name="img_offset_y"]').value
+    document.querySelectorAll('.carousel-images__img img').forEach(a => {
+        a.style.top = `calc(50% - ${y}px)`
+    })
 }, 100)
 </script>
+{{ block.super }}
 {% endblock %}

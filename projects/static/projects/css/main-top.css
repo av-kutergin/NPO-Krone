@@ -107,13 +107,27 @@
     background: linear-gradient(0deg, black 0, #00000088 40%, transparent 60%);
     overflow: hidden;
 }
+
+.carousel-images__img {
+    height: 100%;
+}
+
+.images__img-div {
+    height: 100%;
+}
+
 .carousel-images__img img {
     position: absolute;
     width: 100%;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(3);
     z-index: -1;
-}
-.carousel-images__img img {
     transition: 0.3s ease-in;
+}
+.carousel-images__card.is-active .carousel-images__img img {
+    transform: translate(-50%, -50%) scale(1);
 }
 .carousel-images__text {
     padding: 40px;

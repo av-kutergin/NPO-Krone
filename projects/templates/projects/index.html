@@ -1,6 +1,7 @@
 {% extends 'projects/base.html' %}
 {% load static %}
 {% load i18n %}
+{% load l10n %}
 {% load language_selector %}
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -35,8 +36,8 @@
                                         <div class="tg__text">@telegram_krona</div>
                                     </div>
                                     <div class="carousel-images__img">
-                                        <div>
-                                            <img src="{{ c.background_image.url }}" alt="">
+                                        <div class="images__img-div">
+                                            <img src="{{ c.background_image.url }}" alt="" style="width:{{c.img_scale|unlocalize}}%;left:calc(50% + {{c.img_offset_x|unlocalize}}px);top:calc(50% - {{c.img_offset_y|unlocalize}}px)">
                                         </div>
                                         <div class="carousel-images__text">
                                             <h3>{{ c.display_name }}</h3>
@@ -54,8 +55,8 @@
                             <div class="carousel-images__card" onmousemove="cardHovered(event)">
                                 <div class="carousel-images__card-contentwrapper">
                                     <div class="carousel-images__img">
-                                        <div>
-                                            <img src="{{ c.background_image.url }}" alt="">
+                                        <div class="images__img-div">
+                                            <img src="{{ c.background_image.url }}" alt="" style="width:{{c.img_scale|unlocalize}}%;left:calc(50% + {{c.img_offset_x|unlocalize}}px);top:calc(50% - {{c.img_offset_y|unlocalize}}px)">
                                         </div>
                                         <div class="carousel-images__text">
                                             <h3>{{ c.display_name }}</h3>
