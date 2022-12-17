@@ -118,27 +118,37 @@
 
 .carousel-images__img img {
     position: absolute;
-    width: 100%;
     position: relative;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) scale(3);
+    transform: translate(-50%, -50%);
     z-index: -1;
-    transition: 0.3s ease-in;
+    transition: 0.3s ease-out;
 }
 .carousel-images__card.is-active .carousel-images__img img {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%);
 }
 .carousel-images__text {
     padding: 40px;
     position: absolute;
     bottom: 0;
 }        
+.carousel-images__text-content {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}       
+.carousel-images * {
+    cursor: default;
+}
+.carousel-images__card.is-active .carousel-images__text-content {
+    opacity: 1;
+    transition: opacity 0.6s cubic-bezier(0.67, 0.02, 0.56, 0.99);
+}
 .carousel-images__card p, .carousel-images__card h3 {
     margin: 0;
     color: white;
 }
-.carousel-images__card p {
+.carousel-images__card .button {
     font-size: 18px;
     width: 330px;
     display: block;

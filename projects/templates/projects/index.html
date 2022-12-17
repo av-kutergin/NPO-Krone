@@ -37,14 +37,20 @@
                                     </div>
                                     <div class="carousel-images__img">
                                         <div class="images__img-div">
-                                            <img src="{{ c.background_image.url }}" alt="" style="width:{{c.img_scale|unlocalize}}%;left:calc(50% + {{c.img_offset_x|unlocalize}}px);top:calc(50% - {{c.img_offset_y|unlocalize}}px)">
+                                            <img src="{{ c.background_image.url }}" alt="" style="height:{{c.img_scale|unlocalize}}%;left:calc(50% + {{c.img_offset_x|unlocalize}}px);top:calc(50% - {{c.img_offset_y|unlocalize}}px)">
                                         </div>
                                         <div class="carousel-images__text">
                                             <h3>{{ c.display_name }}</h3>
                                             <div class="collapsed-h3">{{ c.collapsed_content }}</div>
 
+                                            {% if c.content %}
+                                                <div class="carousel-images__text-content">
+                                                    {{ c.content|safe }}
+                                                </div>
+                                            {% endif %}
+
                                             {% if c.project %}
-                                                <a href="{{ c.project.get_absolute_url }}"><div class="button dark">{% translate "Узнать больше" %}</div></a>
+                                                <a href="{{ c.project.get_absolute_url }}" class="button dark">{% translate "Узнать больше" %}</a>
                                             {% endif %}
 
                                         </div>
@@ -56,13 +62,20 @@
                                 <div class="carousel-images__card-contentwrapper">
                                     <div class="carousel-images__img">
                                         <div class="images__img-div">
-                                            <img src="{{ c.background_image.url }}" alt="" style="width:{{c.img_scale|unlocalize}}%;left:calc(50% + {{c.img_offset_x|unlocalize}}px);top:calc(50% - {{c.img_offset_y|unlocalize}}px)">
+                                            <img src="{{ c.background_image.url }}" alt="" style="height:{{c.img_scale|unlocalize}}%;left:calc(50% + {{c.img_offset_x|unlocalize}}px);top:calc(50% - {{c.img_offset_y|unlocalize}}px)">
                                         </div>
                                         <div class="carousel-images__text">
                                             <h3>{{ c.display_name }}</h3>
                                             <div class="collapsed-h3">{{ c.collapsed_content }}</div>
+
+                                            {% if c.content %}
+                                                <div class="carousel-images__text-content">
+                                                    {{ c.content|safe }}
+                                                </div>
+                                            {% endif %}
+
                                             {% if c.project %}
-                                                <a href="{{ c.project.get_absolute_url }}"><div class="button dark">{% translate "Узнать больше" %}</div></a>
+                                                <a href="{{ c.project.get_absolute_url }}" class="button dark">{% translate "Узнать больше" %}</a>
                                             {% endif %}
                                         </div>
                                     </div>

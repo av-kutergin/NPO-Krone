@@ -26,7 +26,7 @@
                 <div class="carousel-images__text">
                     <h3>Наша задача</h3>
                     <div class="collapsed-h3">АНО «Крона»</div>
-                    <p>Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент</p>
+                    <div class="carousel-images__text-content" style="color:white;font-size:1rem">Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент</div>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 <div class="carousel-images__text">
                     <h3>Наша задача</h3>
                     <div class="collapsed-h3">АНО «Крона»</div>
-                    <p>Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент</p>
+                    <div class="carousel-images__text-content">Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент</div>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@ setInterval(() => {
     document.querySelectorAll('.carousel-images__text h3').forEach(x => x.innerHTML = displayName.value)
     try {
         let content = document.querySelector('.cke_wysiwyg_frame').contentWindow.document.querySelector('.cke_editable')
-        document.querySelectorAll('.carousel-images__text p').forEach(x => x.innerHTML = content.innerHTML)
+        document.querySelectorAll('.carousel-images__text-content').forEach(x => x.innerHTML = content.innerHTML)
     } catch {
         /*swallow*/
     }
@@ -65,7 +65,7 @@ setInterval(() => {
 
     let back_image = document.querySelector('input[name="background_image"]')
     if (back_image.files && back_image.files[0]) {
-        var reader = new FileReader();
+        let reader = new FileReader();
         document.querySelectorAll('.carousel-images__img img').forEach(x => {
             x.src = URL.createObjectURL(back_image.files[0])
         })
@@ -78,7 +78,7 @@ setInterval(() => {
     document.querySelector('input[name="img_scale"]').setAttribute('step', 10)
     let scale = +document.querySelector('input[name="img_scale"]').value
     document.querySelectorAll('.carousel-images__img img').forEach(a => {
-        a.style.width = `${scale}%`
+        a.style.height = `${scale}%`
     })
 
     document.querySelector('input[name="img_offset_x"]').setAttribute('step', 30)
@@ -92,7 +92,7 @@ setInterval(() => {
     document.querySelectorAll('.carousel-images__img img').forEach(a => {
         a.style.top = `calc(50% - ${y}px)`
     })
-}, 100)
+}, 500)
 </script>
 {{ block.super }}
 {% endblock %}
