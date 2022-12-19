@@ -49,12 +49,12 @@
                     <div class="project__photo">
                         <div class="project__photo-back">
                             <div class="project__photo-back-img">
-                                <img src="{% static 'projects/img/photo_main.jpg' %}" alt="">
+                                <img src="{{ event.photo.url }}" alt="">
                             </div>
                         </div>
                         <div class="project__photo-front">
                             <div class="project__photo-front-img">
-                                <img src="{% static 'projects/img/photo_main.jpg' %}" alt="">
+                                <img src="{{event.photo.url }}" alt="">
                             </div>
                             <div class="card-gradient"></div>
                             <div class="project__photo-text">

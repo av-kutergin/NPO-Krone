@@ -1,6 +1,7 @@
 {% extends 'projects/base.html' %}
 {% load static %}
 {% load i18n %}
+{% load l10n %}
 {% load language_selector %}
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -15,7 +16,7 @@
 
 {% block content %}
 
-    <div class="carousel" data-count="3">
+    <div class="carousel" data-count="{{carousel|length}}">
         <div class="container">
             <div class="punchline">
                 <div class="punchline-wrapper">
@@ -27,75 +28,68 @@
             <div class="carousel-images">
                 {% for c in carousel %}
                     {% if c.position %}
-                        {% if c.position == 1 %}
-                            <div class="carousel-images__card is-active" onmouseenter="cardHovered(event)">
+                        {% if forloop.counter == 1 %}
+                            <div class="carousel-images__card is-active" onmousemove="cardHovered(event)">
                                 <div class="carousel-images__card-contentwrapper">
                                     <div class="carousel-images__tg tg">
                                         <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
                                         <div class="tg__text">@telegram_krona</div>
                                     </div>
                                     <div class="carousel-images__img">
-                                        <div>
-                                            <img src="{{ c.background_image.url }}" alt="">
+                                        <div class="images__img-div">
+                                            <img src="{{ c.background_image.url }}" alt="" style="height:{{c.img_scale|unlocalize}}%;left:calc(50% + {{c.img_offset_x|unlocalize}}px);top:calc(50% - {{c.img_offset_y|unlocalize}}px)">
                                         </div>
                                         <div class="carousel-images__text">
                                             <h3>{{ c.display_name }}</h3>
                                             <div class="collapsed-h3">{{ c.collapsed_content }}</div>
 
+                                            {% if c.content %}
+                                                <div class="carousel-images__text-content">
+                                                    {{ c.content|safe }}
+                                                </div>
+                                            {% endif %}
+
                                             {% if c.project %}
-                                            <p>{{ c.project.get_absolute_url }}</p>
+                                                <a href="{{ c.project.get_absolute_url }}" class="button dark">{% translate "Узнать больше" %}</a>
                                             {% endif %}
 
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        {% endif %}
+                        {% else %}
+                            <div class="carousel-images__card" onmousemove="cardHovered(event)">
+                                <div class="carousel-images__card-contentwrapper">
+                                    <div class="carousel-images__img">
+                                        <div class="images__img-div">
+                                            <img src="{{ c.background_image.url }}" alt="" style="height:{{c.img_scale|unlocalize}}%;left:calc(50% + {{c.img_offset_x|unlocalize}}px);top:calc(50% - {{c.img_offset_y|unlocalize}}px)">
+                                        </div>
+                                        <div class="carousel-images__text">
+                                            <h3>{{ c.display_name }}</h3>
+                                            <div class="collapsed-h3">{{ c.collapsed_content }}</div>
 
-                    <div class="carousel-images__card" onmouseenter="cardHovered(event)">
-                        <div class="carousel-images__card-contentwrapper">
-                            <div class="carousel-images__tg tg">
-                                <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>
-                                <div class="tg__text">@telegram_krona</div>
-                            </div>
-                            <div class="carousel-images__img">
-                                <div>
-                                    <img src="{{ c.background_image.url }}" alt="">
-                                </div>
-                                <div class="carousel-images__text">
-                                    <h3>{{ c.display_name }}</h3>
-                                    <div class="collapsed-h3">{{ c.collapsed_content }}</div>
-                                    <p><a class="button dark">{{ c.content|safe }}</a></p>
+                                            {% if c.content %}
+                                                <div class="carousel-images__text-content">
+                                                    {{ c.content|safe }}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if c.project %}
+                                                <a href="{{ c.project.get_absolute_url }}" class="button dark">{% translate "Узнать больше" %}</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                {% endif %}
+                        {% endif %}
+                    {% endif %}
                 {% endfor %}
-<!--                <div class="carousel-images__card" onmouseenter="cardHovered(event)">-->
-<!--                    <div class="carousel-images__card-contentwrapper">-->
-<!--                        <div class="carousel-images__tg tg">-->
-<!--                            <div class="tg__icon"><img src="{% static 'projects/img/tg.svg' %}" alt=""></div>-->
-<!--                            <div class="tg__text">@telegram_krona</div>-->
-<!--                        </div>-->
-<!--                        <div class="carousel-images__img">-->
-<!--                            <div>-->
-<!--                                <img src="{% static 'projects/img/p-2.jpg' %}" alt="">-->
-<!--                            </div>-->
-<!--                            <div class="carousel-images__text">      -->
-<!--                                <h3>Проект <br> «Хэллоуин»</h3>-->
-<!--                                <div class="collapsed-h3">Проект <br> «Хэллоуин»</div>-->
-<!--                                <p><a class="button dark">Узнать больше</a></p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
         </div>
     </div>
 
     <div class="about-us-scrollwrapper">
-    <div class="about-us">
+    <div class="about-us" data-columns=2>
 
         <div class="container">
 
@@ -165,7 +159,13 @@
             <div class="team__teammates">
                 {% for t in teammates %}
                 <div class="team__teammate teammate">
+                    {% if not t.avatar %}
+                    <div class="teammate__img"><img src="{% static 'projects/img/default_avatar.jpg' %}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    {% else %}
                     <div class="teammate__img"><img src="{{ t.avatar.url }}" alt=""></div>
+                    <div class="card-gradient"></div>
+                    {% endif %}
                     <div class="card-gradient"></div>
                     <div class="teammate__text">
                         <div class="teammate__name">{{ t.name }}</div>
@@ -223,6 +223,6 @@
             </div>
         </div>
     </div>
+    <script src="{% static 'projects/js/main.js' %}"></script>
 {% endblock content %}
 
-<script src="{% static 'projects/js/main.js' %}"></script>

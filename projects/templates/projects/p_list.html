@@ -1,0 +1,17 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<br><br>
+
+<div class="reports">
+    {% for p in list_of_p %}
+    <div class="report" style="color:red">
+        <div>
+            <button onclick="window.location.href='{% url 'make_carousel' project_slug=p.slug %}';">{{p}}</button>
+        </div>
+        <hr>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

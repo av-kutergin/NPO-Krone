@@ -76,27 +76,29 @@ class Project(TranslatableModel):
                 self.content_brief = self.content[:200]
 
     @staticmethod
-    def make_carousel(project=None):
+    def make_carousel_from_project(project=None):
         new_cariousel = Carousel.objects.create(display_name='', background_image=b'', content='')
-        if project:
-            for lang in ['ru', 'en']:
-                project.set_current_language(lang)
-                new_cariousel.set_current_language(lang)
-                new_cariousel.display_name = project.name
-                new_cariousel.background_image = project.photo
-                new_cariousel.content = project.sumamry
-                new_cariousel.project = project
-            new_cariousel.save()
-        else:
-            new_cariousel.set_current_language('ru')
-            new_cariousel.display_name = 'DefaultRu'
-            new_cariousel.background_image = b''
-            new_cariousel.content = 'DefaultRu'
-            new_cariousel.set_current_language('en')
-            new_cariousel.display_name = 'DefaultEn'
-            new_cariousel.background_image = b''
-            new_cariousel.content = 'DefaultEn'
-            new_cariousel.save()
+        for lang in ['ru', 'en']:
+            project.set_current_language(lang)
+            new_cariousel.set_current_language(lang)
+            new_cariousel.display_name = project.name
+            new_cariousel.background_image = project.photo
+            new_cariousel.content = project.summary
+            new_cariousel.project = project
+        new_cariousel.save()
+
+    @staticmethod
+    def make_carousel_default(project=None):        
+        new_cariousel = Carousel.objects.create(display_name='', background_image=b'', content='')
+        new_cariousel.set_current_language('ru')
+        new_cariousel.display_name = 'DefaultRu'
+        new_cariousel.background_image = b''
+        new_cariousel.content = 'DefaultRu'
+        new_cariousel.set_current_language('en')
+        new_cariousel.display_name = 'DefaultEn'
+        new_cariousel.background_image = b''
+        new_cariousel.content = 'DefaultEn'
+        new_cariousel.save()
 
 
     # IF NEEDED
@@ -237,7 +239,7 @@ class AboutUs(TranslatableModel):
         name=models.CharField(verbose_name='Имя', max_length=255),
         text=RichTextField(verbose_name='Текст', blank=True)
     )
-    position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
+    #position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
 
 
 @receiver(post_save, sender=Guest)
@@ -265,7 +267,7 @@ def set_doc_image(sender, instance, **kwargs):
     instance.clean()
     if not instance.image:
         filepath = instance.file.path
-        name = filepath.split('/')[-1]
+        name = os.path.split(filepath)[-1]
         stream = pdf2png(instance)
         instance.image.save(f'{name}.png', ContentFile(stream), save=False)
 
