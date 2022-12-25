@@ -300,33 +300,19 @@ def make_carousel_from_project(request, project_slug):
     new_carousel.save()
     return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.id,)))
 
-
-    # project = Project.objects.get(slug=project_slug)
-    # Project.make_carousel_from_project(project)
-    # return HttpResponseRedirect(reverse('admin:index'))
-
-
 def make_carousel_default(request):
-    # path = os.path.join(STATIC_ROOT, '1.png')
-    new_carousel = Carousel.objects.create(display_name='', background_image='1.png', content='')
-
-    # with open(path, 'rb') as f:  # use 'rb' mode for python3
-    #     data = File(f)
-    #     new_carousel.background_image.save('1.png', data, True)
-
-    # new_carousel.background_image = '1.png'
+    new_carousel = Carousel.objects.create(display_name='', background_image='carousel/2022/p-2.jpg', content='')
 
     new_carousel.set_current_language('ru')
-    new_carousel.display_name = 'DefaultRu'
-    new_carousel.content = 'DefaultRu'
+    new_carousel.display_name = 'Наша задача'
+    new_carousel.collapsed_content = 'АНО «Крона»'
+    new_carousel.content = 'Мы объединяем людей и помогаем в реализации их инициатив, затрагиявая социально значимые вопросы, используя методы игрофикации и развлекательный контент'
+    new_carousel.img_offset_x = 110
+    new_carousel.save()
     new_carousel.set_current_language('en')
-    new_carousel.display_name = 'DefaultEn'
-    # new_carousel.background_image = b''
-    new_carousel.content = 'DefaultEn'
+    new_carousel.display_name = 'Our mission'
+    new_carousel.collapsed_content = 'Krone'
+    new_carousel.content = '...'
     new_carousel.save()
     return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.id,)))
-
-
-    # Project.make_carousel_default()
-    # return HttpResponseRedirect(reverse('admin:index'))
 
