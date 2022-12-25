@@ -25,7 +25,7 @@
     color: white;
     text-shadow: 2px 2px 10px #000000fc;
     background: url('../img/btbg.svg');
-    background-size: 100% 150%;
+    background-size: contain;
     background-position: center;
     filter: grayscale(0.2) brightness(1.1);
 }
@@ -35,7 +35,7 @@
 }
 
 .project__date.is-old {
-    color: #000;
+    color: #5f5f5f;
     text-shadow: none;
     padding: 2px;
 }

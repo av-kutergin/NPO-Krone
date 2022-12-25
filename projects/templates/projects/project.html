@@ -10,7 +10,7 @@
 
 {% block content %}
 
-    <div class="project">    
+    <div class="project" style="opacity:0.01">    
         <div class="container">
 
             <div class="project__title">
@@ -37,5 +37,36 @@
                 {% endif %}
         </div>
     </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            let html = document.querySelector('.project__content').innerHTML
+            document.querySelector('.project__content').innerHTML = html
+                .replace(/<img.*?>/g, (match) => `<div class="project__photo">
+                        <div class="project__photo-back">
+                            <div class="project__photo-back-img">
+                                ${match}
+                            </div>
+                        </div>
+                        <div class="project__photo-front">
+                            <div class="project__photo-front-img">
+                                ${match}
+                            </div>
+                        </div>
+                    </div>`)
+
+            Array.from(document.querySelectorAll('.project__content img')).forEach(
+                x => {
+                    let width = x.style.width
+                    let style = x.getAttribute('style')
+                    if (style) {
+                        x.closest('.project__photo').setAttribute('style', style)
+                        x.setAttribute('style', null)
+                        x.style.width = '100%'
+                    }
+                })
+            document.querySelector('.project').style.opacity = '1';
+        })
+    </script>
 
 {% endblock content %}

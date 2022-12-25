@@ -1,0 +1,51 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% load static %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'projects/css/common.css' %}">
+<link rel="stylesheet" href="{% static 'projects/css/main-top.css' %}">
+{% endblock %}
+{% block field_sets %}
+{% if language_tabs %}{% include "admin/parler/language_tabs.html" %}{% endif %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<style>
+    .form-row.field-content_brief {
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+</style>
+<script>
+function stripHtml(html)
+{
+   let tmp = document.createElement("DIV");
+   tmp.innerHTML = html;
+   return tmp.textContent || tmp.innerText || "";
+}
+
+setInterval(() => {
+    let html = ''
+    try {
+        let content = document.querySelector('.cke_wysiwyg_frame').contentWindow.document.querySelector('.cke_editable')
+        html = content.innerHTML;
+    } catch {
+        /*swallow*/
+    }
+
+    let cut = /.{1,800}<\/p>/g.exec(html)[0];
+    let short = '';
+    cut.match(/<p>(.*?)<\/p>/g).forEach((x) => {
+        console.log(x)
+        if (x.length > short.length && x.length < 400) {
+            short = x;
+        }
+    });
+    document.querySelector('textarea[name="content_brief"]').value = stripHtml(short);
+}, 500)
+</script>
+{{ block.super }}
+{% endblock %}
