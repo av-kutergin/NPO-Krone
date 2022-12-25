@@ -8,7 +8,7 @@
     {% for p in list_of_p %}
     <div class="report" style="color:red">
         <div>
-            <button onclick="window.location.href='{% url 'make_carousel' project_slug=p.slug %}';">{{p}}</button>
+            <button onclick="window.location.href='{% url 'make_carousel_from_project' project_slug=p.slug %}';">{{p}}</button>
         </div>
         <hr>
     </div>

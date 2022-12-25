@@ -12,23 +12,6 @@ admin.site.site_title = _('Админ-панель НКО "Крона"')
 admin.site.site_header = _('Админ-панель НКО "Крона"')
 
 
-@admin.action(description=_('Сделать карусель'))
-def make_carousel(self, request, queryset):
-    for obj in queryset:
-        new_obj = Carousel.objects.create(display_name='', background_image=b'', content='')
-        obj.set_current_language('ru')
-        new_obj.set_current_language('ru')
-        new_obj.display_name = obj.name
-        new_obj.background_image = obj.photo
-        new_obj.content = obj.content
-        obj.set_current_language('en')
-        new_obj.set_current_language('en')
-        new_obj.display_name = obj.name
-        new_obj.background_image = obj.photo
-        new_obj.content = obj.content
-        new_obj.save()
-
-
 @admin.register(Project)
 class ProjectAdmin(TranslatableAdmin):
     list_display = ('id', 'name', 'date', 'total_places',)
@@ -37,7 +20,7 @@ class ProjectAdmin(TranslatableAdmin):
     fields = ('name', 'content', 'content_brief', 'summary', 'howto',
               'total_places', 'date', 'price', 'qr_reveal_date', 'slug', 'photo', 'show_on_main'
               )
-    actions = [make_carousel]
+    # actions = [make_carousel]
     change_form_template = str(BASE_DIR) + '/templates/admin/change_form_project.html' 
 
     def get_prepopulated_fields(self, request, obj=None):
@@ -64,7 +47,7 @@ class SimpleDocumentAdmin(TranslatableAdmin):
 
 @admin.register(Carousel)
 class CarouselAdmin(TranslatableAdmin):
-    list_display = ('id', 'display_name')
+    list_display = ('id', 'display_name', 'position')
     list_display_links = ('display_name',)
     list_filter = (
         # ('translations__display_name', SortedRelatedFieldListFilter),

@@ -25,6 +25,6 @@ urlpatterns = [
     path('set_arrived/<slug:ticket_uid>', views.set_arrived, name='set_arrived'),
     path('cash-desk/result-payment', views.result_payment, name='result_payment'),  # Payment ResultURL
     path('helpme', views.p_list, name='helpme'),
-    path('make_carousel/<slug:project_slug>', views.make_carousel, name='make_carousel'),
-    path('make_default_carousel', views.make_default_carousel, name='make_default_carousel'),
+    path('make_carousel_from_project/<slug:project_slug>', views.make_carousel_from_project, name='make_carousel_from_project'),
+    path('make_carousel_default', views.make_carousel_default, name='make_carousel_default'),
 ]

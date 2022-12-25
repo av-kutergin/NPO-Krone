@@ -5,6 +5,8 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
+from django.core.files.images import ImageFile
 from django.core.mail import EmailMessage
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -13,6 +15,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from dotenv import load_dotenv
 
+from Krone.settings import STATIC_ROOT
 from projects.forms import AddGuestForm
 from projects.models import Project, Document, Carousel, TeamMate, Guest, DonateButton, AboutUs
 from projects.utils import calculate_signature, parse_response, check_signature_result, generate_payment_link, check_success_payment
@@ -284,13 +287,46 @@ def p_list(request):
     return render(request, 'projects/p_list.html', context)
 
 
-def make_carousel(request, project_slug):
+def make_carousel_from_project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
-    Project.make_carousel_from_project(project)
-    return HttpResponseRedirect(reverse('admin:index'))
+    new_carousel = Carousel.objects.create(display_name='', background_image=b'', content='')
+    for lang in ['ru', 'en']:
+        project.set_current_language(lang)
+        new_carousel.set_current_language(lang)
+        new_carousel.display_name = project.name
+        new_carousel.background_image = project.photo
+        new_carousel.content = project.summary
+        new_carousel.project = project
+    new_carousel.save()
+    return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.id,)))
 
 
-def make_default_carousel(request):
-    Project.make_carousel_default()
-    return HttpResponseRedirect(reverse('admin:index'))
+    # project = Project.objects.get(slug=project_slug)
+    # Project.make_carousel_from_project(project)
+    # return HttpResponseRedirect(reverse('admin:index'))
+
+
+def make_carousel_default(request):
+    # path = os.path.join(STATIC_ROOT, '1.png')
+    new_carousel = Carousel.objects.create(display_name='', background_image='1.png', content='')
+
+    # with open(path, 'rb') as f:  # use 'rb' mode for python3
+    #     data = File(f)
+    #     new_carousel.background_image.save('1.png', data, True)
+
+    # new_carousel.background_image = '1.png'
+
+    new_carousel.set_current_language('ru')
+    new_carousel.display_name = 'DefaultRu'
+    new_carousel.content = 'DefaultRu'
+    new_carousel.set_current_language('en')
+    new_carousel.display_name = 'DefaultEn'
+    # new_carousel.background_image = b''
+    new_carousel.content = 'DefaultEn'
+    new_carousel.save()
+    return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.id,)))
+
+
+    # Project.make_carousel_default()
+    # return HttpResponseRedirect(reverse('admin:index'))
 

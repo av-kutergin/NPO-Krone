@@ -39,8 +39,8 @@ class Project(TranslatableModel):
     # vacant_places = models.PositiveIntegerField(verbose_name='Количество свободных мест', editable=False, blank=True)
 
     class Meta:
-        verbose_name = _('Проект')
-        verbose_name_plural = _('Проекты')
+        verbose_name = 'Проект'
+        verbose_name_plural = 'Проекты'
         ordering = ['-date']
 
     def __str__(self):
@@ -75,30 +75,30 @@ class Project(TranslatableModel):
             else:
                 self.content_brief = self.content[:200]
 
-    @staticmethod
-    def make_carousel_from_project(project=None):
-        new_cariousel = Carousel.objects.create(display_name='', background_image=b'', content='')
-        for lang in ['ru', 'en']:
-            project.set_current_language(lang)
-            new_cariousel.set_current_language(lang)
-            new_cariousel.display_name = project.name
-            new_cariousel.background_image = project.photo
-            new_cariousel.content = project.summary
-            new_cariousel.project = project
-        new_cariousel.save()
-
-    @staticmethod
-    def make_carousel_default(project=None):        
-        new_cariousel = Carousel.objects.create(display_name='', background_image=b'', content='')
-        new_cariousel.set_current_language('ru')
-        new_cariousel.display_name = 'DefaultRu'
-        new_cariousel.background_image = b''
-        new_cariousel.content = 'DefaultRu'
-        new_cariousel.set_current_language('en')
-        new_cariousel.display_name = 'DefaultEn'
-        new_cariousel.background_image = b''
-        new_cariousel.content = 'DefaultEn'
-        new_cariousel.save()
+    # @staticmethod
+    # def make_carousel_from_project(project=None):
+    #     new_cariousel = Carousel.objects.create(display_name='', background_image=b'', content='')
+    #     for lang in ['ru', 'en']:
+    #         project.set_current_language(lang)
+    #         new_cariousel.set_current_language(lang)
+    #         new_cariousel.display_name = project.name
+    #         new_cariousel.background_image = project.photo
+    #         new_cariousel.content = project.summary
+    #         new_cariousel.project = project
+    #     new_cariousel.save()
+    #
+    # @staticmethod
+    # def make_carousel_default(project=None):
+    #     new_cariousel = Carousel.objects.create(display_name='', background_image=b'', content='')
+    #     new_cariousel.set_current_language('ru')
+    #     new_cariousel.display_name = 'DefaultRu'
+    #     new_cariousel.background_image = b''
+    #     new_cariousel.content = 'DefaultRu'
+    #     new_cariousel.set_current_language('en')
+    #     new_cariousel.display_name = 'DefaultEn'
+    #     new_cariousel.background_image = b''
+    #     new_cariousel.content = 'DefaultEn'
+    #     new_cariousel.save()
 
 
     # IF NEEDED
@@ -195,6 +195,15 @@ class Document(TranslatableModel):
 
 
 class Carousel(TranslatableModel):
+    POSITION = (
+        (0, "0"),
+        (1, "1"),
+        (2, "2"),
+        (3, "3"),
+        (4, "4"),
+        (5, "5"),
+    )
+
     translations = TranslatedFields(
         display_name=models.CharField(max_length=100, verbose_name='Наименование', default=_('Некоторое')),
         content=RichTextField(verbose_name='Контент', null=True, default=_('')),
@@ -202,10 +211,14 @@ class Carousel(TranslatableModel):
     background_image = models.ImageField(verbose_name='Картинка фона', null=True, upload_to='carousel/%Y/')
     img_offset_x = models.FloatField(verbose_name='Смещение картинки x', default=0.0)
     img_offset_y = models.FloatField(verbose_name='Смещение картинки y', default=0.0)
-    img_scale = models.FloatField(verbose_name='Масштаб картинки', default=0.0)
+    img_scale = models.FloatField(verbose_name='Масштаб картинки', default=100.0)
     collapsed_content = models.CharField(max_length=100, verbose_name='Контент для свёрнутого представления', null=True)
-    position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
-    project = models.ForeignKey('Project', null=True, blank=True, on_delete=models.CASCADE)
+    position = models.PositiveSmallIntegerField(
+        default=0,
+        verbose_name='Позиция в карусели (0 - не отображать)',
+        choices=POSITION,
+    )
+    project = models.ForeignKey('Project', null=True, blank=True, on_delete=models.CASCADE, editable=False)
 
     def __str__(self):
         return self.display_name
@@ -240,6 +253,11 @@ class AboutUs(TranslatableModel):
         text=RichTextField(verbose_name='Текст', blank=True)
     )
     #position = models.IntegerField(default=0, verbose_name='Позиция в карусели (0 - не отображать)')
+
+    class Meta:
+        verbose_name = 'О нас'
+        verbose_name_plural = 'О нас'
+        ordering = ['id']
 
 
 @receiver(post_save, sender=Guest)
