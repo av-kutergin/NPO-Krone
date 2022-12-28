@@ -1,0 +1,35 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<br><br>
+
+<div class="reports">
+    {% for g in list_of_guests %}
+    {% if g.arrived %}
+    <div class="report" style="color:green">
+        <div>{{ g }}</div>
+        <hr>
+    </div>
+    {% else %}
+    <div class="report" style="color:red">
+        <div>{{ g }}
+            <button onclick="window.location.href='{% url 'set_arrived' ticket_uid=g.ticket_uid %}';">{% translate "Гость пришёл" %}
+            </button>
+        </div>
+        <hr>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+<br>
+<button class="nav-button go-back">{% translate "Назад" %}</button>
+
+<script>
+document.querySelector('.go-back').addEventListener('click', () => {
+  history.back();
+})
+</script>
+{% endblock content %}
+<!--        <div>{{ g }} <a href="{{ g.set_arrived }}" style="font-size: 0.7em;">{% translate "Гость пришёл" %}</a></div>-->
+<!--        <div>{{ g }} <a href="{% url 'set_arrived' ticket_uid=g.ticket_uid %}" style="font-size: 0.7em;">{% translate "Гость пришёл" %}</a></div>-->
