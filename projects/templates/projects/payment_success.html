@@ -70,6 +70,7 @@
                 {% endfor %}
                 {% if guest %}
                     <img id="qr" src="{{ guest.qr.url }}" alt="">
+                    {{ qr_link }}
                 {% endif %}
             </div>
             <a href="{{ main_page }}"><div class="success__back">{% translate "Вернуться на главную" %}</div></a>

@@ -105,7 +105,8 @@ def payment_success(request):
         description = param_request['description']
         if description != 'donation':
             guest = Guest.objects.get(ticket_uid=description)
-            # project = guest.project
+            project = guest.project
+            qr_link = f'тут будет ссылка'
             # image_data = bytes(guest.qr.read())
             # message_text = _(f'''К сообщению прикреплён Ваш QR для входа на мероприятие: {project.name}
             # За сутки до мероприятия на странице, на которую ведёт Ваш QR, появится подробная интрукция о том, как нас найти.
@@ -122,6 +123,7 @@ def payment_success(request):
             context = {
                 'title': _('Успешная оплата'),
                 'guest': guest,
+                'qr_link': qr_link,
                 }
             # return render(request, 'projects/payment_success.html', context)
         else:
