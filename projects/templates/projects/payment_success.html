@@ -68,6 +68,9 @@
 <!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-47">-->
 <!--                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-48">-->
                 {% endfor %}
+                {% if guest %}
+                    <img id="qr" src="{{ guest.qr.url }}" alt="">
+                {% endif %}
             </div>
             <a href="{{ main_page }}"><div class="success__back">{% translate "Вернуться на главную" %}</div></a>
         </div>

@@ -54,7 +54,6 @@ class Project(TranslatableModel):
 
     def is_over(self):
         result = (self.date - datetime.datetime.now()).days < -1
-        print(self.name, result)
         return result
 
     def is_it_time_to_reveal_howto(self):
@@ -185,10 +184,14 @@ class Document(TranslatableModel):
     def download(self):
         return reverse('download_file', kwargs={'pk': self.id, 'file_type': 'document'})
 
-    def clean(self):
-        if not self.name:
-            self.name_ru = self.file.url.split('/')[-1]
-            return
+    # def clean(self):
+    #     for lang in ['en', 'ru']:
+    #         self.set_current_language(lang)
+    #         if not self.name:
+    #             self.name = self.file.url.split('/')[-1]
+    #             self.save()
+    #             return
+    #     return
 
     # def get_absolute_url(self):
     #     return reverse('display_document', kwargs={'pk': self.id})

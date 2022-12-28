@@ -4,6 +4,7 @@ import os
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from django.core.files.images import ImageFile
@@ -74,7 +75,7 @@ class ShowProject(DetailView):
     context_object_name = 'project'
 
 
-def add_guest(request, project_slug):
+def participate(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     context = {
         'event': project,
@@ -122,10 +123,10 @@ def payment_success(request):
                 'title': _('Успешная оплата'),
                 'guest': guest,
                 }
-            # return render(request, 'projects/success.html', context)
+            # return render(request, 'projects/payment_success.html', context)
         else:
             context = {'title': _('Успешная оплата'), }
-        return render(request, 'projects/success.html', context)
+        return render(request, 'projects/payment_success.html', context)
 
 
 def donate(request):
@@ -153,12 +154,8 @@ class DocumentListView(ListView):
 
 
 ####___________________________________####
-def contacts(request):
-    return render(request, 'projects/contacts.html', {'title': _('Контакты')})
-
-
-def sitemap(request):
-    return render(request, 'projects/sitemap.html', {'title': _('Карта сайта')})
+# def sitemap(request):
+#     return render(request, 'projects/sitemap.html', {'title': _('Карта сайта')})
 
 
 def login_page(request):
@@ -220,6 +217,7 @@ def set_arrived(request, ticket_uid):
     if guest.paid:
         guest.arrived = True
         guest.save(update_fields=['arrived'])
+        messages.info(request, f'Гость {guest} отмечен пришедшим.')
     return redirect('guest_list', project.slug)
 
 
@@ -299,6 +297,7 @@ def make_carousel_from_project(request, project_slug):
         new_carousel.project = project
     new_carousel.save()
     return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.id,)))
+
 
 def make_carousel_default(request):
     new_carousel = Carousel.objects.create(display_name='', background_image='carousel/2022/p-2.jpg', content='')

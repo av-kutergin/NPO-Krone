@@ -7,7 +7,7 @@ from projects.forms import AddGuestForm
 
 class TestForms(SimpleTestCase):
 
-    def test_add_guest_form_valid(self):
+    def test_participate_form_valid(self):
         form = AddGuestForm(data={
             'firstname': 'Linus',
             'lastname': 'Torvalds',
@@ -18,7 +18,7 @@ class TestForms(SimpleTestCase):
         })
         self.assertTrue(form.is_valid())
 
-    def test_add_guest_form_invalid(self):
+    def test_participate_form_invalid(self):
         form = AddGuestForm(data={
             'firstname': 'Linus',
             'lastname': '',
@@ -30,8 +30,8 @@ class TestForms(SimpleTestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(len(form.errors), 3)
 
-    def test_add_guest_form_no_data(self):
+    def test_participate_form_no_data(self):
         form = AddGuestForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEqual(len(form.errors), 6)
+        self.assertEqual(len(form.errors), 4)
