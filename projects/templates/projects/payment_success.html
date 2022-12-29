@@ -10,95 +10,189 @@
 
 {% block content %}
 
+<style>
+    .instr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid gray; 
+        border-radius: 30px;padding: 40px;
+    }
+    #qr-title {
+        display: none;
+    }
+    @media print {
+        body * {
+            display: none;
+        }
+        .success {
+            display: block;
+        }
+        .success * {
+            display: none;
+        }
+        .success .container {
+            width: 100%;
+            left: 0;
+            display: block;
+        }
+        .success .container * {
+            display: none;
+        }
+        #qr-title {
+            display: block;
+        }
+        #qr {
+            display: block
+        }
+    }
+</style>
+
 {% if guest %}
     <div class="success">    
-        <div class="container">
-            <h2>{% translate "Оплата прошла успешно" %}</h2>
-            <div class="success__thanks">{% translate "Оплата прошла успешно" %}</div>
-            <div class="success__heart">
-                    <img src="{% static 'projects/img/heart.svg %}" alt="" class="heart" onmouseenter="pet=true" onmouseleave="pet=false" onclick="splash()">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-0">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-1">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-2">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-3">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-4">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-5">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-6">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-7">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-8">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-9">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-10">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-11">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-12">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-13">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-14">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-15">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-16">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-17">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-18">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-19">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-20">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-21">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-22">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-23">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-24">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-25">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-26">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-27">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-28">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-29">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-30">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-31">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-32">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-33">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-34">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-35">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-36">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-37">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-38">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-39">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-40">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-41">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-42">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-43">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-44">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-45">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-46">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-47">
-                    <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-48">
-                {% if guest %}
-                    <img id="qr" src="{{ guest.qr.url }}" alt="">
-                    {{ qr_link }}
-                {% endif %}
+            <div class="container"><div class="success__heart">
+                <img src="{% static 'projects/img/heart.svg' %}" alt="" class="heart">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-1">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-2">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-3">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-4">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-5">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-6">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-7">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-8">
+                <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-9">
             </div>
+            <h2>{% translate "Оплата прошла успешно" %}</h2>
+
+            <div class="instr" >
+                Сохраните ссылку c билетом. Его надо будет показать при входе на мероприятие.
+                <br>  
+                <br>  
+                Внутри ссылки находится QR-код билета и инструкция о том как добраться.
+                <br>  
+                <br>  
+                <br>  
+                <a href="https://music.yandex.ru/artist/4019" style="border:1px solid gray; border-radius:30px;padding: 10px 40px; color:blue !important;box-shadow: 0 0 10px #0000ff61;">https://music.yandex.ru/artist/4019</a>
+            </div> 
+
+            <br>  
+            <br> 
+
+            <div style="width:25%;text-align:center;">Также вы можете сохранить на компьютер или распечатать QR-код билета с помощью кнопок ниже</div>
+
+            <br> 
+
+            <h3 id="qr-title">Название мероприятия!!!</h3>
+
+            <img id="qr" src="{{ guest.qr.url }}" alt="">
+
+            <br>  
+            <a href="javascript:if(window.print)window.print()" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">Распечатать</a>
+            <br>  
+            <a href="" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">Скачать</a>
+            
+            <br>  
+            <br> 
+            <br> 
+
             <a href="{{ main_page }}"><div class="success__back">{% translate "Вернуться на главную" %}</div></a>
+        
+            <br> 
+            <br> 
+            <br> 
+            <br> 
+
         </div>
     </div>
 {% else %}
 <div style="font-size:20px; text-align: center;">
+    <div class="success__heart">
+        <img src="{% static 'projects/img/heart.svg' %}" alt="" class="heart" onmouseenter="pet=true" onmouseleave="pet=false" onclick="splash()">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-1">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-2">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-3">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-4">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-5">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-6">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-7">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-8">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-9">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-10">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-11">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-12">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-13">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-14">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-15">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-16">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-17">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-18">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-19">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-20">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-21">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-22">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-23">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-24">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-25">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-26">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-27">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-28">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-29">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-30">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-31">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-32">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-33">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-34">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-35">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-36">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-37">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-38">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-39">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-40">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-41">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-42">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-43">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-44">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-45">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-46">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-47">
+        <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-48">
+    </div>
     <p>{% translate "Спасибо за Ваше щедрое пожертвование!" %}</p>
 </div>
 {% endif %}
 
 {% block javascript %}
-{% block.super() %}
+{{ block.super }}
     <script> 
         let index = 0
-        let maxIndex = 48
+
+        {% if guest %}
+            let maxIndex = 10
+        {% else %}
+            let maxIndex = 100
+        {% endif %}
+
         let animations = {}
         let pet = false
 
+        function saveQrToLocalStorage() {
+            //localStorage.setItem(`NPOKRONE-QR-for-project-${'!!!'}`, 'Tom');
+        }
+
         window.addEventListener('load', () => {
+
+            saveQrToLocalStorage();
+
             setInterval(() => {
                 if (!pet) {
                     bump()
                 }
             }, 3000)
-            setInterval(() => {
+            /*setInterval(() => {
                 if (pet) {
                     bump()
                 }
-            }, 1500)
+            }, 1500)*/
             setInterval(() => {
                 if (pet) {
                     radiate()
