@@ -2,15 +2,21 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
-
-<p>{{ message }}</p>
-
 <style>
     .button:hover {
         border: 2px solid green;
     }
 </style>
 <br>
+
+{% if messages %}
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+{% endif %}
+
+<div class="project block">
+    {% if flag %}
 <div style="display:flex;flex-direction:column;align-items:center;">
 {% if flag %}
     <h2>{{ project.name }}</h2>

@@ -222,7 +222,7 @@ def set_arrived(request, ticket_uid):
     if guest.paid:
         guest.arrived = True
         guest.save(update_fields=['arrived'])
-        messages.add_message(request, messages.INFO, f'Гость {guest} отмечен пришедшим.')
+        messages.add_message(request, messages.INFO, 'Гость отмечен пришедшим.')
     return redirect('guest_list', project.slug)
 
 
@@ -255,6 +255,7 @@ def guest_list(request, project_slug):
         'list_of_guests': list_of_guests,
         'title': _('Список гостей')
     }
+    messages.add_message(request, messages.INFO, 'Гость отмечен пришедшим.')
     return render(request, 'projects/guest_list.html', context)
 
 

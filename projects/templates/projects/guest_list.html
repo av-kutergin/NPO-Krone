@@ -3,7 +3,11 @@
 {% load i18n %}
 {% block content %}
 <br><br>
-
+{% if messages %}
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+{% endif %}
 <p>{{ message }}</p>
 
 <div class="reports" style="display:flex;flex-direction:column;align-items:center;">
