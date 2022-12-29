@@ -43,7 +43,7 @@
 
 .heart.splashed {
     transform: scale(1.2);
-    filter: blur(1px) brightness(1.5);
+    filter: blur(0.1px) brightness(1.2);
 }
 
 .h {
