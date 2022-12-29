@@ -42,6 +42,43 @@ a {
     display: flex;
     justify-content: space-between;
 }
+.my-tickets {
+    position: fixed;
+    right: 30px;
+    top: 100px;
+    z-index: 20;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 20px;
+    background: white;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: 0.3s ease-out;
+}
+.my-tickets:hover {
+    border-color: blue;
+    color: blue;
+    opacity: 1;
+}
+.my-tickets__top {
+    display: flex;
+}
+.my-tickets__icon {
+    height: 2rem;
+    margin-right: 10px;
+}
+.my-tickets__title {
+    line-height: 2rem;
+}
+.my-tickets a:hover {
+    color: blue;
+}
+.my-tickets__list {
+    display: none;
+}
+.my-tickets.is-active .my-tickets__list {
+    display: block;
+}
 .nav-burger-button {
     display: none;
 }
@@ -323,8 +360,23 @@ nav .is-active {
     .container {
         width: 480px;
     }
+    .my-tickets__icon {
+        margin-right: 0
+    }
+    .my-tickets__title {
+        display: none;
+    }
+    .my-tickets:is-active .my-tickets__title {
+        display: block;
+    }
     .icon {
         width: 70px;
+    }
+    .my-tickets__icon {
+        margin-right: 0
+    }
+    .my-tickets__title {
+        display: none;
     }
     .nav {
         display: none;

@@ -18,7 +18,7 @@ from parler.models import TranslatedFields, TranslatableModel
 from phonenumber_field.modelfields import PhoneNumberField
 
 from Krone.settings import MEDIA_ROOT
-from projects.utils import get_uuid_id, COLORS, calculate_signature, pdf2png, strfdelta
+from projects.utils import get_uuid_id, COLORS, calculate_signature, pdf2png
 
 
 class Project(TranslatableModel):
@@ -26,8 +26,8 @@ class Project(TranslatableModel):
         name=models.CharField(max_length=100, verbose_name=_('Название')),
         content=RichTextField(blank=True, verbose_name=_('Контент')),
         content_brief=models.TextField(max_length=200, blank=True, verbose_name=_('Контент кратко')),
-        summary=models.CharField(max_length=50, blank=True, verbose_name=_('В двух словах')),
-        howto=models.TextField(max_length=200, verbose_name=_('Как добраться')),
+        summary=models.CharField(max_length=50, blank=True, verbose_name=_('В двух словах')),       
+        howto=RichTextField(blank=True, max_length=10000, verbose_name=_('Как добраться')),
     )
     price = models.DecimalField(max_digits=5, decimal_places=0, verbose_name=_('Стоимость входа'))
     date = models.DateTimeField(verbose_name=_('Дата проведения'))
@@ -59,8 +59,8 @@ class Project(TranslatableModel):
     def is_it_time_to_reveal_howto(self):
         return datetime.date.today() >= self.qr_reveal_date
 
-    def time_before_reveal(self):
-        return strfdelta(datetime.datetime.combine(self.qr_reveal_date, datetime.datetime.min.time()) - datetime.datetime.now(), "%D дней %H часов и %M минут")
+    def days_to_event(self):
+        return (self.date - datetime.datetime.now()).days
 
     def has_vacant(self):
         return int(self.total_places) - len(self.guest_set.all().filter(paid=True))

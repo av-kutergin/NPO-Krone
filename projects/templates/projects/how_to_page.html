@@ -2,8 +2,21 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
+<style>
+    img {
+        max-width: 100vw; 
+    }
+    .project {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 3rem;
+        display:flex; 
+        flex-direction:column; 
+        align-items:center
+    }
+</style>
 <br>
-<div class="project" style="display:flex; flex-direction:column; align-items:center">
+<div class="project">
     <h2>{{ project.name }}</h2>
 
     <p>{% translate "Дата проведения мероприятия:" %}</p>
@@ -12,7 +25,7 @@
     
     {% if project.is_it_time_to_reveal_howto and not project.is_over %}
         <br>
-        <p style="width: 40%">{{ project.howto }}</p>
+        <p style="width: 40%">{{ project.howto | safe }}</p>
         <br>
         <div class="qr-code">
             <img src="{{ guest.qr.url }}" alt="">

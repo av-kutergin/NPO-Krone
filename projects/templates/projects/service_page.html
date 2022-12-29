@@ -2,28 +2,22 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
+
+<p>{{ message }}</p>
+
 <style>
     .button:hover {
         border: 2px solid green;
     }
 </style>
 <br>
-
-{% if messages %}
-    {% for message in messages %}
-        {{ message }}
-    {% endfor %}
-{% endif %}
-
-<div class="project block">
-    {% if flag %}
 <div style="display:flex;flex-direction:column;align-items:center;">
 {% if flag %}
     <h2>{{ project.name }}</h2>
     {% if not guest.arrived and not project.is_over %}
         <div style="display:flex;flex-direction:column;align-items:center;">
             <style>body {background:#8de6a8;}</style>
-            <h3 style="text-align:center">{% translate "У гостя есть билет! Можно отметить, что гость пришёл!" %}</h3>
+            <h3 style="text-align:center">{% translate "У гостя есть билет! Можно отметить, что он пришёл!" %}</h3>
             <br>
             <a href="{% url 'set_arrived' ticket_uid=guest.ticket_uid %}" class="button" style="display:inline-block">{% translate "Гость пришёл" %}
             </a>

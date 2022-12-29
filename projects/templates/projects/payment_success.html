@@ -49,7 +49,7 @@
 </style>
 
 {% if guest %}
-    <div class="success" style="overflow:hidden;">    
+    <div class="success">    
             <div class="container"><div class="success__heart">
                 <img src="{% static 'projects/img/heart.svg' %}" alt="" class="heart">
                 <img src="{% static 'projects/img/heart animation.svg' %}" alt="" class="h h-1">
@@ -65,14 +65,14 @@
             <h2>{% translate "Оплата прошла успешно" %}</h2>
 
             <div class="instr" >
-                Сохраните ссылку c билетом. Его надо будет показать при входе на мероприятие.
+                {% translate "По ссылке находится QR-код билета и инструкция о том как добраться." %}
                 <br>  
                 <br>  
-                Внутри ссылки находится QR-код билета и инструкция о том как добраться.
+                {% translate "Сохраните ссылку. QR-код надо будет показать при входе на мероприятие." %}
                 <br>  
                 <br>  
                 <br>  
-                <a href="https://music.yandex.ru/artist/4019" style="border:1px solid gray; border-radius:30px;padding: 10px 40px; color:blue !important;box-shadow: 0 0 10px #0000ff61;">https://music.yandex.ru/artist/4019</a>
+                <input type="text" value="{{ qr_link }}" style="padding:20px; border-radius:10px; border: 1px solid gray; width:80%">
             </div> 
 
             <br>  
@@ -82,14 +82,14 @@
 
             <br> 
 
-            <h3 id="qr-title">Название мероприятия!!!</h3>
+            <h3 id="qr-title">{{ guest.project.name }}</h3>
 
             <img id="qr" src="{{ guest.qr.url }}" alt="">
 
             <br>  
             <a href="javascript:if(window.print)window.print()" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">Распечатать</a>
             <br>  
-            <a href="" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">Скачать</a>
+            <a href="{{ guest.download_qr_image }}" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">Скачать</a>
             
             <br>  
             <br> 
@@ -105,7 +105,7 @@
         </div>
     </div>
 {% else %}
-<div class="success" style="padding:100px; overflow:hidden;">    
+<div class="success" style="padding:100px;">    
     <div style="font-size:20px;text-align:center;">
         <div class="success__heart">
             <img src="{% static 'projects/img/heart.svg' %}" alt="" class="heart" onmouseenter="pet=true" onmouseleave="pet=false" onclick="splash()">
@@ -179,7 +179,7 @@
 
         function saveQrToLocalStorage() {
             {% if guest %}
-                //localStorage.setItem(`NPOKRONE-QR-for-project-${'!!!'}`, 'Tom');
+                localStorage.setItem(`NPOKRONE-QR-for-project-${ '{{ guest.project.name }}' }`, '{{ qr_link }}');
             {% endif %}
         }
 
@@ -192,11 +192,11 @@
                     bump()
                 }
             }, 3000)
-            /*setInterval(() => {
+            setInterval(() => {
                 if (pet) {
                     bump()
                 }
-            }, 1500)*/
+            }, 1500)
             setInterval(() => {
                 if (pet) {
                     radiate()
