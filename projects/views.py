@@ -1,25 +1,22 @@
 import mimetypes
 import os
 
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.files import File
-from django.core.files.images import ImageFile
-from django.core.mail import EmailMessage
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from dotenv import load_dotenv
 
-from Krone.settings import STATIC_ROOT
 from projects.forms import AddGuestForm
 from projects.models import Project, Document, Carousel, TeamMate, Guest, DonateButton, AboutUs
-from projects.utils import calculate_signature, parse_response, check_signature_result, generate_payment_link, check_success_payment
+from projects.utils import calculate_signature, parse_response, check_signature_result, generate_payment_link, \
+    check_success_payment
 
 load_dotenv()
 
@@ -106,7 +103,7 @@ def payment_success(request):
         if description != 'donation':
             guest = Guest.objects.get(ticket_uid=description)
             project = guest.project
-            qr_link = f'тут будет ссылка'
+            qr_link = f'https://npokrona.ru/how-to/{project.slug}/{guest.ticket_uid}'
             # image_data = bytes(guest.qr.read())
             # message_text = _(f'''К сообщению прикреплён Ваш QR для входа на мероприятие: {project.name}
             # За сутки до мероприятия на странице, на которую ведёт Ваш QR, появится подробная интрукция о том, как нас найти.
@@ -129,6 +126,14 @@ def payment_success(request):
         else:
             context = {'title': _('Успешная оплата'), }
         return render(request, 'projects/payment_success.html', context)
+    else:
+        context = {'title': _('Ошибка оплаты')}
+        return render(request, 'projects/payment_error.html')
+
+
+def payment_error(request):
+    context = {'title': _('Ошибка оплаты')}
+    return render(request, 'projects/payment_error.html', context)
 
 
 def donate(request):
@@ -151,8 +156,6 @@ class DocumentListView(ListView):
         context = super(DocumentListView, self).get_context_data(*args, **kwargs)
         context['title'] = _('Документы')
         return context
-
-
 
 
 ####___________________________________####
@@ -219,7 +222,7 @@ def set_arrived(request, ticket_uid):
     if guest.paid:
         guest.arrived = True
         guest.save(update_fields=['arrived'])
-        messages.info(request, f'Гость {guest} отмечен пришедшим.')
+        messages.add_message(request, messages.INFO, f'Гость {guest} отмечен пришедшим.')
     return redirect('guest_list', project.slug)
 
 
@@ -278,7 +281,7 @@ def result_payment(request: str) -> str:
     return "bad sign"
 
 
-def p_list(request):
+def projects_list(request):
     list_of_p = Project.objects.all()
     context = {
         'list_of_p': list_of_p,
