@@ -4,19 +4,25 @@
 {% block content %}
 <br><br>
 
-<div class="reports">
+<p>{{ message }}</p>
+
+<div class="reports" style="display:flex;flex-direction:column;align-items:center;">
     {% for g in list_of_guests %}
     {% if g.arrived %}
-    <div class="report" style="color:green">
-        <div>{{ g }}</div>
+    <div class="report" style="display:flex;flex-direction:column;align-items:center;">
+        <div>{{ g }} ✅</div>
+        <br>
+        <br>
         <hr>
     </div>
     {% else %}
-    <div class="report" style="color:red">
+    <div class="report" style="display:flex;flex-direction:column;align-items:center;">
         <div>{{ g }}
-            <button onclick="window.location.href='{% url 'set_arrived' ticket_uid=g.ticket_uid %}';">{% translate "Гость пришёл" %}
+            <button onclick="if (confirm('Отметить, что этот гость пришёл?'))window.location.href='{% url 'set_arrived' ticket_uid=g.ticket_uid %}';">{% translate "гость пришёл" %}
             </button>
         </div>
+        <br>
+        <br>
         <hr>
     </div>
     {% endif %}
