@@ -25,7 +25,7 @@
     color: white;
     text-shadow: 2px 2px 10px #000000fc;
     background: url('../img/btbg.svg');
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     filter: grayscale(0.2) brightness(1.1);
 }
