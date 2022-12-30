@@ -87,7 +87,7 @@
 <div class="my-tickets" onclick="this.classList.contains('is-active') ? this.classList.remove('is-active') : this.classList.add('is-active')">
     <div class="my-tickets__top">
         <img class="my-tickets__icon" src="{% static 'projects/img/ticket.svg' %}" alt="">
-        <div class="my-tickets__title">Мои билеты</div>
+        <div class="my-tickets__title">{% translate "Мои билеты"%}</div>
     </div>
     <ul class="my-tickets__list">
         {% for p in not_over %}

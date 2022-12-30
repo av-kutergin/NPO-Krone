@@ -78,7 +78,7 @@
             <br>  
             <br> 
 
-            <div style="width:25%;text-align:center;">Также вы можете сохранить на компьютер или распечатать QR-код билета с помощью кнопок ниже</div>
+            <div style="width:25%;text-align:center;">{% translate "Также вы можете сохранить на компьютер или распечатать QR-код билета с помощью кнопок ниже" %}</div>
 
             <br> 
 
@@ -87,9 +87,9 @@
             <img id="qr" src="{{ guest.qr.url }}" alt="">
 
             <br>  
-            <a href="javascript:if(window.print)window.print()" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">Распечатать</a>
+            <a href="javascript:if(window.print)window.print()" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">{% translate "Распечатать" %}</a>
             <br>  
-            <a href="{{ guest.download_qr_image }}" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">Скачать</a>
+            <a href="{{ guest.download_qr_image }}" style="border:1px solid gray; border-radius:30px;padding: 10px 40px;">{% translate "Скачать" %}</a>
             
             <br>  
             <br> 

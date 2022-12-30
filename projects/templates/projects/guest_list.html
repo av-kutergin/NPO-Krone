@@ -18,7 +18,7 @@
     {% else %}
     <div class="report" style="display:flex;flex-direction:column;align-items:center;">
         <div>{{ g }}
-            <button onclick="if (confirm('Отметить, что этот гость пришёл?'))window.location.href='{% url 'set_arrived' ticket_uid=g.ticket_uid %}';">{% translate "гость пришёл" %}
+            <button onclick="if (confirm('Отметить, что этот гость пришёл?'))window.location.href='{% url 'set_arrived' ticket_uid=g.ticket_uid %}';">{% translate "Гость пришёл" %}
             </button>
         </div>
         <br>

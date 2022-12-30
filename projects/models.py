@@ -123,7 +123,7 @@ class Guest(models.Model):
                                   max_length=40, unique=True)
     qr = models.ImageField(blank=True, editable=False, upload_to='guest_QRs/%Y/')
     arrived = models.BooleanField(default=False, verbose_name='Пришёл')
-    paid = models.BooleanField(default=False, verbose_name='Оплачено', editable=False)
+    paid = models.BooleanField(default=False, verbose_name='Оплачено')  # , editable=False)
 
     class Meta:
         verbose_name = 'Гость'

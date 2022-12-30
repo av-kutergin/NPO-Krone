@@ -14,6 +14,7 @@
 <div style="display:flex;flex-direction:column;align-items:center;">
 {% if flag %}
     <h2>{{ project.name }}</h2>
+    {% if guest.paid %}
     {% if not guest.arrived and not project.is_over %}
         <div style="display:flex;flex-direction:column;align-items:center;">
             <style>body {background:#8de6a8;}</style>
@@ -36,6 +37,14 @@
             <h3 style="text-align:center">{% translate "Мероприятие уже завершилось!" %}</h3>
             <br>
         </div>
+    {% endif %}
+    {% else %}
+    <div style="display:flex;flex-direction:column;align-items:center;">
+        <style>body {background:#ff7b7d;}</style>
+        <h2>❌</h2>
+        <h3 style="text-align:center">{% translate "Билет недействителен!" %}</h3>
+        <br>
+    </div>
     {% endif %}
     <br>
     <a href="{% url 'guest_list' project_slug=project.slug %}" style="text-align: center; display:block">{% translate "Список гостей" %}</a>

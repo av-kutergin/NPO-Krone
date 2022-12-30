@@ -194,12 +194,15 @@ def download_file(request, file_type, pk):
 def how_to_view(request, project_slug, ticket_uid):
     guest = Guest.objects.select_related('project').get(ticket_uid=ticket_uid)
     project = guest.project
-    context = {
-        'project': project,
-        'guest': guest,
-        'title': _('Инструкция'),
-    }
-    return render(request, 'projects/how_to_page.html', context)
+    if not request.user.is_authenticated:
+        context = {
+            'project': project,
+            'guest': guest,
+            'title': _('Инструкция'),
+        }
+        return render(request, 'projects/how_to_page.html', context)
+    else:
+        return redirect('service_page', project_slug=project_slug, ticket_uid=ticket_uid)
 
 
 @login_required()
