@@ -84,6 +84,17 @@
     </div>
 </header>
 
+<div class="my-tickets" onclick="this.classList.contains('is-active') ? this.classList.remove('is-active') : this.classList.add('is-active')">
+    <div class="my-tickets__top">
+        <img class="my-tickets__icon" src="{% static 'projects/img/ticket.svg' %}" alt="">
+        <div class="my-tickets__title">Мои билеты</div>
+    </div>
+    <ul class="my-tickets__list">
+        <a href="https://www.youtube.com/" data-proj-id="NPOKRONE-QR-for-project-Привет"><li>Привет</li></a>
+        <a href="https://www.youtube.com/" data-proj-id="NPOKRONE-QR-for-project-Сосед"><li>Сосед</li></a>
+    </ul>
+</div>
+
 {% endblock mainmenu %}
 {% block content %}
 {% endblock content%}
@@ -110,6 +121,19 @@
 </footer>
 
 <script src="{% static 'projects/js/common.js' %}"></script>
+<script>
+    window.addEventListener('load', () => {
+        Array.from(document.querySelectorAll('.my-tickets__list a'))
+            .forEach(x => {
+                let ticket = localStorage.getItem(x.getAttribute('data-proj-id'))
+                if (ticket) {
+                    x.setAttribute('href', ticket)
+                } else {
+                    x.remove()
+                }
+            })
+    })
+</script>
 
 </body>
 </html>

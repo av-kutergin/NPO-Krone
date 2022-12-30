@@ -19,6 +19,8 @@
                     <div class="project__date-text">{{ project.date.date }}</div>
                 </div>
 
+                <a href="" class="project__ticket">Ваш билет: </a>
+
                 {% if not project.is_over and project.has_vacant %}
                         <div class="project__state">{% translate "Еще есть свободные места" %}</div>
             </div>
@@ -42,6 +44,14 @@
 
     <script>
         window.addEventListener('load', () => {
+            let ticket_url = localStorage.getItem(`NPOKRONE-QR-for-project-${ '{{ project.name }}' }`)
+            if (ticket_url) {
+                let ticket_block = document.querySelector('.project__ticket')
+                ticket_block.innerHTML = `Ваш билет: ${ticket_url}`
+                ticket_block.setAttribute('href', ticket_url)
+                ticket_block.style.display = 'block'
+            }
+            
             let html = document.querySelector('.project__content').innerHTML
             document.querySelector('.project__content').innerHTML = html
                 .replace(/<img.*?>/g, (match) => `<div class="project__photo">

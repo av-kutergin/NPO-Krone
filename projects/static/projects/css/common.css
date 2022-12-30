@@ -53,7 +53,7 @@ a {
     background: white;
     cursor: pointer;
     opacity: 0.3;
-    transition: 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
 }
 .my-tickets:hover {
     border-color: blue;
