@@ -60,7 +60,9 @@ class Project(TranslatableModel):
         return datetime.date.today() >= self.qr_reveal_date
 
     def time_before_reveal_formatted(self):
-        return strfdelta(datetime.datetime.combine(self.qr_reveal_date, datetime.datetime.min.time()) - datetime.datetime.now(), "%D дней %H часов и %M минут")
+        return strfdelta(
+            datetime.datetime.combine(self.qr_reveal_date, datetime.datetime.min.time()) - datetime.datetime.now(),
+            "%D " + _("дней") + " %H " + _("часов") + _("и") + " %M " + _("минут"))
 
     def has_vacant(self):
         return int(self.total_places) - len(self.guest_set.all().filter(paid=True))

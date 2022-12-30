@@ -3,316 +3,438 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: projects/models.py:214
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-18 18:21+0400\n"
-"PO-Revision-Date: 2022-11-18 14:22+0000\n"
-"Last-Translator:   <>\n"
+"POT-Creation-Date: 2022-12-30 21:41+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Translated-Using: django-rosetta 0.9.8\n"
-
-#: projects/admin.py:10 projects/admin.py:11
+#: projects/admin.py:11 projects/admin.py:12
 msgid "Админ-панель НКО \"Крона\""
 msgstr ""
 
-#: projects/admin.py:14
-msgid "Сделать карусель"
+#: projects/forms.py:17
+msgid "Имя"
+msgstr ""
+
+#: projects/forms.py:18
+msgid "Фамилия"
+msgstr ""
+
+#: projects/forms.py:20
+msgid "+70000000000"
 msgstr ""
 
 #: projects/forms.py:25
-msgid "Имя"
-msgstr "First name"
+msgid "Имя*"
+msgstr ""
 
 #: projects/forms.py:26
-msgid "Фамилия"
-msgstr "Last name"
+msgid "Фамилия*"
+msgstr ""
 
 #: projects/forms.py:27
-msgid "Телефон"
-msgstr "Phone number"
+msgid "Телефон*"
+msgstr ""
 
 #: projects/forms.py:28
 msgid "Телеграм"
-msgstr "Telegram"
+msgstr ""
 
 #: projects/forms.py:29
 msgid "Электронная почта"
-msgstr "E-mail"
+msgstr ""
 
 #: projects/forms.py:30
-msgid "Дата рождения"
-msgstr "Birthdate:"
+msgid "Дата рождения*"
+msgstr ""
 
-#: projects/models.py:191
+#: projects/models.py:26
+msgid "Название"
+msgstr ""
+
+#: projects/models.py:27
+msgid "Контент"
+msgstr ""
+
+#: projects/models.py:28
+msgid "Контент кратко"
+msgstr ""
+
+#: projects/models.py:29
+msgid "В двух словах"
+msgstr ""
+
+#: projects/models.py:30
+msgid "Как добраться"
+msgstr ""
+
+#: projects/models.py:32
+msgid "Стоимость входа"
+msgstr ""
+
+#: projects/models.py:33
+msgid "Дата проведения"
+msgstr ""
+
+#: projects/models.py:34
+msgid "Количество мест"
+msgstr ""
+
+#: projects/models.py:35
+msgid "Дата, когда откроется qr-код"
+msgstr ""
+
+#: projects/models.py:37
+msgid "Фото"
+msgstr ""
+
+#: projects/models.py:38
+msgid "Отображать на главной странице"
+msgstr ""
+
+#: projects/models.py:65 projects/utils.py:30 projects/utils.py:32
+msgid "дней"
+msgstr ""
+
+#: projects/models.py:65
+msgid "часов"
+msgstr ""
+
+#: projects/models.py:65
+msgid "и"
+msgstr ""
+
+#: projects/models.py:65
+msgid "минут"
+msgstr ""
+
+#: projects/models.py:213
 msgid "Некоторое"
-msgstr "Soneshit"
+msgstr ""
 
-#: projects/models.py:192
-msgid ""
-"Некоторое количество текста, которое имеет своей целью коротко представить "
-"организацию широкой публике заходящих на сайт людей"
-msgstr "Some amount of text, that represents our organisation"
+#: projects/templates/projects/base.html:35
+#: projects/templates/projects/base.html:68
+#: projects/templates/projects/base.html:110
+msgid "Главная"
+msgstr ""
 
-#: projects/templates/projects/base.html:30
-msgid "О нас"
-msgstr "About us"
-
-#: projects/templates/projects/base.html:32 projects/views.py:42
-msgid "Команда"
-msgstr "Team"
-
-#: projects/templates/projects/base.html:33 projects/views.py:98
+#: projects/templates/projects/base.html:36
+#: projects/templates/projects/base.html:69
+#: projects/templates/projects/base.html:111
+#: projects/templates/projects/docs.html:14 projects/views.py:144
 msgid "Документы"
-msgstr "Documents"
+msgstr ""
 
-#: projects/templates/projects/base.html:34 projects/views.py:108
-msgid "Отчёты"
-msgstr "Reports"
+#: projects/templates/projects/base.html:37
+#: projects/templates/projects/base.html:70
+#: projects/templates/projects/base.html:112 projects/views.py:54
+msgid "Команда"
+msgstr ""
 
-#: projects/templates/projects/base.html:38 projects/views.py:50
+#: projects/templates/projects/base.html:38
+#: projects/templates/projects/base.html:71
+#: projects/templates/projects/base.html:113 projects/views.py:62
 msgid "Проекты"
-msgstr "Projects"
-
-#: projects/templates/projects/base.html:41 projects/views.py:57
-msgid "Контакты"
-msgstr "Contacts"
-
-#: projects/templates/projects/base.html:44 projects/views.py:64
-msgid "Донат"
-msgstr "Donate"
-
-#: projects/templates/projects/base.html:63 projects/views.py:70
-msgid "Карта сайта"
-msgstr "Sitemap"
-
-#: projects/templates/projects/base.html:64
-msgid ""
-"Макет сайта разработан Принцем Богемским Франц Иосиф фон Габсбург-"
-"Лотарингеном в 2022 г."
 msgstr ""
-"Layout of the site is developed by Prince of Bogemia Franz Josef von "
-"Habsburg-Lorraine in 2022"
 
-#: projects/templates/projects/contacts.html:8
-msgid "Телефон, ссылки, может карта и проч"
-msgstr "Phone number, links, map maybe etc."
+#: projects/templates/projects/base.html:39
+#: projects/templates/projects/base.html:72
+#: projects/templates/projects/base.html:114
+#: projects/templates/projects/index.html:193
+msgid "Поддержать"
+msgstr ""
 
-#: projects/templates/projects/display_document.html:9
-#: projects/templates/projects/payment-succeed-qr.html:19
+#: projects/templates/projects/base.html:90
+msgid "Мои билеты"
+msgstr ""
+
+#: projects/templates/projects/docs.html:25
+#: projects/templates/projects/docs.html:47
+#: projects/templates/projects/docs.html:59
+#: projects/templates/projects/payment_success.html:92
 msgid "Скачать"
-msgstr "Download"
-
-#: projects/templates/projects/documents.html:11
-#, python-format
-msgid ""
-"\n"
-"            скачать: %(name)s\n"
-"          "
 msgstr ""
-"\n"
-"download: %(name)s"
 
-#: projects/templates/projects/donate.html:7
-msgid "Ведьмаку-у-у заплатите чека-а-а-нной монетой"
-msgstr "Toss a co-o-o-in to the witcher"
-
-#: projects/templates/projects/guest-registration.html:22
-msgid "Взнос за участие:"
-msgstr "Participation fee:"
-
-#: projects/templates/projects/guest-registration.html:25
-#: projects/templates/projects/guest-registration.html:27
-msgid "Оплатить"
-msgstr "Pay"
-
-#: projects/templates/projects/guest_list.html:17
-#: projects/templates/projects/guest_list.html:34
-#: projects/templates/projects/guest_list.html:35
-#: projects/templates/projects/service_page.html:17
+#: projects/templates/projects/guest_list.html:21
+#: projects/templates/projects/guest_list.html:40
+#: projects/templates/projects/guest_list.html:41
+#: projects/templates/projects/service_page.html:23
 msgid "Гость пришёл"
-msgstr "Guest has arrived"
+msgstr ""
 
-#: projects/templates/projects/guest_list.html:26
+#: projects/templates/projects/guest_list.html:32
 msgid "Назад"
-msgstr "Back"
+msgstr ""
 
-#: projects/templates/projects/how_to_page.html:15
-msgid "Сожалеем, но этот проект уже завершён"
-msgstr "We are sorry but this project is over"
+#: projects/templates/projects/how_to_page.html:22
+msgid "Дата проведения мероприятия:"
+msgstr ""
 
-#: projects/templates/projects/how_to_page.html:23
-#: projects/templates/projects/payment-succeed-qr.html:24
-#: projects/templates/projects/service_page.html:40
+#: projects/templates/projects/how_to_page.html:35
+msgid ""
+"Сожалеем, но этот проект уже завершён, приходите на следующее мероприятие!"
+msgstr ""
+
+#: projects/templates/projects/how_to_page.html:39
+msgid "Скоро откроется информация о том как добраться!"
+msgstr ""
+
+#: projects/templates/projects/how_to_page.html:40
+msgid "Откроется через"
+msgstr ""
+
+#: projects/templates/projects/how_to_page.html:44
+#: projects/templates/projects/service_page.html:62
 msgid "На главную!"
-msgstr "To the main page!"
+msgstr ""
 
-#: projects/templates/projects/how_to_page.html:25
-#: projects/templates/projects/service_page.html:33
+#: projects/templates/projects/how_to_page.html:46
 msgid "Обслуживание"
-msgstr "Service"
+msgstr ""
 
-#: projects/templates/projects/index.html:7
-msgid "Пафосный панчлайн слева от карусельки"
-msgstr "Pathos punchline on the left of a carousel"
+#: projects/templates/projects/index.html:23
+msgid "Мы объединяем людей"
+msgstr ""
 
-#: projects/templates/projects/index.html:14
-msgid "И ещё ссылка на телегу"
-msgstr "Telegram link"
+#: projects/templates/projects/index.html:24
+msgid ""
+"организуем культурные, развлекательные и иные массовые мероприятия, "
+"направленные на достижение цели НКО “Крона”"
+msgstr ""
 
-#: projects/templates/projects/index.html:21
-msgid "Деньги держат нашу организацию на плаву"
-msgstr "Money lets us survive a day"
-
-#: projects/templates/projects/index.html:22
-msgid "\"КНОПКА \"ДОНАТ\""
-msgstr "\"DONATE BUTTON\""
-
-#: projects/templates/projects/index.html:30
-#: projects/templates/projects/projects.html:8
-msgid "Мы организуем проекты"
-msgstr "We organize projects"
-
-#: projects/templates/projects/index.html:36
-#: projects/templates/projects/projects.html:14
-msgid "Подробнее!"
-msgstr "Tell me more!"
-
-#: projects/templates/projects/index.html:43
-msgid "Наша команда"
-msgstr "Team"
-
+#: projects/templates/projects/index.html:25
 #: projects/templates/projects/index.html:53
-msgid "И другие нераавнодушные люди"
-msgstr "And other caring people"
+#: projects/templates/projects/index.html:78
+#: projects/templates/projects/index.html:125
+#: projects/templates/projects/projects.html:34
+msgid "Узнать больше"
+msgstr ""
 
-#: projects/templates/projects/payment-succeed-qr.html:7
-msgid "Останьтесь на пару секунд!"
-msgstr "Stay for a few seconds!"
+#: projects/templates/projects/index.html:96
+msgid "О нас"
+msgstr ""
 
-#: projects/templates/projects/payment-succeed-qr.html:10
+#: projects/templates/projects/index.html:97
 msgid ""
-"Оплата прошла успешно и в качестве доказательства взноса на входе нужно "
-"будет предоставить этот qr-код"
-msgstr ""
-"Your payment has been confirmed. You'll need to show this QR at the entrance"
-" as a proof"
-
-#: projects/templates/projects/payment-succeed-qr.html:11
-#, python-format
-msgid ""
-" Мы уже отправили его к вам на %(email)s, но на всякий случай вы можете его\n"
-"        сфотографировать, скачать или распечатать "
-msgstr ""
-"We've already send it to %(email)s, but you can also take a photo, download "
-"or print it"
-
-#: projects/templates/projects/payment-succeed-qr.html:22
-msgid "Распечатать"
-msgstr "Print"
-
-#: projects/templates/projects/payment-succeed-qr.html:36
-msgid "Спасибо за Ваше щедрое пожертвование!"
+"Мы - автономная некоммерческая организация внедрения нетиповых решений в "
+"социальной сфере."
 msgstr ""
 
-#: projects/templates/projects/project_page.html:17
-msgid "Участвовать!"
-msgstr "Take part!"
-
+#: projects/templates/projects/index.html:118
 #: projects/templates/projects/projects.html:16
-msgid "Дата проведения: "
-msgstr "Event date:"
+msgid "Наши проекты"
+msgstr ""
 
-#: projects/templates/projects/projects.html:19
-msgid "Акция уже прошла"
-msgstr "Already passed"
+#: projects/templates/projects/index.html:123
+#, python-format
+msgid " Проект \"%(name)s\" "
+msgstr ""
 
-#: projects/templates/projects/projects.html:22
-msgid "Ещё есть свободные места"
-msgstr "There are vacant places"
+#: projects/templates/projects/index.html:143
+#: projects/templates/projects/project.html:34
+#: projects/templates/projects/projects.html:52
+msgid "Хочу участвовать"
+msgstr ""
 
-#: projects/templates/projects/projects.html:25
-msgid "Свободных мест нет."
-msgstr "No vacant places"
+#: projects/templates/projects/index.html:157
+msgid "Наша команда"
+msgstr ""
 
-#: projects/templates/projects/projects.html:26
-msgid "Не отчаивайся! Скоро будут новые проекты"
-msgstr "Do not worry! More projects are coming soon"
+#: projects/templates/projects/index.html:182
+msgid "Посмотреть команду"
+msgstr ""
 
-#: projects/templates/projects/reports.html:11
-msgid "(Скачать в формате PDF)"
-msgstr "(Download PDF)"
+#: projects/templates/projects/index.html:189
+#: projects/templates/projects/support.html:15
+msgid "Поддержка"
+msgstr ""
 
-#: projects/templates/projects/service_page.html:15
-msgid "green back"
+#: projects/templates/projects/index.html:191
+#: projects/templates/projects/support.html:17
+msgid ""
+"Наша организация не является коммерческой, поэтому вы можете материально "
+"поддержать нас, чтобы у нас была возможность продолжать организовывать "
+"мероприятия и помогать людям"
+msgstr ""
+
+#: projects/templates/projects/index.html:192
+#: projects/templates/projects/support.html:18
+msgid "Мы будем рады любой помощи"
+msgstr ""
+
+#: projects/templates/projects/index.html:204
+msgid "Контакты"
+msgstr ""
+
+#: projects/templates/projects/index.html:205
+msgid ""
+"Автономная некоммерческая организация внедрения экстраординарных решений в "
+"социальной сфере «Крона»"
+msgstr ""
+
+#: projects/templates/projects/index.html:209
+msgid "Свердловская область, г. Екатеринбург,"
+msgstr ""
+
+#: projects/templates/projects/index.html:209
+msgid "ул. Резервная, д. 1"
+msgstr ""
+
+#: projects/templates/projects/index.html:213
+msgid "Телефон: "
+msgstr ""
+
+#: projects/templates/projects/index.html:217
+msgid "Эл. почта:"
+msgstr ""
+
+#: projects/templates/projects/participate.html:22
+msgid "Для участия в проекте заполните форму"
+msgstr ""
+
+#: projects/templates/projects/participate.html:43
+msgid "Взнос за участие:"
+msgstr ""
+
+#: projects/templates/projects/participate.html:45
+msgid "Оплатить"
+msgstr ""
+
+#: projects/templates/projects/payment_error.html:13
+msgid "Не удалось оплатить"
+msgstr ""
+
+#: projects/templates/projects/payment_success.html:65
+msgid "Оплата прошла успешно"
+msgstr ""
+
+#: projects/templates/projects/payment_success.html:68
+msgid "По ссылке находится QR-код билета и инструкция о том как добраться."
+msgstr ""
+
+#: projects/templates/projects/payment_success.html:71
+msgid "Сохраните ссылку. QR-код надо будет показать при входе на мероприятие."
+msgstr ""
+
+#: projects/templates/projects/payment_success.html:81
+msgid ""
+"Также вы можете сохранить на компьютер или распечатать QR-код билета с "
+"помощью кнопок ниже"
+msgstr ""
+
+#: projects/templates/projects/payment_success.html:90
+msgid "Распечатать"
+msgstr ""
+
+#: projects/templates/projects/payment_success.html:98
+msgid "Вернуться на главную"
+msgstr ""
+
+#: projects/templates/projects/payment_success.html:161
+msgid "Спасибо за Ваше щедрое пожертвование! 🙂"
+msgstr ""
+
+#: projects/templates/projects/project.html:22
+#: projects/templates/projects/project.html:50
+msgid "Ваш билет:"
+msgstr ""
+
+#: projects/templates/projects/project.html:25
+#: projects/templates/projects/projects.html:29
+msgid "Еще есть свободные места"
+msgstr ""
+
+#: projects/templates/projects/projects.html:21
+#, python-format
+msgid " Проект %(name)s "
+msgstr ""
+
+#: projects/templates/projects/projects.html:27
+msgid "Мероприятие уже прошло"
+msgstr ""
+
+#: projects/templates/projects/projects.html:31
+msgid "Мероприятие скоро начнётся"
 msgstr ""
 
 #: projects/templates/projects/service_page.html:21
-msgid "orange back"
+msgid "У гостя есть билет! Можно отметить, что он пришёл!"
 msgstr ""
 
-#: projects/templates/projects/service_page.html:25
-msgid "yellow back"
+#: projects/templates/projects/service_page.html:30
+msgid "Этот гость уже отмечен как пришедший!"
 msgstr ""
-
-#: projects/templates/projects/service_page.html:29 projects/views.py:224
-msgid "Список гостей"
-msgstr "Guest list"
 
 #: projects/templates/projects/service_page.html:37
-msgid "red back"
+msgid "Мероприятие уже завершилось!"
 msgstr ""
 
-#: projects/templates/projects/sitemap.html:7
-msgid "Карта сайта, ничего особенного"
-msgstr "Sitemap, nothing special"
+#: projects/templates/projects/service_page.html:45
+#: projects/templates/projects/service_page.html:58
+msgid "Билет недействителен!"
+msgstr ""
 
-#: projects/templates/projects/team.html:8
+#: projects/templates/projects/service_page.html:50 projects/views.py:246
+msgid "Список гостей"
+msgstr ""
+
+#: projects/templates/projects/team.html:16
 msgid "Основной состав"
-msgstr "Main cast"
+msgstr ""
 
-#: projects/templates/projects/team.html:17
-msgid "Те, без кого бы мы не справились ^^"
-msgstr "The ones we couldn't do without ^^"
-
-#: projects/utils.py:28 projects/utils.py:30
-msgid "дней"
-msgstr "days"
-
-#: projects/utils.py:32
-msgid "день"
-msgstr "days"
+#: projects/templates/projects/team.html:46
+msgid "Те, без кого мы бы не справились"
+msgstr ""
 
 #: projects/utils.py:34
+msgid "день"
+msgstr ""
+
+#: projects/utils.py:36
 msgid "дня"
-msgstr "day"
+msgstr ""
 
-#: projects/views.py:23
+#: projects/views.py:25
 msgid "НКО Крона"
-msgstr "NPO Krone"
+msgstr ""
 
-#: projects/views.py:158
-msgid "Как нас найти"
-msgstr "How to find us"
-
-#: projects/views.py:167
+#: projects/views.py:79
 msgid "Регистрация на мероприятие"
-msgstr "Event registration"
+msgstr ""
 
-#: projects/views.py:205 projects/views.py:211
-msgid "Сервис"
-msgstr "Service"
-
-#: projects/views.py:250 projects/views.py:256
+#: projects/views.py:109 projects/views.py:114
 msgid "Успешная оплата"
-msgstr "Payment confirmed"
+msgstr ""
+
+#: projects/views.py:117 projects/views.py:122
+msgid "Ошибка оплаты"
+msgstr ""
+
+#: projects/views.py:130
+msgid "Донат"
+msgstr ""
+
+#: projects/views.py:201
+msgid "Инструкция"
+msgstr ""
+
+#: projects/views.py:227 projects/views.py:233
+msgid "Сервис"
+msgstr ""
+
+#: projects/views.py:278
+msgid "Список проектов"
+msgstr ""
 
 #: templates/admin/base_site.html:11
 msgid "Django site admin"
@@ -322,42 +444,6 @@ msgstr ""
 msgid "Django administration"
 msgstr ""
 
-#: templates/registration/login.html:9
+#: templates/registration/login.html:20
 msgid "Войти"
-msgstr "Enter"
-
-#~ msgid "До мероприятия осталось: {days} {get_day_word(days)}"
-#~ msgstr "Only {days} {get_day_word(days)} to the event"
-
-#, python-brace-format
-#~ msgid ""
-#~ "К сообщению прикреплён Ваш QR для входа на мероприятие: {project.name}\n"
-#~ "    За сутки до мероприятия на странице, на которую ведёт Ваш QR, появится подробная интрукция о том, как нас найти."
-#~ msgstr ""
-#~ "There is a QR attached to this email. It is your ticket to the event: {project.name}.\n"
-#~ "More information on how to find us will appear on the page, where this QR leads, one day before the event."
-
-#, python-brace-format
-#~ msgid "Ваш QR для входа на мероприятие: {project.name}"
-#~ msgstr "Your QR to take part in the event: {project.name}"
-
-#~ msgid "<h1>Страница не найдена</h1>"
-#~ msgstr "<h1>Page not found</h1>"
-
-#~ msgid "lastname"
-#~ msgstr "Last name"
-
-#~ msgid "firstname"
-#~ msgstr "First name"
-
-#~ msgid "phone"
-#~ msgstr "Phone number"
-
-#~ msgid "telegram"
-#~ msgstr "Telegram"
-
-#~ msgid "email"
-#~ msgstr "E-Mail"
-
-#~ msgid "birthdate"
-#~ msgstr "Date of birth"
+msgstr ""
