@@ -84,7 +84,7 @@
     </div>
 </header>
 
-<div class="my-tickets" onclick="this.classList.contains('is-active') ? this.classList.remove('is-active') : this.classList.add('is-active')">
+<div class="my-tickets is-hidden" onclick="this.classList.contains('is-active') ? this.classList.remove('is-active') : this.classList.add('is-active')">
     <div class="my-tickets__top">
         <img class="my-tickets__icon" src="{% static 'projects/img/ticket.svg' %}" alt="">
         <div class="my-tickets__title">{% translate "Мои билеты"%}</div>
@@ -123,16 +123,26 @@
 
 <script src="{% static 'projects/js/common.js' %}"></script>
 <script>
-    window.addEventListener('load', () => {
-        Array.from(document.querySelectorAll('.my-tickets__list a'))
-            .forEach(x => {
-                let ticket = localStorage.getItem(x.getAttribute('data-proj-id'))
-                if (ticket) {
-                    x.setAttribute('href', ticket)
-                } else {
-                    x.remove()
-                }
-            })
+window.addEventListener('load', () => {
+        let list = Array.from(document.querySelectorAll('.my-tickets__list a'));
+
+        document.querySelector('.my-tickets').style.display = 'block'
+        list.forEach(x => {
+            let ticket = localStorage.getItem(x.getAttribute('data-proj-id'))
+            if (ticket) {
+                x.setAttribute('href', ticket)
+            } else {
+                x.remove()
+            }
+        })
+
+        list = Array.from(document.querySelectorAll('.my-tickets__list a'));
+
+        if (list.length > 0) {
+            document.querySelector('.my-tickets').classList.remove('is-hidden')
+        } else {
+            document.querySelector('.my-tickets').style.display = 'none'
+        }
     })
 </script>
 

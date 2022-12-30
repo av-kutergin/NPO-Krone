@@ -55,6 +55,9 @@ a {
     opacity: 0.3;
     transition: opacity 0.3s ease-out;
 }
+.my-tickets.is-hidden {
+    opacity: 0;
+}
 .my-tickets:hover {
     border-color: blue;
     color: blue;
