@@ -90,8 +90,9 @@
         <div class="my-tickets__title">Мои билеты</div>
     </div>
     <ul class="my-tickets__list">
-        <a href="https://www.youtube.com/" data-proj-id="NPOKRONE-QR-for-project-Привет"><li>Привет</li></a>
-        <a href="https://www.youtube.com/" data-proj-id="NPOKRONE-QR-for-project-Сосед"><li>Сосед</li></a>
+        {% for p in not_over %}
+        <a data-proj-id="NPOKRONE-QR-for-project-{{ p }}"><li>{{ p }}</li></a>
+        {% endfor %}
     </ul>
 </div>
 

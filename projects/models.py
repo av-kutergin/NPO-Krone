@@ -53,7 +53,7 @@ class Project(TranslatableModel):
     #     return self.date > datetime.date.today()
 
     def is_over(self):
-        result = (datetime.datetime.combine(self.qr_reveal_date, datetime.datetime.min.time()) - datetime.datetime.now()).total_seconds() / 60 / 60  < -24
+        result = (datetime.datetime.combine(self.date, datetime.datetime.min.time()) - datetime.datetime.now()).total_seconds() / 60 / 60  < -24
         return result
 
     def is_it_time_to_reveal_howto(self):

@@ -97,36 +97,25 @@ def participate(request, project_slug):
 
 
 def payment_success(request):
-    guest = Guest.objects.get(ticket_uid='f873a1cb-1fca-4ba7-9afb-c4095a7adbf8')
-    project = guest.project
-    qr_link = f'https://npokrona.ru/how-to/{project.slug}/{guest.ticket_uid}'
-    context = {
-        'title': _('Успешная оплата'),
-        'guest': guest,
-        'qr_link': qr_link,
-    }
-    return render(request, 'projects/payment_success.html', context)
-
-    '''if check_success_payment(request):
+    if check_success_payment(request):
         param_request = parse_response(request)
         description = param_request['description']
         if description != 'donation':
             guest = Guest.objects.get(ticket_uid=description)
             project = guest.project
-            qr_link = f'https://npokrona.ru/how-to/{project.slug}/{guest.ticket_uid}
+            qr_link = f'https://npokrona.ru/how-to/{project.slug}/{guest.ticket_uid}'
 
             context = {
                 'title': _('Успешная оплата'),
                 'guest': guest,
                 'qr_link': qr_link,
                 }
-            # return render(request, 'projects/payment_success.html', context)
         else:
             context = {'title': _('Успешная оплата'), }
         return render(request, 'projects/payment_success.html', context)
     else:
         context = {'title': _('Ошибка оплаты')}
-        return render(request, 'projects/payment_error.html')'''
+        return render(request, 'projects/payment_error.html', context)
 
 
 def payment_error(request):
@@ -317,4 +306,3 @@ def make_carousel_default(request):
     new_carousel.content = '...'
     new_carousel.save()
     return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.id,)))
-
