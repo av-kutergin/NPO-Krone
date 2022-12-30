@@ -18,7 +18,7 @@ from parler.models import TranslatedFields, TranslatableModel
 from phonenumber_field.modelfields import PhoneNumberField
 
 from Krone.settings import MEDIA_ROOT
-from projects.utils import get_uuid_id, COLORS, calculate_signature, pdf2png
+from projects.utils import get_uuid_id, COLORS, calculate_signature, pdf2png, strfdelta
 
 
 class Project(TranslatableModel):
@@ -53,14 +53,14 @@ class Project(TranslatableModel):
     #     return self.date > datetime.date.today()
 
     def is_over(self):
-        result = (self.date - datetime.datetime.now()).days < -1
+        result = (datetime.datetime.combine(self.qr_reveal_date, datetime.datetime.min.time()) - datetime.datetime.now()).total_seconds() / 60 / 60  < -24
         return result
 
     def is_it_time_to_reveal_howto(self):
         return datetime.date.today() >= self.qr_reveal_date
 
-    def days_to_event(self):
-        return (self.date - datetime.datetime.now()).days
+    def time_before_reveal_formatted(self):
+        return strfdelta(datetime.datetime.combine(self.qr_reveal_date, datetime.datetime.min.time()) - datetime.datetime.now(), "%D дней %H часов и %M минут")
 
     def has_vacant(self):
         return int(self.total_places) - len(self.guest_set.all().filter(paid=True))

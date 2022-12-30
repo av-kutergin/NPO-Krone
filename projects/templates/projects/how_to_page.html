@@ -37,7 +37,7 @@
     {% else %}
         <div style="font-size:20px; text-align:center; background: #feda4d;padding: 40px;border-radius: 30px;">
             <p>{% translate "Скоро откроется информация о том как добраться!"%}</p>
-            <p>{% translate "Откроется через"%} {{ project.time_before_reveal }}</p>
+            <p>{% translate "Откроется через"%} {{ project.time_before_reveal_formatted }}</p>
         </div>
     {% endif %}
     <br>
