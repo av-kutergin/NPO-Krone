@@ -26,8 +26,8 @@ class Project(TranslatableModel):
         name=models.CharField(max_length=100, verbose_name=_('Название')),
         content=RichTextField(blank=True, verbose_name=_('Контент')),
         content_brief=models.TextField(max_length=200, blank=True, verbose_name=_('Контент кратко')),
-        summary=models.CharField(max_length=50, blank=True, verbose_name=_('В двух словах')),
-        howto=models.TextField(max_length=200, verbose_name=_('Как добраться')),
+        summary=models.CharField(max_length=50, blank=True, verbose_name=_('В двух словах')),       
+        howto=RichTextField(blank=True, max_length=10000, verbose_name=_('Как добраться')),
     )
     price = models.DecimalField(max_digits=5, decimal_places=0, verbose_name=_('Стоимость входа'))
     date = models.DateTimeField(verbose_name=_('Дата проведения'))
@@ -53,13 +53,13 @@ class Project(TranslatableModel):
     #     return self.date > datetime.date.today()
 
     def is_over(self):
-        result = (self.date - datetime.datetime.now()).days < -1
+        result = (datetime.datetime.combine(self.qr_reveal_date, datetime.datetime.min.time()) - datetime.datetime.now()).total_seconds() / 60 / 60  < -24
         return result
 
     def is_it_time_to_reveal_howto(self):
         return datetime.date.today() >= self.qr_reveal_date
 
-    def time_before_reveal(self):
+    def time_before_reveal_formatted(self):
         return strfdelta(datetime.datetime.combine(self.qr_reveal_date, datetime.datetime.min.time()) - datetime.datetime.now(), "%D дней %H часов и %M минут")
 
     def has_vacant(self):

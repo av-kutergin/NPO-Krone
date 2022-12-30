@@ -97,25 +97,23 @@ def participate(request, project_slug):
 
 
 def payment_success(request):
-    if check_success_payment(request):
+    guest = Guest.objects.get(ticket_uid='f873a1cb-1fca-4ba7-9afb-c4095a7adbf8')
+    project = guest.project
+    qr_link = f'https://npokrona.ru/how-to/{project.slug}/{guest.ticket_uid}'
+    context = {
+        'title': _('Успешная оплата'),
+        'guest': guest,
+        'qr_link': qr_link,
+    }
+    return render(request, 'projects/payment_success.html', context)
+
+    '''if check_success_payment(request):
         param_request = parse_response(request)
         description = param_request['description']
         if description != 'donation':
             guest = Guest.objects.get(ticket_uid=description)
             project = guest.project
-            qr_link = f'https://npokrona.ru/how-to/{project.slug}/{guest.ticket_uid}'
-            # image_data = bytes(guest.qr.read())
-            # message_text = _(f'''К сообщению прикреплён Ваш QR для входа на мероприятие: {project.name}
-            # За сутки до мероприятия на странице, на которую ведёт Ваш QR, появится подробная интрукция о том, как нас найти.
-            # ''')
-            # message = EmailMessage(
-            #     _(f'Ваш QR для входа на мероприятие: {project.name}'),
-            #     message_text,
-            #     os.environ['EMAIL_HOST_USER'],
-            #     [guest.email]
-            # )
-            # message.attach(guest.qr.name, image_data, 'image/png')
-            # message.send()
+            qr_link = f'https://npokrona.ru/how-to/{project.slug}/{guest.ticket_uid}
 
             context = {
                 'title': _('Успешная оплата'),
@@ -128,7 +126,7 @@ def payment_success(request):
         return render(request, 'projects/payment_success.html', context)
     else:
         context = {'title': _('Ошибка оплаты')}
-        return render(request, 'projects/payment_error.html')
+        return render(request, 'projects/payment_error.html')'''
 
 
 def payment_error(request):
@@ -197,7 +195,7 @@ def download_file(request, file_type, pk):
         filepath = guest.qr.path
         mime_type, _ = mimetypes.guess_type(filepath)
         extension = mimetypes.guess_extension(filepath)
-        name = filepath.split('/')[-1]
+        _, name = os.path.split(filepath)
         with open(filepath, 'rb') as file:
             response = HttpResponse(file.read(), content_type=mime_type)
             response['Content-Disposition'] = f'attachment; filename={name}'
@@ -210,7 +208,7 @@ def how_to_view(request, project_slug, ticket_uid):
     context = {
         'project': project,
         'guest': guest,
-        'title': _('Как нас найти'),
+        'title': _('Инструкция'),
     }
     return render(request, 'projects/how_to_page.html', context)
 
@@ -222,7 +220,7 @@ def set_arrived(request, ticket_uid):
     if guest.paid:
         guest.arrived = True
         guest.save(update_fields=['arrived'])
-        messages.add_message(request, messages.INFO, 'Гость отмечен пришедшим.')
+        messages.add_message(request, messages.INFO, f'Гость {guest} отмечен пришедшим.')
     return redirect('guest_list', project.slug)
 
 
@@ -255,7 +253,6 @@ def guest_list(request, project_slug):
         'list_of_guests': list_of_guests,
         'title': _('Список гостей')
     }
-    messages.add_message(request, messages.INFO, 'Гость отмечен пришедшим.')
     return render(request, 'projects/guest_list.html', context)
 
 
