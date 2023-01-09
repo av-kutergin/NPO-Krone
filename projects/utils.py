@@ -99,12 +99,14 @@ def generate_payment_link(
     merchant_login = os.environ['PAYMENT_LOGIN']
     merchant_password_1 = os.environ['PAYMENT_PASSWORD1']
     payment_url = os.environ['PAYMENT_URL']
-    is_test = 1
+    is_test = os.environ['IS_TEST']
 
     signature = calculate_signature(
         merchant_login,
+
         cost,
-        merchant_password_1
+        '',
+        merchant_password_1,
     )
 
     data = {

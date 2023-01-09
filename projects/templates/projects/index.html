@@ -190,7 +190,7 @@
             <div class="support__text">
                 <p>{% translate "Наша организация не является коммерческой, поэтому вы можете материально поддержать нас, чтобы у нас была возможность продолжать организовывать мероприятия и помогать людям" %}</p>
                 <p>{% translate "Мы будем рады любой помощи" %}</p>
-                <div class="button light">{% translate "Поддержать" %}</div>
+                <a href="{% url 'donate' %}"><div class="button light">{% translate "Поддержать" %}</div></a>
             </div>
             <div class="support__img">
                 <div class="support__img-front"><img src="{% static 'projects/img/photo_sup.jpg' %}" alt=""></div>

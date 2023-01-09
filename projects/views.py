@@ -104,7 +104,6 @@ def payment_success(request):
             guest = Guest.objects.get(ticket_uid=description)
             project = guest.project
             qr_link = f'https://npokrona.ru/how-to/{project.slug}/{guest.ticket_uid}'
-
             context = {
                 'title': _('Успешная оплата'),
                 'guest': guest,
@@ -291,7 +290,7 @@ def make_carousel_from_project(request, project_slug):
         new_carousel.content = project.summary
         new_carousel.project = project
     new_carousel.save()
-    return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.id,)))
+    return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.pk,)))
 
 
 def make_carousel_default(request):
@@ -308,4 +307,4 @@ def make_carousel_default(request):
     new_carousel.collapsed_content = 'Krone'
     new_carousel.content = '...'
     new_carousel.save()
-    return HttpResponseRedirect(reverse('admin:projects_carousel_change', args=(new_carousel.id,)))
+    return redirect(reverse('admin:projects_carousel_change', args=(new_carousel.pk,)))

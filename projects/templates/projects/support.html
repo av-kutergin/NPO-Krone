@@ -23,7 +23,8 @@
                              MerchantLogin: '{{ merchant_login }}',
                              OutSum: '{{ d.amount }}',
                              Description: 'donation',
-                             SignatureValue: '{{ d.get_hash }}'})">
+                             SignatureValue: '{{ d.get_hash }}',
+                             Istest: 1})">
                     {% endif %}
                 {% endfor %}
             </div>

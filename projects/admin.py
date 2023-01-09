@@ -21,7 +21,7 @@ class ProjectAdmin(TranslatableAdmin):
               'total_places', 'date', 'price', 'qr_reveal_date', 'slug', 'photo', 'show_on_main'
               )
     # actions = [make_carousel]
-    change_form_template = str(BASE_DIR) + '/templates/admin/change_form_project.html' 
+    change_form_template = '.ьу./templates/admin/change_form_project.html'
 
     def get_prepopulated_fields(self, request, obj=None):
         # can't use `prepopulated_fields = ..` because it breaks the admin validation

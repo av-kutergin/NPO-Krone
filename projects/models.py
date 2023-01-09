@@ -125,7 +125,7 @@ class Guest(models.Model):
                                   max_length=40, unique=True)
     qr = models.ImageField(blank=True, editable=False, upload_to='guest_QRs/%Y/')
     arrived = models.BooleanField(default=False, verbose_name='Пришёл')
-    paid = models.BooleanField(default=False, verbose_name='Оплачено')  # , editable=False)
+    paid = models.BooleanField(default=False, verbose_name='Оплачено', editable=False)
 
     class Meta:
         verbose_name = 'Гость'
@@ -249,7 +249,7 @@ class DonateButton(models.Model):
     def get_hash(self):
         merchant_login = os.environ['PAYMENT_LOGIN']
         merchant_password_1 = os.environ['PAYMENT_PASSWORD1']
-        return calculate_signature(merchant_login, self.amount, merchant_password_1)
+        return calculate_signature(merchant_login, self.amount, '', merchant_password_1)
 
 
 class AboutUs(TranslatableModel):
